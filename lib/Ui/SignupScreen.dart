@@ -15,6 +15,7 @@ class _SignupScreenState extends State<SignupScreen> {
   var _emailFieldController = new TextEditingController();
   var _passFieldController = new TextEditingController();
   var _rePassFieldController = new TextEditingController();
+  var _referralController = new TextEditingController();
   bool progress = false;
   @override
   void initState() {
@@ -152,6 +153,40 @@ class _SignupScreenState extends State<SignupScreen> {
                 color: Colors.white,
               ),
               hintText: 'Confirm Password',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _referralField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Referral Code (OPTIONAL)',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            obscureText: true,
+            controller: _referralController,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.people_outline,
+                color: Colors.white,
+              ),
+              hintText: 'Enter referral code',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -298,7 +333,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         _rePassTextField(),
                         SizedBox(
-                          height: 25.0,
+                          height: 30.0,
+                        ),
+                        _referralField(),
+                        SizedBox(
+                          height: 15.0,
                         ),
                         _signUpButton(),
                         _signInButton()
@@ -315,20 +354,31 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void _registerUser() async {
+    setState(() {
+      progress = true;
+    });
     if (_nameFieldController.text.toString().isNotEmpty &&
         _emailFieldController.text.toString().isNotEmpty &&
         _passFieldController.text.toString().isNotEmpty) {
       if (_passFieldController.text.length >= 6) {
         if (_passFieldController.text.toString().trim() ==
             _rePassFieldController.text.toString().trim()) {
-          String email, pass, name;
+          String email, pass, name, referral;
           email = _emailFieldController.text.trim();
           pass = _passFieldController.text.trim();
           name = _nameFieldController.text;
+          if(_referralController.text == ""){
+            referral = "";
+          }else{
+            referral = _referralController.text;
+          }
           String URL =
-              'https://appvideopromo.000webhostapp.com/VideoApp/signup.php?email=$email&name=$name&password=$pass';
+              'https://appvideopromo.000webhostapp.com/VideoApp/signup.php?email=$email&name=$name&password=$pass&referral=$referral';
           http.Response response = await http.get(URL);
           if (response.body.contains('Email already exists')) {
+            setState(() {
+              progress = false;
+            });
             // Email already exists
             Fluttertoast.showToast(
                 msg: "Email already exists!",
@@ -340,10 +390,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 fontSize: 16.0);
           } else if (response.body == 'Your Account created successfully') {
             setState(() {
-              progress = true;
-            });
-            await Future.delayed(Duration(seconds: 2), (){
-              Navigator.of(context).pop();
+              progress = false;
             });
             // Account created
             Fluttertoast.showToast(
@@ -354,7 +401,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 backgroundColor: Colors.grey,
                 textColor: Colors.white,
                 fontSize: 16.0);
+            Navigator.of(context).pop();
           } else {
+            setState(() {
+              progress = false;
+            });
             // Error
             Fluttertoast.showToast(
                 msg: "An error has occurred!",
@@ -368,6 +419,9 @@ class _SignupScreenState extends State<SignupScreen> {
           print(response.body);
           // Register Function
         } else {
+          setState(() {
+            progress = false;
+          });
           Fluttertoast.showToast(
               msg: "Password does not match!",
               toastLength: Toast.LENGTH_SHORT,
@@ -378,6 +432,9 @@ class _SignupScreenState extends State<SignupScreen> {
               fontSize: 16.0);
         }
       } else {
+        setState(() {
+          progress = false;
+        });
         Fluttertoast.showToast(
             msg: "Password must be greater than 6",
             toastLength: Toast.LENGTH_SHORT,
@@ -388,6 +445,9 @@ class _SignupScreenState extends State<SignupScreen> {
             fontSize: 16.0);
       }
     } else {
+      setState(() {
+        progress = false;
+      });
       Fluttertoast.showToast(
           msg: "Text fields must not be empty!",
           toastLength: Toast.LENGTH_SHORT,

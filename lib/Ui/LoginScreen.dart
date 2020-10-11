@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:video_promoter/Ui/SignupScreen.dart';
 import 'package:video_promoter/utilities/constant_dart.dart';
+import 'package:http/http.dart' as http;
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -9,27 +16,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  final _emailKey = GlobalKey<FormState>();
-  final _passKey  = GlobalKey<FormState>();
-  String email, pass;
+  var _emailFieldController = new TextEditingController();
+  var _passFieldController = new TextEditingController();
   bool progress = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-//    databaseReference = database.reference().child('FrenzyUsers');
   }
 
-  void validate() async{
-    setState(() {
-      progress = true;
-    });
-    if(_emailKey.currentState.validate() && _passKey.currentState.validate()){
-      print('Validate');
-    }
-  }
 
 
   Widget _emailFormField() {
@@ -45,31 +41,21 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           decoration: kBoxDecorationStyle,
           alignment: Alignment.center,
-          child: Form(
-            key: _emailKey,
-            child: TextFormField(
-              validator: (value){
-                if(value.isEmpty){
-                  return '*';
-                }else{
-                  email = value.trim();
-                  return null;
-                }
-              },
-              keyboardType: TextInputType.emailAddress,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  prefixIcon: Icon(
-                    Icons.email,
-                    color: Colors.white,
-                  ),
-                  hintText: "Enter your Email",
-                  hintStyle: kHintTextStyle
-              ),
+          child: TextField(
+            controller: _emailFieldController,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: Colors.white,
+                ),
+                hintText: "Enter your Email",
+                hintStyle: kHintTextStyle
             ),
           ),
         ),
@@ -92,31 +78,21 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           decoration: kBoxDecorationStyle,
           alignment: Alignment.center,
-          child: Form(
-            key: _passKey,
-            child: TextFormField(
-              validator: (value){
-                if(value.isNotEmpty){
-                  pass = value;
-                  return null;
-                }else{
-                  return '*';
-                }
-              },
-              obscureText: true,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  hintText: "Enter your Password",
-                  hintStyle: kHintTextStyle
-              ),
+          child: TextField(
+            controller: _passFieldController,
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: "Enter your Password",
+                hintStyle: kHintTextStyle
             ),
           ),
         ),
@@ -145,7 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: validate,
+        onPressed: (){
+          loginUser();
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -284,5 +262,101 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void loginUser() async {
+    // Validating text fields
+    setState(() {
+      progress = true;
+    });
+    if (_emailFieldController.text
+        .toString()
+        .isNotEmpty && _passFieldController.text
+        .toString()
+        .isNotEmpty) {
+      String email, pass;
+      email = _emailFieldController.text.trim();
+      pass = _passFieldController.text.trim();
+
+      // Creating a json encoded data to send the data to server
+      String jsonObj = jsonEncode(<String, dynamic>{
+        'user_email': email,
+        'user_password': pass,
+      });
+
+      String URL = 'https://appvideopromo.000webhostapp.com/VideoApp/login.php';
+      http.Response response = await http.post(
+        URL,
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonObj,
+      );
+      // Checking if the user has successfully logged in
+      if (response.statusCode == 200) {
+        print(response.body);
+        setState(() {
+          progress = false;
+        });
+        Fluttertoast.showToast(
+            msg: "Login successful.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        saveObjectToPreferences(User.fromJson(json.decode(response.body)));
+        await Future.delayed(Duration(seconds: 2), () {
+          // Switch to home page here
+          Navigator.of(context).pushReplacement(
+              new MaterialPageRoute(builder: (context) {
+                return HomePage();
+              }));
+        });
+      } else if (response.statusCode == 401) {
+        setState(() {
+          progress = false;
+        });
+        Fluttertoast.showToast(
+            msg: "Invalid email or password!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        setState(() {
+          progress = false;
+        });
+        Fluttertoast.showToast(
+            msg: "An error has occurred!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } else {
+      setState(() {
+        progress = false;
+      });
+      Fluttertoast.showToast(
+          msg: "Text fields must not be empty!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+  void saveObjectToPreferences(User user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('id', user.id);
+    prefs.setBool('loggedIn', true);
+    prefs.setString('name', user.name);
+    prefs.setString('email', user.email);
+    prefs.setString('referral', user.referral);
   }
 }
