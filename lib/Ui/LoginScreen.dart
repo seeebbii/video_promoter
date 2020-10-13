@@ -292,7 +292,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       // Checking if the user has successfully logged in
       if (response.statusCode == 200) {
-        print(response.body);
         setState(() {
           progress = false;
         });

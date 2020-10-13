@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
+import 'package:video_promoter/drawer/ShareScreen.dart';
 
 class DrawerItems extends StatelessWidget {
   User user;
@@ -18,24 +19,42 @@ class DrawerItems extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(color: Colors.red),
               accountName: Text(user.name,
                   style: TextStyle(
-                      color: Color(0xFFC11010),
+                      color: Colors.red.shade900,
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
               accountEmail: Text(
                 user.email,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
               currentAccountPicture: CircleAvatar(
-                child: Text(user.name[0].toUpperCase()),
+                backgroundColor: Colors.white,
+                child: Text(user.name[0].toUpperCase(), style: TextStyle(
+                  color: Colors.red
+                ),),
               ),
             ),
-
+            new ListTile(
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return ShareScreen(referralId: user.referral,);
+                }));
+              },
+              leading: Icon(
+                Icons.share,
+                size: 20,
+              ),
+              title: Text(
+                'Share with friends',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
             Divider(
               height: 15,
               thickness: 2,

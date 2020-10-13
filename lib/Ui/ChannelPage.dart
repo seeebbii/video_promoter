@@ -1,15 +1,28 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/AddVideoPage.dart';
 import 'package:youtube_video_validator/youtube_video_validator.dart';
-
+import 'package:http/http.dart' as http;
 class ChannelPage extends StatefulWidget {
   @override
   _ChannelPageState createState() => _ChannelPageState();
+
 }
 
 class _ChannelPageState extends State<ChannelPage> {
   TextEditingController _linkController = TextEditingController();
   bool isValid = false;
+  User user;
+
+  @override
+  void initState() {
+    super.initState();
+    getSavedUser();
+  }
+
   // set up the AlertDialog
   _displayDialog(BuildContext context) async {
     return showDialog(
@@ -55,7 +68,7 @@ class _ChannelPageState extends State<ChannelPage> {
       _linkController.clear();
       Navigator.of(context).pop();
       Navigator.of(context).push(new MaterialPageRoute(builder: (context){
-        return AddVideoPage(videoUrl: url,);
+        return AddVideoPage(videoUrl: url, user: user,);
       }));
     }else{
       _linkController.clear();
@@ -84,5 +97,22 @@ class _ChannelPageState extends State<ChannelPage> {
         child: Text('Channel'),
       ),
     );
+  }
+  getSavedUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id, name, email, referral;
+    int balance;
+    id = prefs.getString('id');
+    name = prefs.getString('name');
+    email = prefs.getString('email');
+    referral = prefs.getString('referral');
+    String url = "https://appvideopromo.000webhostapp.com/VideoApp/getBalance.php?id=$id";
+    http.Response response = await http.get(url);
+    var test = jsonDecode(response.body);
+    balance = int.parse(test['balance']);
+    User newuser = new User(id: id, name: name, email: email, balance: balance, referral: referral);
+    setState(() {
+      user = newuser;
+    });
   }
 }

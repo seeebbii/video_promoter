@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 class HomePage extends StatefulWidget {
   User user;
 
+
   @override
   _HomePageState createState() => _HomePageState();
 
@@ -22,7 +23,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Widget currentScreen;
-  int balance = 0;
+  int balance;
+
 
   @override
   void initState() {
@@ -143,7 +145,7 @@ class _HomePageState extends State<HomePage> {
     name = prefs.getString('name');
     email = prefs.getString('email');
     referral = prefs.getString('referral');
-    User user = new User(id, name, email, referral);
+    User user = new User(id: id, name: name, email: email, balance: 0, referral: referral);
     setState(() {
       widget.user = user;
     });

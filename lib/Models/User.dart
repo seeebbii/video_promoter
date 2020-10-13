@@ -6,9 +6,7 @@ class User{
   String referral;
 
 
-  User(this.id, this.name, this.email, this.referral);
-
-
+  User({this.id, this.name, this.email, this.balance , this.referral});
 
   User.fromJson(Map<String, dynamic> json){
     id = json['id'];

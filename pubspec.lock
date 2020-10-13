@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.1"
+  clipboard_manager:
+    dependency: "direct main"
+    description:
+      name: clipboard_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   clock:
     dependency: transitive
     description:
@@ -97,6 +104,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0+4"
+  flutter_share:
+    dependency: "direct main"
+    description:
+      name: flutter_share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2+1"
   flutter_statusbarcolor:
     dependency: "direct main"
     description:
