@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+import 'package:http/http.dart' as http;
 class AddVideoPage extends StatefulWidget {
   String videoUrl;
   User user;
@@ -159,7 +160,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                     ),
                   ),
                   Text(
-                    "787",
+                    "${selectedSeconds*selectedViewCount}",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 18
@@ -176,7 +177,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                 elevation: 5,
                 color: Colors.red,
                 onPressed: (){
-
+                  validate();
                 },
                 child: Text(
                   "DONE",
@@ -192,4 +193,38 @@ class _AddVideoPageState extends State<AddVideoPage> {
       ),
     );
   }
+
+  AlertDialog invalid = AlertDialog(
+    title: Text("Insufficient fund!"),
+    content: Text("Watch more videos to earn."),
+  );
+
+  void validate() async{
+    int totalCost = selectedViewCount * selectedSeconds;
+    if(widget.user.balance >= totalCost){
+      String URL = 'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedSeconds}&durationWatched=0';
+      http.Response response = await http.get(URL);
+      if(response.body == "Video added successfully"){
+        // Deduct balance from the server
+        String URL = 'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
+        http.Response response = await http.get(URL);
+        print(response.body);
+        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context){
+          return HomePage();
+        }));
+      }
+
+    }else{
+      // Not sufficient stuff
+      showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return invalid;
+        },
+      );
+    }
+  }
+
 }

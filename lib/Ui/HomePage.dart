@@ -92,7 +92,8 @@ class _HomePageState extends State<HomePage> {
                 valueColor: new AlwaysStoppedAnimation<Color>(Colors.red.shade700),
               ),
             ): Text("$balance", style: TextStyle(
-                fontSize: 20.5
+                fontSize: 20.5,
+              fontWeight: FontWeight.w300,
             ),),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
