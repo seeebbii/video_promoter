@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ): Text("$balance", style: TextStyle(
                 fontSize: 20.5,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
             ),),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
@@ -101,9 +101,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: WillPopScope(
         onWillPop: onWillPop,
-        child: PageStorage(
-          child: widgetList.elementAt(currentTab),
-          bucket: bucket,
+        child: IndexedStack(
+          children:widgetList,
+          index:currentTab,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

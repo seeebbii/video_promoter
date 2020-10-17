@@ -72,7 +72,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                   )
                 : Text(
                     "${widget.user.balance}",
-                    style: TextStyle(fontSize: 20.5),
+                    style: TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
                   ),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),

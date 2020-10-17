@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/Models/VideosModel.dart';
 import 'package:video_promoter/Ui/AddVideoPage.dart';
+import 'package:video_promoter/Ui/ViewMyVideo.dart';
 import 'package:youtube_video_validator/youtube_video_validator.dart';
 import 'package:http/http.dart' as http;
 class ChannelPage extends StatefulWidget {
@@ -14,13 +16,17 @@ class ChannelPage extends StatefulWidget {
 
 class _ChannelPageState extends State<ChannelPage> {
   TextEditingController _linkController = TextEditingController();
+  List<VideosModel> myVideos = <VideosModel>[];
   bool isValid = false;
   User user;
+  Future<List> _future;
 
   @override
   void initState() {
+    myVideos.clear();
     super.initState();
     getSavedUser();
+    _future = getMyVideos();
   }
 
   // set up the AlertDialog
@@ -93,11 +99,61 @@ class _ChannelPageState extends State<ChannelPage> {
         backgroundColor: Colors.red,
         child: Icon(Icons.add),
       ),
-      body: Center(
-        child: Text('Channel'),
-      ),
+      body: FutureBuilder(
+        future: getMyVideos(),
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot){
+          if(snapshot.hasData){
+            return ListView.builder(
+              cacheExtent: 9000,
+                shrinkWrap: true,
+                itemCount: myVideos.length,
+                padding: new EdgeInsets.all(8.0),
+                itemBuilder: (_, int index) {
+                  return InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context){
+                        return ViewMyVideo(myVideos[index].link, myVideos[index].totalViews, myVideos[index].gotView, myVideos[index].duration, myVideos[index].durationWatched, user, index);
+                      }));
+                    },
+                    child: Card(
+                      shadowColor: Colors.black,
+                        elevation: 3.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        color: Colors.black,
+                        child: myVideos[index]),
+                  );
+                });
+          }else{
+            return Center(
+              child: Text(
+                "My Videos"
+              ),
+            );
+          }
+        },
+      )
     );
   }
+
+  Future<List> getMyVideos() async {
+    myVideos.clear();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id;
+    id = prefs.getString('id');
+    String Url = "https://appvideopromo.000webhostapp.com/VideoApp/getMyVideos.php?id=${id}";
+    http.Response response = await http.get(Url);
+    List test = json.decode(response.body);
+    for(int i = 0 ; i <test.length; i++){
+      String extractedId = test[i]['link'];
+      VideosModel model = VideosModel(test[i]['link'],int.parse(test[i]['totalViews']),int.parse(test[i]['gotViews']),int.parse(test[i]['duration']),int.parse(test[i]['durationWatched']),extractedId.substring( extractedId.indexOf('=')+1, extractedId.length));
+      myVideos.add(model);
+    }
+    return myVideos;
+  }
+
+
   getSavedUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String id, name, email, referral;
