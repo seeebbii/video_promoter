@@ -20,6 +20,8 @@ class ViewPage extends StatefulWidget {
 
 class _ViewPageState extends State<ViewPage> {
 
+  PlayerState _playerState;
+  bool _isPlayerReady = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -31,7 +33,7 @@ class _ViewPageState extends State<ViewPage> {
           autoPlay: true,
           disableDragSeek: true,
           hideControls: false,
-        ));
+        ))..addListener(listener);
 
   }
 
@@ -72,6 +74,13 @@ class _ViewPageState extends State<ViewPage> {
     );
   }
 
+  void listener() {
+    if (_isPlayerReady && mounted && !widget.controller.value.isFullScreen) {
+      setState(() {
+        _playerState = widget.controller.value.playerState;
+      });
+    }
+  }
 
   @override
   void dispose() {
