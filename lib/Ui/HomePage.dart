@@ -59,8 +59,16 @@ class _HomePageState extends State<HomePage> {
       currentTab = index;
 
     });
-    if(StateMachine.Viewinstance != null) {
-      StateMachine.Viewinstance.controller.pause();
+
+    if(index != 1) {
+      if (StateMachine.Viewinstance != null) {
+        StateMachine.Viewinstance.controller.pause();
+      }
+    }
+    else {
+      if (StateMachine.Viewinstance != null) {
+        StateMachine.Viewinstance.controller.play();
+      }
     }
   }
 
