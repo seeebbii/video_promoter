@@ -9,6 +9,7 @@ import 'package:video_promoter/Ui/ViewMyVideo.dart';
 import 'package:youtube_video_validator/youtube_video_validator.dart';
 import 'package:http/http.dart' as http;
 class ChannelPage extends StatefulWidget {
+
   @override
   _ChannelPageState createState() => _ChannelPageState();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_promoter/Ui/ViewPage.dart';
 class StateMachine{
   String _Data;
 
@@ -8,6 +9,8 @@ class StateMachine{
     StateMachine();
     return _instance;
   }
+
+  static ViewPage Viewinstance;
 
   StateMachine(){
     if(_instance == null)

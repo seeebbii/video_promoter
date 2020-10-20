@@ -5,6 +5,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/Models/stateMachine.dart';
 import 'package:video_promoter/Ui/ChannelPage.dart';
 import 'package:video_promoter/Ui/OthersPage.dart';
 import 'package:video_promoter/Ui/ViewPage.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     getSavedUser();
     getBalance();
     currentScreen = ViewPage();
@@ -55,7 +57,11 @@ class _HomePageState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       currentTab = index;
+
     });
+    if(StateMachine.Viewinstance != null) {
+      StateMachine.Viewinstance.controller.pause();
+    }
   }
 
   static List<Widget> widgetList = <Widget>[
