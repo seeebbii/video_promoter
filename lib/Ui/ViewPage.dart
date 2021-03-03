@@ -150,7 +150,7 @@ class _ViewPageState extends State<ViewPage> {
 
   Future<WatchVideo> getVideo() async {
     String url =
-        "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=0";
+        "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=1";
     http.Response response = await http.get(url);
     print(response.body);
     var test = json.decode(response.body);
