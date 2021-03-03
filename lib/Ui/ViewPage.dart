@@ -10,22 +10,21 @@ import 'package:video_promoter/Models/stateMachine.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
+import '../Models/WatchVideo.dart';
+
 class ViewPage extends StatefulWidget {
   YoutubePlayerController controller;
   @override
   _ViewPageState createState() {
-
-    if(StateMachine.Viewinstance == null){
+    if (StateMachine.Viewinstance == null) {
       StateMachine.Viewinstance = this;
     }
 
     return _ViewPageState();
   }
-
 }
 
 class _ViewPageState extends State<ViewPage> {
-
   PlayerState _playerState;
   bool _isPlayerReady = false;
   WatchVideo currentVideo;
@@ -34,74 +33,87 @@ class _ViewPageState extends State<ViewPage> {
   @override
   void initState() {
     super.initState();
-    getVideo();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * currentVideo.duration;
-
-    /*do{
+    if (currentVideo == null) {
+    } else {
+      int endTime =
+          DateTime.now().millisecondsSinceEpoch + 1000 * currentVideo.duration;
+      /*do{
 
     }while(currentVideo.link == "" && currentVideo.duration < 1);*/
-    widget.controller = YoutubePlayerController(
-        initialVideoId: YoutubePlayer.convertUrlToId(
-            currentVideo.link),
-        flags: YoutubePlayerFlags(
-          autoPlay: true,
-          disableDragSeek: true,
-          hideControls: false,
-        ))..addListener(listener);
+      widget.controller = YoutubePlayerController(
+          initialVideoId: YoutubePlayer.convertUrlToId(currentVideo.link),
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+            disableDragSeek: true,
+            hideControls: false,
+          ))
+        ..addListener(listener);
 
-    setState(() {
-      _start = currentVideo.duration;
-    });
+      setState(() {
+        _start = currentVideo.duration;
+      });
 
-    if(widget.controller.hasListeners){
-      startTimer();
+      if (widget.controller.hasListeners) {
+        startTimer();
+      }
     }
 
-    return  Scaffold(
-      body: widget.controller != null && currentVideo != null ? SingleChildScrollView(
-        child: Column(
-          children: [
-            YoutubePlayer(
-              onReady: (){
-                setState(() {
-                  _isPlayerReady = true;
-                });
-              },
-              controller: widget.controller,
-              showVideoProgressIndicator: true,
-              progressIndicatorColor: Colors.red,
-              aspectRatio: 1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Scaffold(
+      body: FutureBuilder(
+        future: getVideo(),
+        builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
               children: [
-                FlatButton(
-                  onPressed: (){
-                    widget.controller.pause();
+                YoutubePlayer(
+                  onReady: () {
+                    setState(() {
+                      _isPlayerReady = true;
+                    });
                   },
-                  child: Text("Pause"),
-                  color: Colors.red,
+                  controller: widget.controller,
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.red,
+                  aspectRatio: 1,
                 ),
-                _start == null ?CircularProgressIndicator() : Text(
-                  "$_start"
-                ),
-                FlatButton(
-                  onPressed: (){
-                    widget.controller.play();
-                  },
-                  child: Text("Play"),
-                  color: Colors.red,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                      onPressed: () {
+                        widget.controller.pause();
+                      },
+                      child: Text("Pause"),
+                      color: Colors.red,
+                    ),
+                    _start == null
+                        ? CircularProgressIndicator()
+                        : Text("$_start"),
+                    FlatButton(
+                      onPressed: () {
+                        widget.controller.play();
+                      },
+                      child: Text("Play"),
+                      color: Colors.red,
+                    ),
+                  ],
                 ),
               ],
-            )
-          ],
-        ),
-      ) : Center(child: CircularProgressIndicator(),) ,
+            );
+            // return Center(
+            //   child: Text("Data has been loaded."),
+            // );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -109,8 +121,8 @@ class _ViewPageState extends State<ViewPage> {
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-           (Timer timer) => setState(
-            () {
+      (Timer timer) => setState(
+        () {
           if (_start < 1) {
             timer.cancel();
           } else {
@@ -136,15 +148,23 @@ class _ViewPageState extends State<ViewPage> {
     super.dispose();
   }
 
-  getVideo() async{
-    String url = "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=0";
+  Future<WatchVideo> getVideo() async {
+    String url =
+        "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=0";
     http.Response response = await http.get(url);
     print(response.body);
     var test = json.decode(response.body);
-    WatchVideo obj = WatchVideo(test['link'], int.parse(test['vid'] ) ,  test['email'] , test['name'] , int.parse(test['id']), int.parse(test['duration']));
+    WatchVideo obj = WatchVideo(
+        test['link'],
+        int.parse(test['vid']),
+        test['email'],
+        test['name'],
+        int.parse(test['id']),
+        int.parse(test['duration']));
+
     setState(() {
       currentVideo = obj;
     });
+    return obj;
   }
-
 }

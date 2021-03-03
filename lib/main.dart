@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Ui/SplashScreen.dart';
+
 bool loggedIn;
 SharedPreferences prefs;
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
-  return runApp(
-    new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "VideoPromotion",
-      home: MyApp(),
-    )
-  );
+  return runApp(new MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: "VideoPromotion",
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -26,15 +25,18 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      if(prefs.getBool('loggedIn') == null){
+      if (prefs.getBool('loggedIn') == null) {
         loggedIn = false;
-      }else{
+      } else {
         loggedIn = prefs.getBool('loggedIn');
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return SplashScreen(loggedIn: loggedIn,);
+    return SplashScreen(
+      loggedIn: loggedIn,
+    );
   }
 }
