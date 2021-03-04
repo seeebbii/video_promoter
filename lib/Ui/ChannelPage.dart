@@ -18,6 +18,7 @@ class ChannelPage extends StatefulWidget {
 class _ChannelPageState extends State<ChannelPage> {
   TextEditingController _linkController = TextEditingController();
   List<VideosModel> myVideos = <VideosModel>[];
+
   bool isValid = false;
   User user;
 
