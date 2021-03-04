@@ -101,37 +101,43 @@ class _ChannelPageState extends State<ChannelPage> {
       body: FutureBuilder(
         future: getMyVideos(),
         builder: (BuildContext context, AsyncSnapshot<List<VideosModel>> snapshot){
-          if(snapshot.hasData){
-            return ListView.builder(
-              cacheExtent: 9000,
-                shrinkWrap: true,
-                itemCount: snapshot.data.length,
-                padding: new EdgeInsets.all(8.0),
-                itemBuilder: (_, int index) {
-                  return InkWell(
-                    onTap: (){
-                      Navigator.of(context).push(new MaterialPageRoute(builder: (context){
-                        return ViewMyVideo(snapshot.data[index].link, snapshot.data[index].totalViews, snapshot.data[index].gotView, snapshot.data[index].duration, snapshot.data[index].durationWatched, user, index);
-                      }));
-                    },
-                    child: Card(
-                      shadowColor: Colors.black,
-                        elevation: 3.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        color: Colors.black,
-                        child: myVideos[index]),
-                  );
-                });
-          }else{
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data.isEmpty) {
+              return Center(
+                child: Text("No video added"),
+              );
+            }else{
+              return ListView.builder(
+                  cacheExtent: 9000,
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  padding: new EdgeInsets.all(8.0),
+                  itemBuilder: (_, int index) {
+                    return InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(new MaterialPageRoute(builder: (context){
+                          return ViewMyVideo(snapshot.data[index].link, snapshot.data[index].totalViews, snapshot.data[index].gotView, snapshot.data[index].duration, snapshot.data[index].durationWatched, user, index);
+                        }));
+                      },
+                      child: Card(
+                          shadowColor: Colors.black,
+                          elevation: 3.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.black,
+                          child: myVideos[index]),
+                    );
+                  });
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: Text(
-                "My Videos"
-              ),
+              child: CircularProgressIndicator(),
             );
+          }else{
+            return Center(child: Text("An error has occurred!"));
           }
-        },
+        }
       )
     );
   }

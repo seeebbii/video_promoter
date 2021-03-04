@@ -14,6 +14,7 @@ import '../Models/WatchVideo.dart';
 
 class ViewPage extends StatefulWidget {
   YoutubePlayerController controller;
+
   @override
   _ViewPageState createState() {
     if (StateMachine.Viewinstance == null) {
@@ -30,6 +31,7 @@ class _ViewPageState extends State<ViewPage> {
   WatchVideo currentVideo;
   Timer _timer;
   int _start;
+
   @override
   void initState() {
     super.initState();
@@ -66,52 +68,61 @@ class _ViewPageState extends State<ViewPage> {
       body: FutureBuilder(
         future: getVideo(),
         builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                YoutubePlayer(
-                  onReady: () {
-                    setState(() {
-                      _isPlayerReady = true;
-                    });
-                  },
-                  controller: widget.controller,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Colors.red,
-                  aspectRatio: 1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FlatButton(
-                      onPressed: () {
-                        widget.controller.pause();
-                      },
-                      child: Text("Pause"),
-                      color: Colors.red,
-                    ),
-                    _start == null
-                        ? CircularProgressIndicator()
-                        : Text("$_start"),
-                    FlatButton(
-                      onPressed: () {
-                        widget.controller.play();
-                      },
-                      child: Text("Play"),
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-              ],
-            );
-            // return Center(
-            //   child: Text("Data has been loaded."),
-            // );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data == null) {
+              return Center(
+                child: Text("No Data yet"),
+              );
+            }else{
+              return Container();
+            }
+          }else{
+            if(snapshot.data != null){
+              return Column(
+                children: [
+                  YoutubePlayer(
+                    onReady: () {
+                      setState(() {
+                        _isPlayerReady = true;
+                      });
+                    },
+                    controller: widget.controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.red,
+                    aspectRatio: 1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          widget.controller.pause();
+                        },
+                        child: Text("Pause"),
+                        color: Colors.red,
+                      ),
+                      _start == null
+                          ? CircularProgressIndicator()
+                          : Text("$_start"),
+                      FlatButton(
+                        onPressed: () {
+                          widget.controller.play();
+                        },
+                        child: Text("Play"),
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }else{
+              return Center(child: CircularProgressIndicator());
+            }
+
           }
+          // return Center(
+          //   child: Text("Data has been loaded."),
+          // );
         },
       ),
     );
