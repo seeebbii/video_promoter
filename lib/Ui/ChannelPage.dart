@@ -20,14 +20,11 @@ class _ChannelPageState extends State<ChannelPage> {
   List<VideosModel> myVideos = <VideosModel>[];
   bool isValid = false;
   User user;
-  Future<List> _future;
 
   @override
   void initState() {
-    myVideos.clear();
     super.initState();
     getSavedUser();
-    _future = getMyVideos();
   }
 
   // set up the AlertDialog
@@ -102,18 +99,18 @@ class _ChannelPageState extends State<ChannelPage> {
       ),
       body: FutureBuilder(
         future: getMyVideos(),
-        builder: (BuildContext context, AsyncSnapshot<List> snapshot){
+        builder: (BuildContext context, AsyncSnapshot<List<VideosModel>> snapshot){
           if(snapshot.hasData){
             return ListView.builder(
               cacheExtent: 9000,
                 shrinkWrap: true,
-                itemCount: myVideos.length,
+                itemCount: snapshot.data.length,
                 padding: new EdgeInsets.all(8.0),
                 itemBuilder: (_, int index) {
                   return InkWell(
                     onTap: (){
                       Navigator.of(context).push(new MaterialPageRoute(builder: (context){
-                        return ViewMyVideo(myVideos[index].link, myVideos[index].totalViews, myVideos[index].gotView, myVideos[index].duration, myVideos[index].durationWatched, user, index);
+                        return ViewMyVideo(snapshot.data[index].link, snapshot.data[index].totalViews, snapshot.data[index].gotView, snapshot.data[index].duration, snapshot.data[index].durationWatched, user, index);
                       }));
                     },
                     child: Card(
@@ -138,7 +135,7 @@ class _ChannelPageState extends State<ChannelPage> {
     );
   }
 
-  Future<List> getMyVideos() async {
+  Future<List<VideosModel>> getMyVideos() async {
     myVideos.clear();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String id;
