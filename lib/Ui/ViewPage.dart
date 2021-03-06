@@ -14,6 +14,7 @@ import '../Models/WatchVideo.dart';
 
 class ViewPage extends StatefulWidget {
   YoutubePlayerController controller;
+
   @override
   _ViewPageState createState() {
     if (StateMachine.Viewinstance == null) {
@@ -30,6 +31,7 @@ class _ViewPageState extends State<ViewPage> {
   WatchVideo currentVideo;
   Timer _timer;
   int _start;
+
   @override
   void initState() {
     super.initState();
@@ -66,9 +68,23 @@ class _ViewPageState extends State<ViewPage> {
       body: FutureBuilder(
         future: getVideo(),
         builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
+<<<<<<< HEAD
           if (snapshot.hasData) {
             return SingleChildScrollView(
               child: Column(
+=======
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data == null) {
+              return Center(
+                child: Text("No Data yet"),
+              );
+            }else{
+              return Container();
+            }
+          }else{
+            if(snapshot.data != null){
+              return Column(
+>>>>>>> 55d1c3d79825201dcf80b83a621f9fce9e810643
                 children: [
                   YoutubePlayer(
                     onReady: () {
@@ -104,6 +120,7 @@ class _ViewPageState extends State<ViewPage> {
                     ],
                   ),
                 ],
+<<<<<<< HEAD
               ),
             );
             // return Center(
@@ -113,7 +130,17 @@ class _ViewPageState extends State<ViewPage> {
             return Center(
               child: CircularProgressIndicator(),
             );
+=======
+              );
+            }else{
+              return Center(child: CircularProgressIndicator());
+            }
+
+>>>>>>> 55d1c3d79825201dcf80b83a621f9fce9e810643
           }
+          // return Center(
+          //   child: Text("Data has been loaded."),
+          // );
         },
       ),
     );
@@ -154,7 +181,7 @@ class _ViewPageState extends State<ViewPage> {
     String url =
         "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=1";
     http.Response response = await http.get(url);
-    print(response.body);
+
     var test = json.decode(response.body);
     WatchVideo obj = WatchVideo(
         test['link'],
