@@ -10,13 +10,14 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
   bool loggedIn;
   User user;
-  SplashScreen({Key key, this.loggedIn}) : super(key : key);
+  SplashScreen({Key key, this.loggedIn}) : super(key: key);
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   Future<bool> checkLoggedInUser() async {
-    await Future.delayed(Duration(seconds: 3), );
+    await Future.delayed(
+      Duration(seconds: 3),
+    );
     return widget.loggedIn;
   }
 
@@ -24,32 +25,38 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkLoggedInUser().then((status){
-      if(status){
+    checkLoggedInUser().then((status) {
+      if (status) {
         navigateToHome();
-      }else{
+      } else {
         navigateToLogin();
       }
     });
   }
 
-
-  void navigateToHome(){
-    Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context){
+  void navigateToHome() {
+    Navigator.of(context)
+        .pushReplacement(new MaterialPageRoute(builder: (context) {
       return HomePage();
     }));
   }
+
   void navigateToLogin() {
-    Navigator.of(context).pushReplacement(
-        new MaterialPageRoute(builder: (context) {
-          return LoginScreen();
-        }));
+    Navigator.of(context)
+        .pushReplacement(new MaterialPageRoute(builder: (context) {
+      return LoginScreen();
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red,
+      body: Center(
+        child: Image(
+          image: AssetImage('assets/splash.png'),
+        ),
+      ),
     );
   }
 }

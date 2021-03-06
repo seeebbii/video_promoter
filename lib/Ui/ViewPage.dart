@@ -67,42 +67,44 @@ class _ViewPageState extends State<ViewPage> {
         future: getVideo(),
         builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              children: [
-                YoutubePlayer(
-                  onReady: () {
-                    setState(() {
-                      _isPlayerReady = true;
-                    });
-                  },
-                  controller: widget.controller,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Colors.red,
-                  aspectRatio: 1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FlatButton(
-                      onPressed: () {
-                        widget.controller.pause();
-                      },
-                      child: Text("Pause"),
-                      color: Colors.red,
-                    ),
-                    _start == null
-                        ? CircularProgressIndicator()
-                        : Text("$_start"),
-                    FlatButton(
-                      onPressed: () {
-                        widget.controller.play();
-                      },
-                      child: Text("Play"),
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  YoutubePlayer(
+                    onReady: () {
+                      setState(() {
+                        _isPlayerReady = true;
+                      });
+                    },
+                    controller: widget.controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.red,
+                    aspectRatio: 1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          widget.controller.pause();
+                        },
+                        child: Text("Pause"),
+                        color: Colors.red,
+                      ),
+                      _start == null
+                          ? CircularProgressIndicator()
+                          : Text("$_start"),
+                      FlatButton(
+                        onPressed: () {
+                          widget.controller.play();
+                        },
+                        child: Text("Play"),
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
             // return Center(
             //   child: Text("Data has been loaded."),

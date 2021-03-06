@@ -3,6 +3,7 @@ import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
+
 class AddVideoPage extends StatefulWidget {
   String videoUrl;
   User user;
@@ -72,7 +73,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
                   )
                 : Text(
                     "${widget.user.balance}",
-                    style: TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
+                    style:
+                        TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
                   ),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
@@ -160,11 +162,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
                     ),
                   ),
                   Text(
-                    "${selectedSeconds*selectedViewCount}",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18
-                    ),
+                    "${selectedSeconds * selectedViewCount}",
+                    style: TextStyle(color: Colors.grey, fontSize: 18),
                   )
                 ],
               ),
@@ -176,15 +175,12 @@ class _AddVideoPageState extends State<AddVideoPage> {
               title: RaisedButton(
                 elevation: 5,
                 color: Colors.red,
-                onPressed: (){
+                onPressed: () {
                   validate();
                 },
                 child: Text(
                   "DONE",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
             )
@@ -199,23 +195,25 @@ class _AddVideoPageState extends State<AddVideoPage> {
     content: Text("Watch more videos to earn."),
   );
 
-  void validate() async{
+  void validate() async {
     int totalCost = selectedViewCount * selectedSeconds;
-    if(widget.user.balance >= totalCost){
-      String URL = 'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedSeconds}&durationWatched=0';
+    if (widget.user.balance >= totalCost) {
+      String URL =
+          'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedSeconds}&durationWatched=0';
       http.Response response = await http.get(URL);
-      if(response.body == "Video added successfully"){
+      if (response.body == "Video added successfully") {
         // Deduct balance from the server
-        String URL = 'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
+        String URL =
+            'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
         http.Response response = await http.get(URL);
         print(response.body);
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context){
+        Navigator.of(context)
+            .pushReplacement(new MaterialPageRoute(builder: (context) {
           return HomePage();
         }));
       }
-
-    }else{
+    } else {
       // Not sufficient stuff
       showDialog(
         barrierDismissible: true,
@@ -226,5 +224,4 @@ class _AddVideoPageState extends State<AddVideoPage> {
       );
     }
   }
-
 }

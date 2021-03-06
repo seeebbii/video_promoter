@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-class ViewMyVideo extends StatefulWidget {
 
+class ViewMyVideo extends StatefulWidget {
   String link;
   int totalViews;
   int gotView;
@@ -10,7 +10,6 @@ class ViewMyVideo extends StatefulWidget {
   int durationWatched;
   User user;
   int index;
-
 
   ViewMyVideo(this.link, this.totalViews, this.gotView, this.duration,
       this.durationWatched, this.user, this.index);
@@ -29,11 +28,12 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
         initialVideoId: YoutubePlayer.convertUrlToId(widget.link),
         flags: YoutubePlayerFlags(autoPlay: true));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Video ${widget.index+1}"),
+        title: Text("Video ${widget.index + 1}"),
         backgroundColor: Colors.red,
         actions: [
           Image.asset(
@@ -47,19 +47,20 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
             onPressed: () {},
             child: widget.user.balance == null
                 ? SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 1.5,
-                backgroundColor: Color(0xFFF1959B),
-                valueColor: new AlwaysStoppedAnimation<Color>(
-                    Colors.red.shade700),
-              ),
-            )
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                      backgroundColor: Color(0xFFF1959B),
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                          Colors.red.shade700),
+                    ),
+                  )
                 : Text(
-              "${widget.user.balance}",
-              style: TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
-            ),
+                    "${widget.user.balance}",
+                    style:
+                        TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
+                  ),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
           ),
         ],
@@ -67,7 +68,9 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            YoutubePlayer(controller: controller,),
+            YoutubePlayer(
+              controller: controller,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Row(
@@ -81,10 +84,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
                   ),
                   Text(
                     "${widget.gotView} / ${widget.totalViews}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey.shade700
-                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.grey.shade700),
                   ),
                 ],
               ),
@@ -102,10 +102,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
                   ),
                   Text(
                     "${widget.durationWatched}",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.grey.shade700
-                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.grey.shade700),
                   ),
                 ],
               ),
@@ -117,17 +114,18 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
               title: RaisedButton(
                 elevation: 5,
                 color: Colors.red,
-                onPressed: (){
-                },
+                onPressed: () {},
                 child: Text(
                   "DELETE",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                  'NOTE: YouTube needs 72 hours to update views from third party apps. So please wait at least 72 hours before checking.'),
+            ),
           ],
         ),
       ),
