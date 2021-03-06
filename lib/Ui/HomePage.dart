@@ -131,8 +131,8 @@ class _HomePageState extends State<HomePage> {
             label: 'View',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Others',
+            icon: Icon(Icons.watch_later_outlined),
+            label: 'Minutes',
           ),
         ],
         currentIndex: currentTab,

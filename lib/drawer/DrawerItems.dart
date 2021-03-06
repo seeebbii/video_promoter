@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,16 +33,19 @@ class DrawerItems extends StatelessWidget {
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Text(user.name[0].toUpperCase(), style: TextStyle(
-                  color: Colors.red
-                ),),
+                child: Text(
+                  user.name[0].toUpperCase(),
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
-            new ListTile(
+            ListTile(
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return ShareScreen(referralId: user.referral,);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ShareScreen(
+                    referralId: user.referral,
+                  );
                 }));
               },
               leading: Icon(
@@ -52,6 +54,45 @@ class DrawerItems extends StatelessWidget {
               ),
               title: Text(
                 'Share with friends',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              leading: Icon(
+                Icons.assignment_rounded,
+                size: 20,
+              ),
+              title: Text(
+                'Consent',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              leading: Icon(
+                Icons.policy,
+                size: 20,
+              ),
+              title: Text(
+                'Privacy policy',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              leading: Icon(
+                Icons.attach_email,
+                size: 20,
+              ),
+              title: Text(
+                'Contact us',
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -75,13 +116,26 @@ class DrawerItems extends StatelessWidget {
                 'Log Out',
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
-            )
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              leading: Icon(
+                Icons.delete_forever,
+                size: 20,
+                color: Color(0xFFC11010),
+              ),
+              title: Text(
+                'Delete account',
+                style: TextStyle(color: Color(0xFFC11010)),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-
 
   void logOutHandler(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();

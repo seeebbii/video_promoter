@@ -102,7 +102,7 @@ class _ChannelPageState extends State<ChannelPage> {
         future: getMyVideos(),
         builder: (BuildContext context, AsyncSnapshot<List<VideosModel>> snapshot){
           if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data.isEmpty) {
+            if (snapshot.data == null) {
               return Center(
                 child: Text("No video added"),
               );

@@ -16,6 +16,8 @@ class AddVideoPage extends StatefulWidget {
 
 class _AddVideoPageState extends State<AddVideoPage> {
   YoutubePlayerController controller;
+  TextEditingController viewsController;
+  TextEditingController minController;
 
   @override
   void initState() {
@@ -26,23 +28,9 @@ class _AddVideoPageState extends State<AddVideoPage> {
         flags: YoutubePlayerFlags(autoPlay: true));
   }
 
-  final List<int> viewsList = [35, 50, 100, 200, 300, 400, 500, 750, 1000];
-  final List<int> secondsList = [
-    45,
-    60,
-    90,
-    120,
-    150,
-    180,
-    240,
-    300,
-    360,
-    420,
-    480,
-    540
-  ];
-  int selectedViewCount = 35;
-  int selectedSeconds = 45;
+
+  int selectedViewCount = 0;
+  int selectedMinCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -95,25 +83,29 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       fontSize: 20,
                     ),
                   ),
-                  DropdownButton(
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                    underline: Divider(height: 5, thickness: 3),
-                    value: selectedViewCount,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedViewCount = value;
-                      });
-                    },
-                    items: viewsList.map((value) {
-                      return DropdownMenuItem(
-                        child: Text("$value"),
-                        value: value,
-                      );
-                    }).toList(),
-                  ),
+                  Container(
+                      width: 80.0,
+                      height: 50,
+                      child: TextField(
+                        onChanged: (String value){
+                          setState(() {
+                            selectedViewCount = int.parse(value);
+                          });
+                          print(selectedViewCount);
+                        },
+                        controller: viewsController,
+                        keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: "Views Count"
+                        ),
+                          style: TextStyle(
+                              fontSize: 12,
+                              height: 2.0,
+                              color: Colors.black,
+                          )
+                      )
+                  )
                 ],
               ),
             ),
@@ -123,30 +115,34 @@ class _AddVideoPageState extends State<AddVideoPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Time Duration (Seconds) ",
+                    "Time Duration (Min) ",
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  DropdownButton(
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                    underline: Divider(height: 5, thickness: 3),
-                    value: selectedSeconds,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSeconds = value;
-                      });
-                    },
-                    items: secondsList.map((value) {
-                      return DropdownMenuItem(
-                        child: Text("$value"),
-                        value: value,
-                      );
-                    }).toList(),
-                  ),
+                  Container(
+                      width: 80.0,
+                      height: 50,
+                      child: TextField(
+                        onChanged: (String value){
+                          setState(() {
+                            selectedMinCount = int.parse(value);
+                          });
+                          print(selectedMinCount);
+                        },
+                        controller: minController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              hintText: "Min Count"
+                          ),
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 2.0,
+                            color: Colors.black,
+                          )
+                      )
+                  )
                 ],
               ),
             ),
@@ -162,7 +158,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                     ),
                   ),
                   Text(
-                    "${selectedSeconds * selectedViewCount}",
+                    "${selectedViewCount * selectedMinCount}",
                     style: TextStyle(color: Colors.grey, fontSize: 18),
                   )
                 ],
@@ -200,23 +196,40 @@ class _AddVideoPageState extends State<AddVideoPage> {
     content: Text("Watch more videos to earn."),
   );
 
+  AlertDialog invalidCount = AlertDialog(
+    title: Text("View count or Min count cannot be 0"),
+    content: Text("Values should be greater than 0"),
+  );
+
   void validate() async {
-    int totalCost = selectedViewCount * selectedSeconds;
+    int totalCost = selectedViewCount * selectedMinCount;
     if (widget.user.balance >= totalCost) {
-      String URL =
-          'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedSeconds}&durationWatched=0';
-      http.Response response = await http.get(URL);
-      if (response.body == "Video added successfully") {
-        // Deduct balance from the server
+
+      if(selectedMinCount > 0 && selectedViewCount > 0){
         String URL =
-            'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
+            'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
-        print(response.body);
-        Navigator.of(context).pop();
-        Navigator.of(context)
-            .pushReplacement(new MaterialPageRoute(builder: (context) {
-          return HomePage();
-        }));
+        if (response.body == "Video added successfully") {
+          // Deduct balance from the server
+          String URL =
+              'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
+          http.Response response = await http.get(URL);
+          print(response.body);
+          Navigator.of(context).pop();
+          Navigator.of(context)
+              .pushReplacement(new MaterialPageRoute(builder: (context) {
+            return HomePage();
+          }));
+        }
+      }else{
+        // COUNT < 0
+        showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (BuildContext context) {
+            return invalidCount;
+          },
+        );
       }
     } else {
       // Not sufficient stuff
