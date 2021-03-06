@@ -183,7 +183,12 @@ class _AddVideoPageState extends State<AddVideoPage> {
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                  'NOTE: YouTube needs 72 hours to update views from third party apps. So please wait at least 72 hours before checking.'),
+            ),
           ],
         ),
       ),

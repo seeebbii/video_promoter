@@ -68,23 +68,17 @@ class _ViewPageState extends State<ViewPage> {
       body: FutureBuilder(
         future: getVideo(),
         builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
-<<<<<<< HEAD
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(
-=======
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data == null) {
               return Center(
                 child: Text("No Data yet"),
               );
-            }else{
+            } else {
               return Container();
             }
-          }else{
-            if(snapshot.data != null){
+          } else {
+            if (snapshot.data != null) {
               return Column(
->>>>>>> 55d1c3d79825201dcf80b83a621f9fce9e810643
                 children: [
                   YoutubePlayer(
                     onReady: () {
@@ -120,23 +114,10 @@ class _ViewPageState extends State<ViewPage> {
                     ],
                   ),
                 ],
-<<<<<<< HEAD
-              ),
-            );
-            // return Center(
-            //   child: Text("Data has been loaded."),
-            // );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-=======
               );
-            }else{
+            } else {
               return Center(child: CircularProgressIndicator());
             }
-
->>>>>>> 55d1c3d79825201dcf80b83a621f9fce9e810643
           }
           // return Center(
           //   child: Text("Data has been loaded."),
