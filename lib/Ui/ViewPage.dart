@@ -4,16 +4,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:get/get.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Models/WatchVideo.dart';
 import 'package:video_promoter/Models/stateMachine.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '../Models/WatchVideo.dart';
 
 class ViewPage extends StatefulWidget {
-  YoutubePlayerController controller;
+
 
   @override
   _ViewPageState createState() {
@@ -32,97 +34,96 @@ class _ViewPageState extends State<ViewPage> {
   Timer _timer;
   int _start;
 
+  final watchVideoController = Get.put(WatchVideoController());
+
   @override
   void initState() {
     super.initState();
+    watchVideoController.getVideo();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (currentVideo == null) {
-    } else {
-      int endTime =
-          DateTime.now().millisecondsSinceEpoch + 1000 * currentVideo.duration;
-      /*do{
 
-    }while(currentVideo.link == "" && currentVideo.duration < 1);*/
-      widget.controller = YoutubePlayerController(
-          initialVideoId: YoutubePlayer.convertUrlToId(currentVideo.link),
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-            disableDragSeek: true,
-            hideControls: false,
-          ))
-        ..addListener(listener);
+    // widget.controller = YoutubePlayerController(
+    //     initialVideoId: YoutubePlayer.convertUrlToId(watchVideoController.curVideo.link),
+    //     flags: YoutubePlayerFlags(
+    //       autoPlay: true,
+    //       disableDragSeek: true,
+    //       hideControls: false,
+    //     ))
+    //   ..addListener(listener);
 
-      setState(() {
-        _start = currentVideo.duration;
-      });
+    // if (watchVideoController.curVideo == null) {
+    // } else {
+    //   int endTime =
+    //       DateTime.now().millisecondsSinceEpoch + 1000 * watchVideoController.curVideo.duration;
+    //   /*do{
+    //
+    // }while(currentVideo.link == "" && currentVideo.duration < 1);*/
+    //
+    //
+    //   setState(() {
+    //     _start = watchVideoController.curVideo.duration;
+    //   });
+    //
+    //   if (widget.controller.hasListeners) {
+    //     startTimer();
+    //   }
+    // }
 
-      if (widget.controller.hasListeners) {
-        startTimer();
-      }
-    }
 
     return Scaffold(
-      body: FutureBuilder(
-        future: getVideo(),
-        builder: (context, AsyncSnapshot<WatchVideo> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data == null) {
-              return Center(
-                child: Text("No Data yet"),
-              );
-            } else {
-              return Container();
-            }
-          } else {
-            if (snapshot.data != null) {
-              return Column(
+      body: GetX<WatchVideoController>(
+        init: WatchVideoController(),
+        builder: (controller) {
+          if (controller.videoIsLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if(controller.curVideo.isBlank){
+            controller.getVideo();
+          }
+          return Column(
+            children: [
+              YoutubePlayer(
+                onReady: () {
+                  startTimer();
+                  setState(() {
+                    _isPlayerReady = true;
+                  });
+                },
+                controller: watchVideoController.youtubeController.value,
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: Colors.red,
+                aspectRatio: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  YoutubePlayer(
-                    onReady: () {
-                      setState(() {
-                        _isPlayerReady = true;
-                      });
+                  FlatButton(
+                    onPressed: () {
+                      watchVideoController.youtubeController.value.pause();
                     },
-                    controller: widget.controller,
-                    showVideoProgressIndicator: true,
-                    progressIndicatorColor: Colors.red,
-                    aspectRatio: 1,
+                    child: Text("Pause"),
+                    color: Colors.red,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FlatButton(
-                        onPressed: () {
-                          widget.controller.pause();
-                        },
-                        child: Text("Pause"),
-                        color: Colors.red,
-                      ),
-                      _start == null
-                          ? CircularProgressIndicator()
-                          : Text("$_start"),
-                      FlatButton(
-                        onPressed: () {
-                          widget.controller.play();
-                        },
-                        child: Text("Play"),
-                        color: Colors.red,
-                      ),
-                    ],
+                  watchVideoController.curVideo.duration == null
+                      ? CircularProgressIndicator()
+                      : Text("${watchVideoController.curVideo.duration}"),
+                  FlatButton(
+                    onPressed: () {
+                      watchVideoController.youtubeController.value.play();
+                    },
+                    child: Text("Play"),
+                    color: Colors.red,
                   ),
                 ],
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          }
-          // return Center(
-          //   child: Text("Data has been loaded."),
-          // );
-        },
+              ),
+            ],
+          );
+        }
       ),
     );
   }
@@ -133,48 +134,22 @@ class _ViewPageState extends State<ViewPage> {
       oneSec,
       (Timer timer) => setState(
         () {
-          if (_start < 1) {
+          if (watchVideoController.curVideo.duration < 1) {
             timer.cancel();
           } else {
-            _start = _start - 1;
+            watchVideoController.curVideo.duration = watchVideoController.curVideo.duration - 1;
           }
         },
       ),
     );
   }
 
-  void listener() {
-    if (_isPlayerReady && mounted && !widget.controller.value.isFullScreen) {
-      setState(() {
-        _playerState = widget.controller.value.playerState;
-      });
-    }
-  }
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    watchVideoController.youtubeController.value.dispose();
     // TODO: implement dispose
     super.dispose();
   }
 
-  Future<WatchVideo> getVideo() async {
-    String url =
-        "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=1";
-    http.Response response = await http.get(url);
-
-    var test = json.decode(response.body);
-    WatchVideo obj = WatchVideo(
-        test['link'],
-        int.parse(test['vid']),
-        test['email'],
-        test['name'],
-        int.parse(test['id']),
-        int.parse(test['duration']));
-
-    setState(() {
-      currentVideo = obj;
-    });
-    return obj;
-  }
 }

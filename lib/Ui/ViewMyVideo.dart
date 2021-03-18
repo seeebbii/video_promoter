@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ViewMyVideo extends StatefulWidget {
@@ -8,11 +10,10 @@ class ViewMyVideo extends StatefulWidget {
   int gotView;
   int duration;
   int durationWatched;
-  User user;
   int index;
 
   ViewMyVideo(this.link, this.totalViews, this.gotView, this.duration,
-      this.durationWatched, this.user, this.index);
+      this.durationWatched, this.index);
 
   @override
   _ViewMyVideoState createState() => _ViewMyVideoState();
@@ -28,6 +29,8 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
         initialVideoId: YoutubePlayer.convertUrlToId(widget.link),
         flags: YoutubePlayerFlags(autoPlay: true));
   }
+
+  final userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
             textColor: Colors.white,
             minWidth: 15,
             onPressed: () {},
-            child: widget.user.balance == null
+            child: userController.user.balance == null
                 ? SizedBox(
                     height: 20,
                     width: 20,
@@ -57,7 +60,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
                     ),
                   )
                 : Text(
-                    "${widget.user.balance}",
+                    "${userController.user.balance}",
                     style:
                         TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
                   ),

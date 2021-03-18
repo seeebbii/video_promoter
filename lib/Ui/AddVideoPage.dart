@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:video_promoter/Models/User.dart';
+import 'package:video_promoter/Models/VideosModel.dart';
 import 'package:video_promoter/Ui/HomePage.dart';
+import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class AddVideoPage extends StatefulWidget {
   String videoUrl;
-  User user;
 
   @override
   _AddVideoPageState createState() => _AddVideoPageState();
 
-  AddVideoPage({Key key, this.videoUrl, this.user}) : super(key: key);
+  AddVideoPage({Key key, this.videoUrl}) : super(key: key);
 }
 
 class _AddVideoPageState extends State<AddVideoPage> {
@@ -28,7 +30,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
         flags: YoutubePlayerFlags(autoPlay: true));
   }
 
-
+  final userController = Get.find<UserController>();
   int selectedViewCount = 0;
   int selectedMinCount = 0;
 
@@ -48,7 +50,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
             textColor: Colors.white,
             minWidth: 15,
             onPressed: () {},
-            child: widget.user.balance == null
+            child: userController.user.balance == null
                 ? SizedBox(
                     height: 20,
                     width: 20,
@@ -60,7 +62,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                     ),
                   )
                 : Text(
-                    "${widget.user.balance}",
+                    "${userController.user.balance}",
                     style:
                         TextStyle(fontSize: 20.5, fontWeight: FontWeight.w400),
                   ),
@@ -203,23 +205,37 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
   void validate() async {
     int totalCost = selectedViewCount * selectedMinCount;
-    if (widget.user.balance >= totalCost) {
+    if (userController.user.balance >= totalCost) {
 
       if(selectedMinCount > 0 && selectedViewCount > 0){
         String URL =
-            'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${widget.user.email}&name=${widget.user.name}&id=${widget.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
+            'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
         if (response.body == "Video added successfully") {
+          String extractedId = "";
+          if(widget.videoUrl.contains("https://youtu.be/")){
+            extractedId = widget.videoUrl.substring(
+                widget.videoUrl.indexOf('/') + 11, widget.videoUrl.length);
+          }else{
+            extractedId = widget.videoUrl.substring(
+                widget.videoUrl.indexOf('=') + 1, widget.videoUrl.length);
+          }
+          
+          VideosModel model = VideosModel(
+              widget.videoUrl, selectedViewCount,
+              0, selectedMinCount,
+              0, extractedId);
+          userController.addToVideos(model);
+
           // Deduct balance from the server
           String URL =
-              'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${widget.user.id}&cost=${totalCost}';
+              'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
+          userController.user.balance = userController.user.balance - totalCost;
+          userController.userBal -= totalCost;
           http.Response response = await http.get(URL);
           print(response.body);
           Navigator.of(context).pop();
-          Navigator.of(context)
-              .pushReplacement(new MaterialPageRoute(builder: (context) {
-            return HomePage();
-          }));
+
         }
       }else{
         // COUNT < 0

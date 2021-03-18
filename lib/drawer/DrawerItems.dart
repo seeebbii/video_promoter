@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
+import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/drawer/ShareScreen.dart';
 
 class DrawerItems extends StatelessWidget {
-  User user;
-
-  DrawerItems({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final userController = Get.find<UserController>();
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: Drawer(
@@ -19,32 +20,32 @@ class DrawerItems extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.red),
-              accountName: Text(user.name,
+              accountName: Text(userController.user.name,
                   style: TextStyle(
                       color: Colors.red.shade900,
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
               accountEmail: Text(
-                user.email,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400),
+                    userController.user.email,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400),
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
-                  user.name[0].toUpperCase(),
-                  style: TextStyle(color: Colors.red),
+                  userController.user.name[0].toUpperCase(),
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
               ),
-            ),
             ListTile(
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return ShareScreen(
-                    referralId: user.referral,
+                    referralId: userController.user.referral,
                   );
                 }));
               },
@@ -104,6 +105,7 @@ class DrawerItems extends StatelessWidget {
             ),
             new ListTile(
               onTap: () {
+                userController.dispose();
                 Navigator.of(context).pop();
                 logOutHandler(context);
               },
