@@ -128,7 +128,7 @@ class _ChannelPageState extends State<ChannelPage> {
                               controller.userVideos[index].gotView,
                               controller.userVideos[index].duration,
                               controller.userVideos[index].durationWatched,
-                              index);
+                              index, controller.userVideos[index].vidId);
                         }));
                       },
                       child: Card(

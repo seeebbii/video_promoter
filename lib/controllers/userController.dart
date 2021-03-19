@@ -73,7 +73,7 @@ class UserController extends GetxController {
               int.parse(test[i]['gotViews']),
               int.parse(test[i]['duration']),
               int.parse(test[i]['durationWatched']),
-              extractedId);
+              extractedId, int.parse(test[i]['vid']));
           userVideos.add(model);
         }
       }

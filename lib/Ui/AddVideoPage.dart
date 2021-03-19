@@ -224,7 +224,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
           VideosModel model = VideosModel(
               widget.videoUrl, selectedViewCount,
               0, selectedMinCount,
-              0, extractedId);
+              0, extractedId, null);
           userController.addToVideos(model);
 
           // Deduct balance from the server

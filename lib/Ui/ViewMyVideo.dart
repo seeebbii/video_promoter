@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:http/http.dart' as http;
+
 
 class ViewMyVideo extends StatefulWidget {
   String link;
@@ -11,9 +14,10 @@ class ViewMyVideo extends StatefulWidget {
   int duration;
   int durationWatched;
   int index;
+  int vidId;
 
   ViewMyVideo(this.link, this.totalViews, this.gotView, this.duration,
-      this.durationWatched, this.index);
+      this.durationWatched, this.index, this.vidId);
 
   @override
   _ViewMyVideoState createState() => _ViewMyVideoState();
@@ -21,6 +25,7 @@ class ViewMyVideo extends StatefulWidget {
 
 class _ViewMyVideoState extends State<ViewMyVideo> {
   YoutubePlayerController controller;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -117,7 +122,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
               title: RaisedButton(
                 elevation: 5,
                 color: Colors.red,
-                onPressed: () {},
+                onPressed: deleteVideo,
                 child: Text(
                   "DELETE",
                   style: TextStyle(color: Colors.white, fontSize: 15),
@@ -134,4 +139,33 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
       ),
     );
   }
+
+  void deleteVideo() async {
+    String url = "https://appvideopromo.000webhostapp.com/VideoApp/deleteVideo.php?vidId=${widget.vidId}";
+    http.Response response = await http.get(url);
+    if(response.body.contains("Video Deleted successfully")){
+      Fluttertoast.showToast(
+          msg: "Video deleted successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      userController.userVideos.removeAt(widget.index);
+
+      Navigator.of(context).pop();
+    }else{
+      Fluttertoast.showToast(
+          msg: "Error deleting video!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
 }

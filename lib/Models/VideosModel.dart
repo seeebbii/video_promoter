@@ -8,10 +8,11 @@ class VideosModel extends StatefulWidget {
   int duration;
   int durationWatched;
   String extractedId;
+  int vidId;
 
 
   VideosModel(this.link, this.totalViews, this.gotView, this.duration,
-      this.durationWatched, this.extractedId);
+      this.durationWatched, this.extractedId, this.vidId);
 
   @override
   _VideosModelState createState() => _VideosModelState();
