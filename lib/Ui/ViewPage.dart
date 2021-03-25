@@ -34,12 +34,11 @@ class _ViewPageState extends State<ViewPage> {
   Timer _timer;
   int _start;
 
-  final watchVideoController = Get.find<WatchVideoController>();
+  var watchVideoController = Get.find<WatchVideoController>();
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override

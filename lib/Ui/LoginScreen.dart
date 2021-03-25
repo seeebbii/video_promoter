@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:video_promoter/Ui/SignupScreen.dart';
+import 'package:video_promoter/controllers/userController.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/utilities/constant_dart.dart';
 import 'package:http/http.dart' as http;
 class LoginScreen extends StatefulWidget {
@@ -18,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _emailFieldController = new TextEditingController();
   var _passFieldController = new TextEditingController();
+  final userController = Get.put(UserController());
+  final watchVideoController = Get.find<WatchVideoController>();
   bool progress = false;
 
   @override
@@ -292,6 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       // Checking if the user has successfully logged in
       if (response.statusCode == 200) {
+        watchVideoController.getVideo();
         setState(() {
           progress = false;
         });
@@ -304,6 +310,8 @@ class _LoginScreenState extends State<LoginScreen> {
             textColor: Colors.white,
             fontSize: 16.0);
         saveObjectToPreferences(User.fromJson(json.decode(response.body)));
+        userController.getUser();
+        userController.getMyVideos();
         await Future.delayed(Duration(seconds: 2), () {
           // Switch to home page here
           Navigator.of(context).pushReplacement(

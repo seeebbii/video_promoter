@@ -20,13 +20,13 @@ class DrawerItems extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.red),
-              accountName: Text(userController.user.name,
+              accountName: Text(userController.user.name == null ? "Loading..." : userController.user.name,
                   style: TextStyle(
                       color: Colors.red.shade900,
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
               accountEmail: Text(
-                    userController.user.email,
+                    userController.user.email == null ? "Loading..." : userController.user.email ,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -35,7 +35,7 @@ class DrawerItems extends StatelessWidget {
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
-                  userController.user.name[0].toUpperCase(),
+                  userController.user.name == null ? " " : userController.user.name[0].toUpperCase(),
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
@@ -141,7 +141,9 @@ class DrawerItems extends StatelessWidget {
 
   void logOutHandler(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
+    // await prefs.clear();
     prefs.setBool('loggedIn', false);
+
     Navigator.of(context)
         .pushReplacement(new MaterialPageRoute(builder: (context) {
       return LoginScreen();

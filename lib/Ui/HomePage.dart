@@ -10,6 +10,7 @@ import 'package:video_promoter/Ui/ChannelPage.dart';
 import 'package:video_promoter/Ui/OthersPage.dart';
 import 'package:video_promoter/Ui/ViewPage.dart';
 import 'package:video_promoter/controllers/userController.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/DrawerItems.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   Widget currentScreen;
 
   final userController = Get.find<UserController>();
+  final watchVideoController = Get.find<WatchVideoController>();
 
   @override
   void initState() {
@@ -55,6 +57,14 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentTab = index;
     });
+
+
+
+    if(index != 1){
+      watchVideoController.youtubeController.value.pause();
+    }else{
+      watchVideoController.youtubeController.value.pause();
+    }
 
     // if(index != 1) {
     //   if (StateMachine.Viewinstance != null) {
