@@ -34,45 +34,16 @@ class _ViewPageState extends State<ViewPage> {
   Timer _timer;
   int _start;
 
-  final watchVideoController = Get.put(WatchVideoController());
+  final watchVideoController = Get.find<WatchVideoController>();
 
   @override
   void initState() {
     super.initState();
-    watchVideoController.getVideo();
+
   }
 
   @override
   Widget build(BuildContext context) {
-
-    // widget.controller = YoutubePlayerController(
-    //     initialVideoId: YoutubePlayer.convertUrlToId(watchVideoController.curVideo.link),
-    //     flags: YoutubePlayerFlags(
-    //       autoPlay: true,
-    //       disableDragSeek: true,
-    //       hideControls: false,
-    //     ))
-    //   ..addListener(listener);
-
-    // if (watchVideoController.curVideo == null) {
-    // } else {
-    //   int endTime =
-    //       DateTime.now().millisecondsSinceEpoch + 1000 * watchVideoController.curVideo.duration;
-    //   /*do{
-    //
-    // }while(currentVideo.link == "" && currentVideo.duration < 1);*/
-    //
-    //
-    //   setState(() {
-    //     _start = watchVideoController.curVideo.duration;
-    //   });
-    //
-    //   if (widget.controller.hasListeners) {
-    //     startTimer();
-    //   }
-    // }
-
-
     return Scaffold(
       body: GetX<WatchVideoController>(
         init: WatchVideoController(),
@@ -105,6 +76,7 @@ class _ViewPageState extends State<ViewPage> {
                   FlatButton(
                     onPressed: () {
                       watchVideoController.youtubeController.value.pause();
+                      _timer.cancel();
                     },
                     child: Text("Pause"),
                     color: Colors.red,

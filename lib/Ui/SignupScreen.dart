@@ -373,7 +373,7 @@ class _SignupScreenState extends State<SignupScreen> {
             referral = _referralController.text;
           }
           String URL =
-              'https://appvideopromo.000webhostapp.com/VideoApp/signup.php?email=$email&name=$name&password=$pass&referral=$referral';
+              'http://www.videopromoter.tk/Video_app/signup.php?email=$email&name=$name&password=$pass&referral=$referral';
           http.Response response = await http.get(URL);
           if (response.body.contains('Email already exists')) {
             setState(() {

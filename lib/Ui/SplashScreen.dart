@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/controllers/userController.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 
 import 'HomePage.dart';
 import 'LoginScreen.dart';
@@ -18,6 +19,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   final userController = Get.put(UserController());
+  final watchVideoController = Get.put(WatchVideoController());
 
   Future<bool> checkLoggedInUser() async {
     await Future.delayed(
@@ -34,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (status) {
         userController.getUser();
         userController.getMyVideos();
+        watchVideoController.getVideo();
         navigateToHome();
       } else {
         navigateToLogin();

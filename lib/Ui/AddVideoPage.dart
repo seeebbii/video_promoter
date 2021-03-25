@@ -93,7 +93,6 @@ class _AddVideoPageState extends State<AddVideoPage> {
                           setState(() {
                             selectedViewCount = int.parse(value);
                           });
-                          print(selectedViewCount);
                         },
                         controller: viewsController,
                         keyboardType: TextInputType.number,
@@ -130,7 +129,6 @@ class _AddVideoPageState extends State<AddVideoPage> {
                           setState(() {
                             selectedMinCount = int.parse(value);
                           });
-                          print(selectedMinCount);
                         },
                         controller: minController,
                           keyboardType: TextInputType.number,
@@ -205,11 +203,11 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
   void validate() async {
     int totalCost = selectedViewCount * selectedMinCount;
-    if (userController.user.balance >= totalCost) {
 
+    if (userController.user.balance >= totalCost) {
       if(selectedMinCount > 0 && selectedViewCount > 0){
         String URL =
-            'https://appvideopromo.000webhostapp.com/VideoApp/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
+            'http://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
         if (response.body == "Video added successfully") {
           String extractedId = "";
@@ -220,7 +218,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
             extractedId = widget.videoUrl.substring(
                 widget.videoUrl.indexOf('=') + 1, widget.videoUrl.length);
           }
-          
+
           VideosModel model = VideosModel(
               widget.videoUrl, selectedViewCount,
               0, selectedMinCount,
@@ -229,7 +227,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
           // Deduct balance from the server
           String URL =
-              'https://appvideopromo.000webhostapp.com/VideoApp/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
+              'http://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
           userController.user.balance = userController.user.balance - totalCost;
           userController.userBal -= totalCost;
           http.Response response = await http.get(URL);

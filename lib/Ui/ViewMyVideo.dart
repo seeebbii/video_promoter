@@ -141,7 +141,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
   }
 
   void deleteVideo() async {
-    String url = "https://appvideopromo.000webhostapp.com/VideoApp/deleteVideo.php?vidId=${widget.vidId}";
+    String url = "http://appvideopromo.000webhostapp.com/VideoApp/deleteVideo.php?vidId=${widget.vidId}";
     http.Response response = await http.get(url);
     if(response.body.contains("Video Deleted successfully")){
       Fluttertoast.showToast(

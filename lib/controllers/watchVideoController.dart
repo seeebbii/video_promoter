@@ -19,13 +19,13 @@ class WatchVideoController extends GetxController{
    void getVideo() async {
      try{
        videoIsLoading(true);
-       String url = "https://appvideopromo.000webhostapp.com/VideoApp/viewRandomVideo.php?tested=0";
+       String url = "http://www.videopromoter.tk/Video_app/viewRandomVideo.php?tested=1,5";
        http.Response response = await http.get(url);
        var test = json.decode(response.body);
        WatchVideo obj = WatchVideo(link: test['link'], videoId: int.parse(test['vid']) , email:test['email'], name: test['name'], uploaderId: int.parse(test['id']), duration: int.parse(test['duration']));
        _curVideo.value = obj;
 
-       youtubeController.value =  YoutubePlayerController(initialVideoId: YoutubePlayer.convertUrlToId("${_curVideo.value.link.toString()}"), flags: YoutubePlayerFlags(
+       youtubeController.value =  YoutubePlayerController(initialVideoId: YoutubePlayer.convertUrlToId("${_curVideo.value.link}"), flags: YoutubePlayerFlags(
            autoPlay: true,
          hideControls: false
        ));

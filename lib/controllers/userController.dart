@@ -25,7 +25,7 @@ class UserController extends GetxController {
     referral = prefs.getString('referral');
 
     String url =
-        "https://appvideopromo.000webhostapp.com/VideoApp/getBalance.php?id=$id";
+        "http://www.videopromoter.tk/Video_app/getBalance.php?id=$id";
     http.Response response = await http.get(url);
     var test = jsonDecode(response.body);
     balance = int.parse(test['balance']);
@@ -40,7 +40,7 @@ class UserController extends GetxController {
     String id;
     id = prefs.getString('id');
     String url =
-        "https://appvideopromo.000webhostapp.com/VideoApp/getBalance.php?id=$id";
+        "http://www.videopromoter.tk/Video_app/getBalance.php?id=$id";
     http.Response response = await http.get(url);
     var test = jsonDecode(response.body);
     userBal.value = int.parse(test['balance']);
@@ -50,7 +50,7 @@ class UserController extends GetxController {
     isVideoLoading(true);
     Future.delayed(Duration(seconds: 3), () async {
       String Url =
-          "https://appvideopromo.000webhostapp.com/VideoApp/getMyVideos.php?id=${user.id}";
+          "http://www.videopromoter.tk/Video_app/getMyVideos.php?id=${user.id}";
       http.Response response = await http.get(Url);
       List test = json.decode(response.body);
       try{
