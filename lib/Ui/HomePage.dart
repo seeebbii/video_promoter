@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     if(index != 1 && watchVideoController.isPlayerReady.value){
       watchVideoController.isStateChanged.value = true;
       watchVideoController.youtubeController.value.pause();
+
     }else{
       watchVideoController.youtubeController.value.play();
       watchVideoController.isStateChanged.value = false;
