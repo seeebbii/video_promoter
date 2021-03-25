@@ -284,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'user_password': pass,
       });
 
-      String URL = 'http://www.videopromoter.tk/Video_app/login.php';
+      String URL = 'https://www.videopromoter.tk/Video_app/login.php';
       http.Response response = await http.post(
         URL,
         headers: <String, String>{'Content-Type': 'application/json'},

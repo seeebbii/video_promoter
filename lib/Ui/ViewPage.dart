@@ -73,24 +73,24 @@ class _ViewPageState extends State<ViewPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
-                    onPressed: () {
-                      watchVideoController.youtubeController.value.pause();
-                      _timer.cancel();
-                    },
-                    child: Text("Pause"),
-                    color: Colors.red,
-                  ),
+                  // FlatButton(
+                  //   onPressed: () {
+                  //     watchVideoController.youtubeController.value.pause();
+                  //     _timer.cancel();
+                  //   },
+                  //   child: Text("Pause"),
+                  //   color: Colors.red,
+                  // ),
                   watchVideoController.curVideo.duration == null
                       ? CircularProgressIndicator()
                       : Text("${watchVideoController.curVideo.duration}"),
-                  FlatButton(
-                    onPressed: () {
-                      watchVideoController.youtubeController.value.play();
-                    },
-                    child: Text("Play"),
-                    color: Colors.red,
-                  ),
+                  // FlatButton(
+                  //   onPressed: () {
+                  //     watchVideoController.youtubeController.value.play();
+                  //   },
+                  //   child: Text("Play"),
+                  //   color: Colors.red,
+                  // ),
                 ],
               ),
             ],

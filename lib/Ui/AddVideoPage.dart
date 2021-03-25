@@ -207,7 +207,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
     if (userController.user.balance >= totalCost) {
       if(selectedMinCount > 0 && selectedViewCount > 0){
         String URL =
-            'http://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
+            'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
         if (response.body == "Video added successfully") {
           String extractedId = "";
@@ -227,7 +227,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
           // Deduct balance from the server
           String URL =
-              'http://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
+              'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
           userController.user.balance = userController.user.balance - totalCost;
           userController.userBal -= totalCost;
           http.Response response = await http.get(URL);
