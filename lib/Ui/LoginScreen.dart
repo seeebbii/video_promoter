@@ -295,9 +295,12 @@ class _LoginScreenState extends State<LoginScreen> {
         headers: <String, String>{'Content-Type': 'application/json'},
         body: jsonObj,
       );
+
+      print(response.body);
+
       // Checking if the user has successfully logged in
       if (response.statusCode == 200) {
-        watchVideoController.getVideo();
+
         setState(() {
           progress = false;
         });
@@ -365,5 +368,11 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString('name', user.name);
     prefs.setString('email', user.email);
     prefs.setString('referral', user.referral);
+    if(user.videoWatched == ""){
+      prefs.setString("vid_watched", "0");
+    }else{
+      prefs.setString("vid_watched", user.videoWatched);
+    }
+
   }
 }

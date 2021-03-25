@@ -5,14 +5,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
 import 'package:video_promoter/controllers/userController.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/ShareScreen.dart';
 
 class DrawerItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final watchVideoController = Get.find<WatchVideoController>();
     final userController = Get.find<UserController>();
+
+    if( watchVideoController.isPlayerReady.value){
+      watchVideoController.youtubeController.value.pause();
+    }
+
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: Drawer(

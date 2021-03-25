@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (status) {
         userController.getUser();
         userController.getMyVideos();
-        watchVideoController.getVideo();
+        // watchVideoController.getVideo();
         navigateToHome();
       } else {
         navigateToLogin();

@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    watchVideoController.getVideo();
     currentScreen = ViewPage();
     currentTab = 1;
   }
@@ -60,10 +61,12 @@ class _HomePageState extends State<HomePage> {
 
 
 
-    if(index != 1){
+    if(index != 1 && watchVideoController.isPlayerReady.value){
+      watchVideoController.isStateChanged.value = true;
       watchVideoController.youtubeController.value.pause();
     }else{
-      watchVideoController.youtubeController.value.pause();
+      watchVideoController.youtubeController.value.play();
+      watchVideoController.isStateChanged.value = false;
     }
 
     // if(index != 1) {

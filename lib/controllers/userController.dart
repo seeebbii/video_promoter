@@ -17,12 +17,13 @@ class UserController extends GetxController {
 
   Future<void> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String id, name, email, referral;
+    String id, name, email, referral, videoWatched;
     int balance;
     id = prefs.getString('id');
     name = prefs.getString('name');
     email = prefs.getString('email');
     referral = prefs.getString('referral');
+    videoWatched = prefs.getString("vid_watched");
 
     String url =
         "https://www.videopromoter.tk/Video_app/getBalance.php?id=$id";
@@ -31,7 +32,7 @@ class UserController extends GetxController {
     balance = int.parse(test['balance']);
     userBal.value = balance;
     User user = new User(
-        id: id, name: name, email: email, balance: balance, referral: referral);
+        id: id, name: name, email: email, balance: balance, referral: referral, videoWatched: videoWatched);
     _user.value = user;
   }
 
@@ -82,6 +83,18 @@ class UserController extends GetxController {
       }
 
     });
+  }
+
+
+  void updateWatchedVideos(String vidId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    _user.value.videoWatched += ",${vidId}" ;
+    prefs.setString("vid_watched", _user.value.videoWatched);
+
+    String Url =
+        "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
+    http.Response response = await http.get(Url);
+    print(response.body);
   }
 
   void addToVideos(VideosModel obj) {
