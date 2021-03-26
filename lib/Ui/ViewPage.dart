@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
+import 'package:pausable_timer/pausable_timer.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Models/WatchVideo.dart';
 import 'package:video_promoter/Models/stateMachine.dart';
+import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -27,16 +29,19 @@ class ViewPage extends StatefulWidget {
 
 class _ViewPageState extends State<ViewPage> {
   PlayerState _playerState;
-  bool _isPlayerReady = false;
-  WatchVideo currentVideo;
-  Timer _timer;
-  int _start;
 
-  final watchVideoController = Get.find<WatchVideoController>();
+  WatchVideo currentVideo;
+  PausableTimer pausableTimer;
+  int duration;
+  Timer _timer;
+
+  var watchVideoController = Get.find<WatchVideoController>();
+  var userController = Get.find<UserController>();
 
   @override
   void initState() {
     super.initState();
+    // videoWatched();
   }
 
   @override
@@ -58,9 +63,7 @@ class _ViewPageState extends State<ViewPage> {
                 YoutubePlayer(
                   onReady: () {
                     startTimer();
-                    setState(() {
-                      _isPlayerReady = true;
-                    });
+                    watchVideoController.isPlayerReady.value = true;
                   },
                   controller: watchVideoController.youtubeController.value,
                   showVideoProgressIndicator: true,
@@ -73,14 +76,15 @@ class _ViewPageState extends State<ViewPage> {
                     FlatButton(
                       onPressed: () {
                         watchVideoController.youtubeController.value.pause();
-                        _timer.cancel();
+                        // _timer.cancel();
                       },
                       child: Text("Pause"),
                       color: Colors.red,
                     ),
-                    watchVideoController.curVideo.duration == null
+                    watchVideoController.curVideo.value.duration == null
                         ? CircularProgressIndicator()
-                        : Text("${watchVideoController.curVideo.duration}"),
+                        : Text(
+                            "${watchVideoController.curVideo.value.duration}"),
                     FlatButton(
                       onPressed: () {
                         watchVideoController.youtubeController.value.play();
@@ -97,20 +101,29 @@ class _ViewPageState extends State<ViewPage> {
   }
 
   void startTimer() {
+    watchVideoController.isTimerRunning.value = true;
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
-          if (watchVideoController.curVideo.duration < 1) {
+          if (watchVideoController.curVideo.value.duration < 1) {
             timer.cancel();
+            if ((watchVideoController.isStateChanged.value == true)) {
+              timer.cancel();
+            }
           } else {
-            watchVideoController.curVideo.duration =
-                watchVideoController.curVideo.duration - 1;
+            watchVideoController.curVideo.value.duration =
+                watchVideoController.curVideo.value.duration - 1;
           }
         },
       ),
     );
+  }
+
+  void videoWatched() {
+    userController.updateWatchedVideos(
+        watchVideoController.curVideo.value.videoId.toString());
   }
 
   @override
