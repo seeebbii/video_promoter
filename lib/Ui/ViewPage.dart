@@ -15,8 +15,6 @@ import 'package:http/http.dart' as http;
 import '../Models/WatchVideo.dart';
 
 class ViewPage extends StatefulWidget {
-
-
   @override
   _ViewPageState createState() {
     if (StateMachine.Viewinstance == null) {
@@ -39,64 +37,62 @@ class _ViewPageState extends State<ViewPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GetX<WatchVideoController>(
-        init: WatchVideoController(),
-        builder: (controller) {
-          if (controller.videoIsLoading.value) {
-            return Center(
-              child: CircularProgressIndicator(),
+          init: WatchVideoController(),
+          builder: (controller) {
+            if (controller.videoIsLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (controller.curVideo.isBlank) {
+              controller.getVideo();
+            }
+            return Column(
+              children: [
+                YoutubePlayer(
+                  onReady: () {
+                    startTimer();
+                    setState(() {
+                      _isPlayerReady = true;
+                    });
+                  },
+                  controller: watchVideoController.youtubeController.value,
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.red,
+                  aspectRatio: 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                      onPressed: () {
+                        watchVideoController.youtubeController.value.pause();
+                        _timer.cancel();
+                      },
+                      child: Text("Pause"),
+                      color: Colors.red,
+                    ),
+                    watchVideoController.curVideo.duration == null
+                        ? CircularProgressIndicator()
+                        : Text("${watchVideoController.curVideo.duration}"),
+                    FlatButton(
+                      onPressed: () {
+                        watchVideoController.youtubeController.value.play();
+                      },
+                      child: Text("Play"),
+                      color: Colors.red,
+                    ),
+                  ],
+                ),
+              ],
             );
-          }
-          if(controller.curVideo.isBlank){
-            controller.getVideo();
-          }
-          return Column(
-            children: [
-              YoutubePlayer(
-                onReady: () {
-                  startTimer();
-                  setState(() {
-                    _isPlayerReady = true;
-                  });
-                },
-                controller: watchVideoController.youtubeController.value,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.red,
-                aspectRatio: 1,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FlatButton(
-                    onPressed: () {
-                      watchVideoController.youtubeController.value.pause();
-                      _timer.cancel();
-                    },
-                    child: Text("Pause"),
-                    color: Colors.red,
-                  ),
-                  watchVideoController.curVideo.duration == null
-                      ? CircularProgressIndicator()
-                      : Text("${watchVideoController.curVideo.duration}"),
-                  FlatButton(
-                    onPressed: () {
-                      watchVideoController.youtubeController.value.play();
-                    },
-                    child: Text("Play"),
-                    color: Colors.red,
-                  ),
-                ],
-              ),
-            ],
-          );
-        }
-      ),
+          }),
     );
   }
 
@@ -109,13 +105,13 @@ class _ViewPageState extends State<ViewPage> {
           if (watchVideoController.curVideo.duration < 1) {
             timer.cancel();
           } else {
-            watchVideoController.curVideo.duration = watchVideoController.curVideo.duration - 1;
+            watchVideoController.curVideo.duration =
+                watchVideoController.curVideo.duration - 1;
           }
         },
       ),
     );
   }
-
 
   @override
   void dispose() {
@@ -123,5 +119,4 @@ class _ViewPageState extends State<ViewPage> {
     // TODO: implement dispose
     super.dispose();
   }
-
 }

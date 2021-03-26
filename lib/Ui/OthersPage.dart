@@ -30,7 +30,7 @@ class _OthersPageState extends State<OthersPage> {
                 padding: const EdgeInsets.all(15.0),
                 child: Container(
                   height: 50,
-                  child: Text("To avail any of these offers please contact +92 03362046672", style: TextStyle(
+                  child: Text("To avail any of these offers please contact +923362046672", style: TextStyle(
                       fontSize: 15
                   ),
                   textAlign: TextAlign.center,),

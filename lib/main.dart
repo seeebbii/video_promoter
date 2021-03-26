@@ -9,7 +9,7 @@ void main() async {
   prefs = await SharedPreferences.getInstance();
   return runApp(new MaterialApp(
     debugShowCheckedModeBanner: false,
-    title: "VideoPromotion",
+    title: "Video Promotion",
     home: MyApp(),
   ));
 }
