@@ -4,18 +4,19 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
+import 'package:video_promoter/controllers/language_controller.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/ShareScreen.dart';
 
 class DrawerItems extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final watchVideoController = Get.find<WatchVideoController>();
     final userController = Get.find<UserController>();
+    final LanguageController languageController = LanguageController();
 
-    if( watchVideoController.isPlayerReady.value){
+    if (watchVideoController.isPlayerReady.value) {
       watchVideoController.youtubeController.value.pause();
     }
 
@@ -26,26 +27,33 @@ class DrawerItems extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.red),
-              accountName: Text(userController.user.name == null ? "Loading..." : userController.user.name,
+              accountName: Text(
+                  userController.user.name == null
+                      ? "Loading..."
+                      : userController.user.name,
                   style: TextStyle(
                       color: Colors.red.shade900,
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
               accountEmail: Text(
-                    userController.user.email == null ? "Loading..." : userController.user.email ,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400),
+                userController.user.email == null
+                    ? "Loading..."
+                    : userController.user.email,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
-                  userController.user.name == null ? " " : userController.user.name[0].toUpperCase(),
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  userController.user.name == null
+                      ? " "
+                      : userController.user.name[0].toUpperCase(),
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
+            ),
             ListTile(
               onTap: () {
                 Navigator.of(context).pop();
@@ -87,6 +95,40 @@ class DrawerItems extends StatelessWidget {
               ),
               title: Text(
                 'Privacy policy',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Get.defaultDialog(
+                    title: "Language Change".tr,
+                    titleStyle: TextStyle(fontSize: 25),
+                    middleText: "Please select your desired Language",
+                    middleTextStyle: TextStyle(fontSize: 20),
+                    backgroundColor: Colors.redAccent[200],
+                    radius: 10,
+                    textCancel: "Cancel",
+                    cancelTextColor: Colors.white70,
+                    onCancel: () {
+                      Navigator.of(context).pop();
+                    },
+                    actions: [
+                      ElevatedButton(
+                        child: Text('English'),
+                        onPressed: () {
+                          languageController.changeLanguage('en', 'US');
+                          Get.snackbar('Language Changed',
+                              'Your Language has been changed to English');
+                        },
+                      ),
+                    ]);
+              },
+              leading: Icon(
+                Icons.language,
+                size: 20,
+              ),
+              title: Text(
+                'Change Language',
                 style: TextStyle(color: Colors.black),
               ),
             ),
