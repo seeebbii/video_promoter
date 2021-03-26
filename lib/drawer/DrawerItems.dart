@@ -17,6 +17,9 @@ class DrawerItems extends StatelessWidget {
     final userController = Get.find<UserController>();
     final LanguageController languageController = LanguageController();
 
+    if (watchVideoController.isPlayerReady.value) {
+      watchVideoController.youtubeController.value.pause();
+    }
 
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
@@ -66,7 +69,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Share with friends',
+                'Share with friends'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -79,7 +82,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Consent',
+                'Consent'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -118,7 +121,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Contact us',
+                'Contact us'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -140,7 +143,7 @@ class DrawerItems extends StatelessWidget {
                 color: Color(0xFFC11010),
               ),
               title: Text(
-                'Log Out',
+                'Log Out'.tr,
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
             ),
@@ -154,7 +157,7 @@ class DrawerItems extends StatelessWidget {
                 color: Color(0xFFC11010),
               ),
               title: Text(
-                'Delete account',
+                'Delete account'.tr,
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
             ),
