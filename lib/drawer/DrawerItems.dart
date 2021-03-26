@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
+import 'package:video_promoter/Ui/change_language.dart';
 import 'package:video_promoter/controllers/language_controller.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
@@ -14,7 +15,6 @@ class DrawerItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final watchVideoController = Get.find<WatchVideoController>();
     final userController = Get.find<UserController>();
-    final LanguageController languageController = LanguageController();
 
     if (watchVideoController.isPlayerReady.value) {
       watchVideoController.youtubeController.value.pause();
@@ -68,7 +68,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Share with friends',
+                'Share with Friends'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -81,7 +81,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Consent',
+                'Consent'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -94,41 +94,50 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Privacy policy',
+                'Privacy policy'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
             ListTile(
               onTap: () {
-                Get.defaultDialog(
-                    title: "Language Change".tr,
-                    titleStyle: TextStyle(fontSize: 25),
-                    middleText: "Please select your desired Language",
-                    middleTextStyle: TextStyle(fontSize: 20),
-                    backgroundColor: Colors.redAccent[200],
-                    radius: 10,
-                    textCancel: "Cancel",
-                    cancelTextColor: Colors.white70,
-                    onCancel: () {
-                      Navigator.of(context).pop();
-                    },
-                    actions: [
-                      ElevatedButton(
-                        child: Text('English'),
-                        onPressed: () {
-                          languageController.changeLanguage('en', 'US');
-                          Get.snackbar('Language Changed',
-                              'Your Language has been changed to English');
-                        },
-                      ),
-                    ]);
+                Get.to(() => ChangeLanguage());
+                // Get.defaultDialog(
+                //     title: "Language Change".tr,
+                //     titleStyle: TextStyle(fontSize: 25),
+                //     middleText: "Please select your desired Language",
+                //     middleTextStyle: TextStyle(fontSize: 20),
+                //     backgroundColor: Colors.redAccent[200],
+                //     radius: 10,
+                //     textCancel: "Cancel",
+                //     cancelTextColor: Colors.white70,
+                //     onCancel: () {
+                //       Navigator.of(context).pop();
+                //     },
+                //     actions: [
+                //       ElevatedButton(
+                //         child: Text('English'),
+                //         onPressed: () {
+                //           languageController.changeLanguage('en', 'US');
+                //           Get.snackbar('Language Changed',
+                //               'Your Language has been changed to English');
+                //         },
+                //       ),
+                //       ElevatedButton(
+                //         child: Text('French'),
+                //         onPressed: () {
+                //           languageController.changeLanguage('hi', 'FR');
+                //           Get.snackbar('Language Changed',
+                //               'Your Language has been changed to French');
+                //         },
+                //       ),
+                //  );
               },
               leading: Icon(
                 Icons.language,
                 size: 20,
               ),
               title: Text(
-                'Change Language',
+                'Change Language'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -141,7 +150,7 @@ class DrawerItems extends StatelessWidget {
                 size: 20,
               ),
               title: Text(
-                'Contact us',
+                'Contact us'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -163,7 +172,7 @@ class DrawerItems extends StatelessWidget {
                 color: Color(0xFFC11010),
               ),
               title: Text(
-                'Log Out',
+                'Log Out'.tr,
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
             ),
@@ -177,7 +186,7 @@ class DrawerItems extends StatelessWidget {
                 color: Color(0xFFC11010),
               ),
               title: Text(
-                'Delete account',
+                'Delete account'.tr,
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
             ),

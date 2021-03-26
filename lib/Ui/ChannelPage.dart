@@ -35,22 +35,22 @@ class _ChannelPageState extends State<ChannelPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Video Link'),
+            title: Text('Video Link'.tr),
             content: TextField(
               controller: _linkController,
               decoration: InputDecoration(
-                  hintText: "Enter your YouTube video link here"),
+                  hintText: "Enter your YouTube video link here".tr),
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancel'.tr),
                 onPressed: () {
                   _linkController.clear();
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Add'),
+                child: new Text('Add'.tr),
                 onPressed: () {
                   _checkValidity();
                 },
@@ -63,7 +63,7 @@ class _ChannelPageState extends State<ChannelPage> {
   // set up the AlertDialog
   AlertDialog invalid = AlertDialog(
     title: Text("Error!"),
-    content: Text("The link entered is not valid."),
+    content: Text("The link entered is not valid.".tr),
   );
 
   _checkValidity() {
@@ -108,7 +108,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   child: CircularProgressIndicator(),
                 );
               }
-              if(controller.userVideos.isEmpty){
+              if (controller.userVideos.isEmpty) {
                 controller.getMyVideos();
               }
 
@@ -128,7 +128,8 @@ class _ChannelPageState extends State<ChannelPage> {
                               controller.userVideos[index].gotView,
                               controller.userVideos[index].duration,
                               controller.userVideos[index].durationWatched,
-                              index, controller.userVideos[index].vidId);
+                              index,
+                              controller.userVideos[index].vidId);
                         }));
                       },
                       child: Card(

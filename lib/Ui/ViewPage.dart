@@ -78,7 +78,7 @@ class _ViewPageState extends State<ViewPage> {
                         watchVideoController.youtubeController.value.pause();
                         // _timer.cancel();
                       },
-                      child: Text("Pause"),
+                      child: Text("Pause".tr),
                       color: Colors.red,
                     ),
                     watchVideoController.curVideo.value.duration == null
@@ -89,7 +89,7 @@ class _ViewPageState extends State<ViewPage> {
                       onPressed: () {
                         watchVideoController.youtubeController.value.play();
                       },
-                      child: Text("Play"),
+                      child: Text("Play".tr),
                       color: Colors.red,
                     ),
                   ],

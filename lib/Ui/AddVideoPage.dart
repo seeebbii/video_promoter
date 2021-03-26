@@ -80,7 +80,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Number of Views ",
+                    "Number of Views".tr,
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -89,60 +89,21 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       width: 80.0,
                       height: 50,
                       child: TextField(
-                        onChanged: (String value){
-                          setState(() {
-                            selectedViewCount = int.parse(value);
-                          });
-                        },
-                        controller: viewsController,
-                        keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          hintText: "Views Count"
-                        ),
-                          style: TextStyle(
-                              fontSize: 12,
-                              height: 2.0,
-                              color: Colors.black,
-                          )
-                      )
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Time Duration (Min) ",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  Container(
-                      width: 80.0,
-                      height: 50,
-                      child: TextField(
-                        onChanged: (String value){
-                          setState(() {
-                            selectedMinCount = int.parse(value);
-                          });
-                        },
-                        controller: minController,
+                          onChanged: (String value) {
+                            setState(() {
+                              selectedViewCount = int.parse(value);
+                            });
+                          },
+                          controller: viewsController,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                              hintText: "Min Count"
-                          ),
+                          decoration:
+                              InputDecoration(hintText: "Views Count".tr),
                           style: TextStyle(
                             fontSize: 12,
                             height: 2.0,
                             color: Colors.black,
-                          )
-                      )
-                  )
+                          )))
                 ],
               ),
             ),
@@ -152,7 +113,39 @@ class _AddVideoPageState extends State<AddVideoPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Total Cost",
+                    "Time Duration (Min)".tr,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Container(
+                      width: 80.0,
+                      height: 50,
+                      child: TextField(
+                          onChanged: (String value) {
+                            setState(() {
+                              selectedMinCount = int.parse(value);
+                            });
+                          },
+                          controller: minController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(hintText: "Min Count".tr),
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 2.0,
+                            color: Colors.black,
+                          )))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Total Cost".tr,
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -183,7 +176,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                  'NOTE: YouTube needs 72 hours to update views from third party apps. So please wait at least 72 hours before checking.'),
+                  'NOTE: YouTube needs 72 hours to update views from third party apps. So please wait at least 72 hours before checking.'
+                      .tr),
             ),
           ],
         ),
@@ -205,24 +199,22 @@ class _AddVideoPageState extends State<AddVideoPage> {
     int totalCost = selectedViewCount * selectedMinCount;
 
     if (userController.user.balance >= totalCost) {
-      if(selectedMinCount > 0 && selectedViewCount > 0){
+      if (selectedMinCount > 0 && selectedViewCount > 0) {
         String URL =
             'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
         if (response.body == "Video added successfully") {
           String extractedId = "";
-          if(widget.videoUrl.contains("https://youtu.be/")){
+          if (widget.videoUrl.contains("https://youtu.be/")) {
             extractedId = widget.videoUrl.substring(
                 widget.videoUrl.indexOf('/') + 11, widget.videoUrl.length);
-          }else{
+          } else {
             extractedId = widget.videoUrl.substring(
                 widget.videoUrl.indexOf('=') + 1, widget.videoUrl.length);
           }
 
-          VideosModel model = VideosModel(
-              widget.videoUrl, selectedViewCount,
-              0, selectedMinCount,
-              0, extractedId, null);
+          VideosModel model = VideosModel(widget.videoUrl, selectedViewCount, 0,
+              selectedMinCount, 0, extractedId, null);
           userController.addToVideos(model);
 
           // Deduct balance from the server
@@ -233,9 +225,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
           http.Response response = await http.get(URL);
           print(response.body);
           Navigator.of(context).pop();
-
         }
-      }else{
+      } else {
         // COUNT < 0
         showDialog(
           barrierDismissible: true,

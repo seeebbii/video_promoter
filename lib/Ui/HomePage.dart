@@ -59,13 +59,10 @@ class _HomePageState extends State<HomePage> {
       currentTab = index;
     });
 
-
-
-    if(index != 1 && watchVideoController.isPlayerReady.value){
+    if (index != 1 && watchVideoController.isPlayerReady.value) {
       watchVideoController.isStateChanged.value = true;
       watchVideoController.youtubeController.value.pause();
-
-    }else{
+    } else {
       watchVideoController.youtubeController.value.play();
       watchVideoController.isStateChanged.value = false;
     }
@@ -94,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: DrawerItems(),
       appBar: AppBar(
-        title: Text("Video Promoter"),
+        title: Text("Video Promoter".tr),
         backgroundColor: Colors.red,
         actions: [
           Image.asset(
@@ -103,35 +100,34 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
           ),
           GetX<UserController>(
-            init: UserController(),
-            builder: (controller) {
-              return FlatButton(
-                textColor: Colors.white,
-                minWidth: 15,
-                onPressed: () {},
-                child: controller.user.balance == null
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          backgroundColor: Color(0xFFF1959B),
-                          valueColor: new AlwaysStoppedAnimation<Color>(
-                              Colors.red.shade700),
+              init: UserController(),
+              builder: (controller) {
+                return FlatButton(
+                  textColor: Colors.white,
+                  minWidth: 15,
+                  onPressed: () {},
+                  child: controller.user.balance == null
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1.5,
+                            backgroundColor: Color(0xFFF1959B),
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                Colors.red.shade700),
+                          ),
+                        )
+                      : Text(
+                          "${controller.userBal}",
+                          style: TextStyle(
+                            fontSize: 20.5,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      )
-                    : Text(
-                        "${controller.userBal}",
-                        style: TextStyle(
-
-                          fontSize: 20.5,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-              );
-            }
-          ),
+                  shape:
+                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                );
+              }),
         ],
       ),
       body: WillPopScope(
@@ -142,18 +138,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Promote',
+            label: "Promote".tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.play_arrow),
-            label: 'View',
+            label: "View".tr,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.watch_later_outlined),
-            label: 'Minutes',
+            label: "Minutes".tr,
           ),
         ],
         currentIndex: currentTab,
@@ -162,5 +158,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
