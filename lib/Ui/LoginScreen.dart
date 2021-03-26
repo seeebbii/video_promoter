@@ -21,8 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _emailFieldController = new TextEditingController();
   var _passFieldController = new TextEditingController();
+
   final userController = Get.put(UserController());
-  final watchVideoController = Get.find<WatchVideoController>();
   bool progress = false;
 
   @override
@@ -313,8 +313,6 @@ class _LoginScreenState extends State<LoginScreen> {
             textColor: Colors.white,
             fontSize: 16.0);
         saveObjectToPreferences(User.fromJson(json.decode(response.body)));
-        userController.getUser();
-        userController.getMyVideos();
         await Future.delayed(Duration(seconds: 2), () {
           // Switch to home page here
           Navigator.of(context).pushReplacement(

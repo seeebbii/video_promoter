@@ -100,4 +100,8 @@ class UserController extends GetxController {
   void addToVideos(VideosModel obj) {
     userVideos.add(obj);
   }
+
+  @override
+  // TODO: implement onDelete
+  get onDelete => super.onDelete;
 }

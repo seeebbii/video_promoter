@@ -36,7 +36,7 @@ class _ViewPageState extends State<ViewPage> {
   Timer _timer;
 
   var watchVideoController = Get.find<WatchVideoController>();
-  var userController = Get.find<UserController>();
+  final userController = Get.put(UserController());
 
   @override
   void initState() {
@@ -47,56 +47,62 @@ class _ViewPageState extends State<ViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetX<WatchVideoController>(
-          init: WatchVideoController(),
-          builder: (controller) {
-            if (controller.videoIsLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(),
+      body: SingleChildScrollView(
+        child: GetX<WatchVideoController>(
+            init: WatchVideoController(),
+            builder: (controller) {
+              if (controller.videoIsLoading.value) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              return Column(
+                children: [
+                  YoutubePlayer(
+                    onReady: () {
+                      startTimer();
+                      watchVideoController.isPlayerReady.value = true;
+                    },
+                    controller: watchVideoController.youtubeController.value,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.red,
+                    bufferIndicator: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    aspectRatio: 0.8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          watchVideoController.youtubeController.value.pause();
+                          // _timer.cancel();
+                        },
+                        child: Text("Pause"),
+                        color: Colors.red,
+                      ),
+                      watchVideoController.curVideo.value.duration == null
+                          ? CircularProgressIndicator()
+                          : Text(
+                              "${watchVideoController.curVideo.value.duration}"),
+                      FlatButton(
+                        onPressed: () {
+                          watchVideoController.youtubeController.value.play();
+                        },
+                        child: Text("Play"),
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ],
               );
-            }
-            if (controller.curVideo.isBlank) {
-              controller.getVideo();
-            }
-            return Column(
-              children: [
-                YoutubePlayer(
-                  onReady: () {
-                    startTimer();
-                    watchVideoController.isPlayerReady.value = true;
-                  },
-                  controller: watchVideoController.youtubeController.value,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Colors.red,
-                  aspectRatio: 1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FlatButton(
-                      onPressed: () {
-                        watchVideoController.youtubeController.value.pause();
-                        // _timer.cancel();
-                      },
-                      child: Text("Pause".tr),
-                      color: Colors.red,
-                    ),
-                    watchVideoController.curVideo.value.duration == null
-                        ? CircularProgressIndicator()
-                        : Text(
-                            "${watchVideoController.curVideo.value.duration}"),
-                    FlatButton(
-                      onPressed: () {
-                        watchVideoController.youtubeController.value.play();
-                      },
-                      child: Text("Play".tr),
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }),
+            }),
+      ),
     );
   }
 

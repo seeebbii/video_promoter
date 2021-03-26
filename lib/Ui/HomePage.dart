@@ -26,13 +26,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Widget currentScreen;
 
-  final userController = Get.find<UserController>();
-  final watchVideoController = Get.find<WatchVideoController>();
+  final watchVideoController = Get.put(WatchVideoController());
+  final userController = Get.put(UserController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    userController.getUser();
+    userController.getMyVideos();
     watchVideoController.getVideo();
     currentScreen = ViewPage();
     currentTab = 1;
@@ -59,10 +62,13 @@ class _HomePageState extends State<HomePage> {
       currentTab = index;
     });
 
-    if (index != 1 && watchVideoController.isPlayerReady.value) {
+
+
+    if(index != 1 && watchVideoController.isPlayerReady.value){
       watchVideoController.isStateChanged.value = true;
       watchVideoController.youtubeController.value.pause();
-    } else {
+
+    }else{
       watchVideoController.youtubeController.value.play();
       watchVideoController.isStateChanged.value = false;
     }
@@ -91,7 +97,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: DrawerItems(),
       appBar: AppBar(
-        title: Text("Video Promoter".tr),
+        title: Text("Video Promoter"),
         backgroundColor: Colors.red,
         actions: [
           Image.asset(
@@ -100,34 +106,35 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
           ),
           GetX<UserController>(
-              init: UserController(),
-              builder: (controller) {
-                return FlatButton(
-                  textColor: Colors.white,
-                  minWidth: 15,
-                  onPressed: () {},
-                  child: controller.user.balance == null
-                      ? SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1.5,
-                            backgroundColor: Color(0xFFF1959B),
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.red.shade700),
-                          ),
-                        )
-                      : Text(
-                          "${controller.userBal}",
-                          style: TextStyle(
-                            fontSize: 20.5,
-                            fontWeight: FontWeight.w400,
-                          ),
+            init: UserController(),
+            builder: (controller) {
+              return FlatButton(
+                textColor: Colors.white,
+                minWidth: 15,
+                onPressed: () {},
+                child: controller.user.balance == null
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1.5,
+                          backgroundColor: Color(0xFFF1959B),
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              Colors.red.shade700),
                         ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
-                );
-              }),
+                      )
+                    : Text(
+                        "${controller.userBal}",
+                        style: TextStyle(
+
+                          fontSize: 20.5,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+              );
+            }
+          ),
         ],
       ),
       body: WillPopScope(
@@ -138,18 +145,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Promote".tr,
+            label: 'Promote',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.play_arrow),
-            label: "View".tr,
+            label: 'View',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.watch_later_outlined),
-            label: "Minutes".tr,
+            label: 'Minutes',
           ),
         ],
         currentIndex: currentTab,
@@ -158,4 +165,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    watchVideoController.youtubeController.value.dispose();
+    super.dispose();
+  }
+
 }

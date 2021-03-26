@@ -17,7 +17,6 @@ class ChannelPage extends StatefulWidget {
 }
 
 class _ChannelPageState extends State<ChannelPage> {
-  final userController = Get.find<UserController>();
 
   TextEditingController _linkController = TextEditingController();
   bool isValid = false;
@@ -35,22 +34,22 @@ class _ChannelPageState extends State<ChannelPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Video Link'.tr),
+            title: Text('Video Link'),
             content: TextField(
               controller: _linkController,
               decoration: InputDecoration(
-                  hintText: "Enter your YouTube video link here".tr),
+                  hintText: "Enter your YouTube video link here"),
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'.tr),
+                child: new Text('Cancel'),
                 onPressed: () {
                   _linkController.clear();
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Add'.tr),
+                child: new Text('Add'),
                 onPressed: () {
                   _checkValidity();
                 },
@@ -63,7 +62,7 @@ class _ChannelPageState extends State<ChannelPage> {
   // set up the AlertDialog
   AlertDialog invalid = AlertDialog(
     title: Text("Error!"),
-    content: Text("The link entered is not valid.".tr),
+    content: Text("The link entered is not valid."),
   );
 
   _checkValidity() {
@@ -92,6 +91,7 @@ class _ChannelPageState extends State<ChannelPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -104,15 +104,16 @@ class _ChannelPageState extends State<ChannelPage> {
             init: UserController(),
             builder: (controller) {
               if (controller.isVideoLoading.value) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
-              if (controller.userVideos.isEmpty) {
-                controller.getMyVideos();
-              }
 
-              return ListView.builder(
+              return controller.userVideos.length > 0 ?ListView.builder(
                   cacheExtent: 9000,
                   shrinkWrap: true,
                   itemCount: controller.userVideos.length,
@@ -128,8 +129,7 @@ class _ChannelPageState extends State<ChannelPage> {
                               controller.userVideos[index].gotView,
                               controller.userVideos[index].duration,
                               controller.userVideos[index].durationWatched,
-                              index,
-                              controller.userVideos[index].vidId);
+                              index, controller.userVideos[index].vidId);
                         }));
                       },
                       child: Card(
@@ -141,7 +141,8 @@ class _ChannelPageState extends State<ChannelPage> {
                           color: Colors.black,
                           child: controller.userVideos[index]),
                     );
-                  });
+                  }) : Container(width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,child: Center(child: Text("No video for promotion")));
             }));
   }
 }

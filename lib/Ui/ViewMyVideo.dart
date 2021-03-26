@@ -32,7 +32,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
     super.initState();
     controller = YoutubePlayerController(
         initialVideoId: YoutubePlayer.convertUrlToId(widget.link),
-        flags: YoutubePlayerFlags(autoPlay: true));
+        flags: YoutubePlayerFlags(autoPlay: true,));
   }
 
   final userController = Get.find<UserController>();
@@ -141,7 +141,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
   }
 
   void deleteVideo() async {
-    String url = "https://appvideopromo.000webhostapp.com/VideoApp/deleteVideo.php?vidId=${widget.vidId}";
+    String url = "https://www.videopromoter.tk/Video_app/deleteVideo.php?vidId=${widget.vidId}";
     http.Response response = await http.get(url);
     if(response.body.contains("Video Deleted successfully")){
       Fluttertoast.showToast(
@@ -166,6 +166,11 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
 }

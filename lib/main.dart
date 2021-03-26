@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Ui/SplashScreen.dart';
 
+
 import 'Models/messages.dart';
 
 bool loggedIn;
 SharedPreferences prefs;
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   var param1;
   var param2;
@@ -19,6 +21,7 @@ void main() async {
     param1 = prefs.getString('param1');
     param2 = prefs.getString('param2');
   }
+
   return runApp(new GetMaterialApp(
     translations: Messages(),
     locale: Locale(param1, param2),
@@ -34,6 +37,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void initState() {
     // TODO: implement initState
