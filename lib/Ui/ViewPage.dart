@@ -34,6 +34,9 @@ class _ViewPageState extends State<ViewPage> {
   PausableTimer pausableTimer;
   int duration;
   Timer _timer;
+  int timerForTimer;
+  bool isStarted = false;
+  int AWARD;
 
   var watchVideoController = Get.find<WatchVideoController>();
   final userController = Get.put(UserController());
@@ -46,11 +49,20 @@ class _ViewPageState extends State<ViewPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(watchVideoController.isStateChanged.value == true) {
+      stop();
+    }
+    // if(watchVideoController.isStateChanged.value == false && watchVideoController.counterOfTimeStarted.value > 1){
+    //   startTimer();
+    // }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: GetX<WatchVideoController>(
             init: WatchVideoController(),
             builder: (controller) {
+              AWARD = controller.curVideo.value.duration;
               if (controller.videoIsLoading.value) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
@@ -64,7 +76,11 @@ class _ViewPageState extends State<ViewPage> {
                 children: [
                   YoutubePlayer(
                     onReady: () {
+                      declareTimeValues();
                       startTimer();
+                      setState(() {
+                        watchVideoController.counterOfTimeStarted.value+=1;
+                      });
                       watchVideoController.isPlayerReady.value = true;
                     },
                     controller: watchVideoController.youtubeController.value,
@@ -78,22 +94,30 @@ class _ViewPageState extends State<ViewPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FlatButton(
-                        onPressed: () {
-                          watchVideoController.youtubeController.value.pause();
-                          // _timer.cancel();
-                        },
-                        child: Text("Pause"),
-                        color: Colors.red,
+                      Card(
+                        child: Container(
+                          child: AWARD == null ? Text("Award: ...") :Text("Award: ${AWARD} Minutes"),
+                        ),
                       ),
+                      // FlatButton(
+                      //   onPressed: () {
+                      //     watchVideoController.youtubeController.value.pause();
+                      //     stop();
+                      //     // _timer.cancel();
+                      //   },
+                      //   child: Text("Pause"),
+                      //   color: Colors.red,
+                      // ),
                       watchVideoController.curVideo.value.duration == null
                           ? CircularProgressIndicator()
-                          : Text(
-                              "${watchVideoController.curVideo.value.duration}"),
+                          : timerForTimer == null ?  Text(
+                              "${watchVideoController.curVideo.value.duration}") : Text(
+                          "${timerForTimer}"),
                       FlatButton(
-                        onPressed: () {
+                        onPressed: !isStarted ? () {
                           watchVideoController.youtubeController.value.play();
-                        },
+                          startTimer();
+                        } : null,
                         child: Text("Play"),
                         color: Colors.red,
                       ),
@@ -106,25 +130,37 @@ class _ViewPageState extends State<ViewPage> {
     );
   }
 
-  void startTimer() {
+
+  void declareTimeValues(){
+
     watchVideoController.isTimerRunning.value = true;
+    timerForTimer = watchVideoController.curVideo.value.duration * 60;
+  }
+
+  void startTimer() {
+    setState(() {
+      isStarted = true;
+    });
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
-          if (watchVideoController.curVideo.value.duration < 1) {
+          if (timerForTimer < 1 || isStarted == false) {
             timer.cancel();
-            if ((watchVideoController.isStateChanged.value == true)) {
-              timer.cancel();
-            }
+            isStarted = true;
           } else {
-            watchVideoController.curVideo.value.duration =
-                watchVideoController.curVideo.value.duration - 1;
+            timerForTimer = timerForTimer - 1;
           }
         },
       ),
     );
+  }
+
+  void stop() {
+    setState(() {
+      isStarted = false;
+    });
   }
 
   void videoWatched() {

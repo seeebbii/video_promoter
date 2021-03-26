@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:video_promoter/Models/VideosModel.dart';
 
 class UserController extends GetxController {
+
+  var currentTab = 1.obs;
+
   var _user = new User().obs;
   var userBal = 0.obs;
   var isVideoLoading = true.obs;

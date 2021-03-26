@@ -37,10 +37,8 @@ class _HomePageState extends State<HomePage> {
     userController.getMyVideos();
     watchVideoController.getVideo();
     currentScreen = ViewPage();
-    currentTab = 1;
   }
 
-  int currentTab;
   final PageStorageBucket bucket = PageStorageBucket();
   DateTime currentBackPressTime;
 
@@ -58,29 +56,27 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      currentTab = index;
+      userController.currentTab.value = index;
     });
 
 
 
     if(index != 1 && watchVideoController.isPlayerReady.value){
-      watchVideoController.isStateChanged.value = true;
-      watchVideoController.youtubeController.value.pause();
 
+      watchVideoController.youtubeController.value.pause();
+      setState(() {
+        watchVideoController.isStateChanged.value = true;
+        watchVideoController.counterOfTimeStarted.value +=1;
+      });
     }else{
-      watchVideoController.youtubeController.value.play();
       watchVideoController.isStateChanged.value = false;
     }
-
-    // if(index != 1) {
-    //   if (StateMachine.Viewinstance != null) {
-    //     StateMachine.Viewinstance.controller.pause();
-    //   }
-    // }
-    // else {
-    //   if (StateMachine.Viewinstance != null) {
-    //     StateMachine.Viewinstance.controller.play();
-    //   }
+    // else{
+    //   watchVideoController.youtubeController.value.play();
+    //   setState(() {
+    //     watchVideoController.isStateChanged.value = false;
+    //   });
+    //
     // }
   }
 
@@ -94,7 +90,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.red.withOpacity(0.7));
     return Scaffold(
-      drawer: DrawerItems(),
+      drawer: userController.currentTab.value != 1 ? DrawerItems() : null,
       appBar: AppBar(
         title: Text("Video Promoter"),
         backgroundColor: Colors.red,
@@ -110,7 +106,11 @@ class _HomePageState extends State<HomePage> {
               return FlatButton(
                 textColor: Colors.white,
                 minWidth: 15,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    userController.currentTab.value = 2;
+                  });
+                },
                 child: controller.user.balance == null
                     ? SizedBox(
                         height: 20,
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
         onWillPop: onWillPop,
         child: IndexedStack(
           children: widgetList,
-          index: currentTab,
+          index: userController.currentTab.value,
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Minutes',
           ),
         ],
-        currentIndex: currentTab,
+        currentIndex: userController.currentTab.value,
         selectedItemColor: Colors.red,
         onTap: _onItemTapped,
       ),

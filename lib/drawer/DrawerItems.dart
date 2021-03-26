@@ -17,9 +17,6 @@ class DrawerItems extends StatelessWidget {
     final userController = Get.find<UserController>();
     final LanguageController languageController = LanguageController();
 
-    if (watchVideoController.isPlayerReady.value) {
-      watchVideoController.youtubeController.value.pause();
-    }
 
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,

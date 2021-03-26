@@ -23,6 +23,8 @@ class WatchVideoController extends GetxController {
   var isTimerRunning = false.obs;
   var isStateChanged = false.obs;
 
+  var counterOfTimeStarted = 0.obs;
+
 
   void getVideo() async {
     try {
@@ -55,4 +57,5 @@ class WatchVideoController extends GetxController {
       videoIsLoading(false);
     }
   }
+
 }
