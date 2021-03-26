@@ -25,15 +25,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Widget currentScreen;
-
-  final watchVideoController = Get.put(WatchVideoController());
   final userController = Get.put(UserController());
+  final watchVideoController = Get.put(WatchVideoController());
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     userController.getUser();
     userController.getMyVideos();
     watchVideoController.getVideo();
@@ -168,7 +167,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    watchVideoController.youtubeController.value.dispose();
+    // watchVideoController.youtubeController.value.dispose();
     super.dispose();
   }
 

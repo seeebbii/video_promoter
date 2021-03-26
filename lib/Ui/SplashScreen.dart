@@ -18,8 +18,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  final userController = Get.put(UserController());
-  final watchVideoController = Get.put(WatchVideoController());
+  // final userController = Get.put(UserController());
+  // final watchVideoController = Get.put(WatchVideoController());
 
   Future<bool> checkLoggedInUser() async {
     await Future.delayed(
