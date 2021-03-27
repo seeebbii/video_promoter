@@ -314,6 +314,8 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 16.0);
         saveObjectToPreferences(User.fromJson(json.decode(response.body)));
         await Future.delayed(Duration(seconds: 2), () {
+          userController.getUser();
+          userController.getMyVideos();
           // Switch to home page here
           Navigator.of(context).pushReplacement(
               new MaterialPageRoute(builder: (context) {

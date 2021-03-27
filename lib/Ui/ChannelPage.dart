@@ -21,6 +21,8 @@ class _ChannelPageState extends State<ChannelPage> {
   TextEditingController _linkController = TextEditingController();
   bool isValid = false;
 
+  final userController = Get.find<UserController>();
+
   @override
   void initState() {
     super.initState();
@@ -111,6 +113,10 @@ class _ChannelPageState extends State<ChannelPage> {
                     child: CircularProgressIndicator(),
                   ),
                 );
+              }
+
+              if(controller.userVideos.isBlank){
+                userController.getMyVideos();
               }
 
               return controller.userVideos.length > 0 ?ListView.builder(

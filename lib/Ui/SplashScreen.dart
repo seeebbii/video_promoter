@@ -20,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // final userController = Get.put(UserController());
   // final watchVideoController = Get.put(WatchVideoController());
+  final userController = Get.put(UserController());
 
   Future<bool> checkLoggedInUser() async {
     await Future.delayed(
@@ -34,6 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     checkLoggedInUser().then((status) {
       if (status) {
+        userController.getUser();
+        userController.getMyVideos();
         navigateToHome();
       } else {
         navigateToLogin();
