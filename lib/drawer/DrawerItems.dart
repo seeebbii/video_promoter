@@ -186,9 +186,8 @@ class DrawerItems extends StatelessWidget {
     // await prefs.clear();
     prefs.setBool('loggedIn', false);
 
-    Navigator.of(context)
-        .pushReplacement(new MaterialPageRoute(builder: (context) {
+    Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (_){
       return LoginScreen();
-    }));
+    }), (route) => false);
   }
 }

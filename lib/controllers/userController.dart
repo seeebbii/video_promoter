@@ -18,6 +18,11 @@ class UserController extends GetxController {
 
   User get user => _user.value;
 
+  void addBalance(int cost){
+    _user.value.balance += cost;
+    userBal.value +=cost;
+  }
+
   Future<void> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String id, name, email, referral, videoWatched;
@@ -89,16 +94,30 @@ class UserController extends GetxController {
   }
 
 
-  void updateWatchedVideos(String vidId) async {
+  void updateWatchedVideos(String vidId, int cost, int view, int durationWatched) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _user.value.videoWatched += ",${vidId}" ;
     prefs.setString("vid_watched", _user.value.videoWatched);
 
-    String Url =
-        "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
-    http.Response response = await http.get(Url);
-    print(response.body);
+    // UPDATES USER WATCHING
+    String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
+    http.Response userWatching = await http.get(Url);
+    print(userWatching.body);
+
+    // UPDATES VIDEO DETAILS ACCORDINGLY
+    String updateVidDetailsUrl = "https://www.videopromoter.tk/Video_app/updateVideoDetails.php?vidId=${vidId}&gotViews=${view}&durationWatched=${durationWatched}";
+    http.Response videoDetails = await http.get(updateVidDetailsUrl);
+    print(videoDetails.body);
+
+    // ADD AWARD TO THE USER
+    addBalance(cost);
+    int updateBalaCost =-cost;
+    String updateBalance = "https://www.videopromoter.tk/Video_app/updateBalance.php?id=${user.id}&cost=$updateBalaCost";
+    http.Response updateBalanceReq = await http.get(updateBalance);
+    print(updateBalanceReq.body);
   }
+
+
 
   void addToVideos(VideosModel obj) {
     userVideos.add(obj);

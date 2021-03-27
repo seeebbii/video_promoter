@@ -32,8 +32,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    userController.getUser();
-    userController.getMyVideos();
     watchVideoController.getVideo();
     currentScreen = ViewPage();
   }
@@ -59,13 +57,15 @@ class _HomePageState extends State<HomePage> {
     });
 
     if (index != 1 && watchVideoController.isPlayerReady.value) {
-      watchVideoController.youtubeController.value.pause();
       setState(() {
         watchVideoController.isStateChanged.value = true;
-        watchVideoController.counterOfTimeStarted.value += 1;
       });
+
+      watchVideoController.youtubeController.value.pause();
     } else {
-      watchVideoController.isStateChanged.value = false;
+      setState(() {
+        watchVideoController.isStateChanged.value = false;
+      });
     }
     // else{
     //   watchVideoController.youtubeController.value.play();
@@ -125,9 +125,19 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
                 );
+                ;
+                Obx(
+                  () => Text(
+                    "${userController.userBal.value}",
+                    style: TextStyle(
+                      fontSize: 20.5,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+                shape:
+                CircleBorder(side: BorderSide(color: Colors.transparent));
               }),
         ],
       ),
@@ -162,7 +172,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // watchVideoController.youtubeController.value.dispose();
+    userController.userVideos.clear();
+    userController.currentTab.value = 1;
+    watchVideoController.dispose();
     super.dispose();
   }
 }

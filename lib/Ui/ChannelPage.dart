@@ -20,6 +20,8 @@ class _ChannelPageState extends State<ChannelPage> {
   TextEditingController _linkController = TextEditingController();
   bool isValid = false;
 
+  final userController = Get.find<UserController>();
+
   @override
   void initState() {
     super.initState();
@@ -111,6 +113,10 @@ class _ChannelPageState extends State<ChannelPage> {
                 );
               }
 
+              if (controller.userVideos.isBlank) {
+                userController.getMyVideos();
+              }
+
               return controller.userVideos.length > 0
                   ? ListView.builder(
                       cacheExtent: 9000,
@@ -145,7 +151,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   : Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
-                      child: Center(child: Text("No video for promotion".tr)));
+                      child: Center(child: Text("No video for promotion")));
             }));
   }
 }

@@ -77,11 +77,10 @@ class _ViewPageState extends State<ViewPage> {
                   YoutubePlayer(
                     onReady: () {
                       declareTimeValues();
-                      startTimer();
                       setState(() {
-                        watchVideoController.counterOfTimeStarted.value+=1;
+                        watchVideoController.isPlayerReady.value = true;
                       });
-                      watchVideoController.isPlayerReady.value = true;
+                      startTimer();
                     },
                     controller: watchVideoController.youtubeController.value,
                     showVideoProgressIndicator: true,
@@ -114,7 +113,7 @@ class _ViewPageState extends State<ViewPage> {
                               "${watchVideoController.curVideo.value.duration}") : Text(
                           "${timerForTimer}"),
                       FlatButton(
-                        onPressed: !isStarted ? () {
+                        onPressed: !isStarted && timerForTimer != null ?  () {
                           watchVideoController.youtubeController.value.play();
                           startTimer();
                         } : null,
@@ -129,7 +128,6 @@ class _ViewPageState extends State<ViewPage> {
       ),
     );
   }
-
 
   void declareTimeValues(){
 
@@ -149,6 +147,9 @@ class _ViewPageState extends State<ViewPage> {
           if (timerForTimer < 1 || isStarted == false) {
             timer.cancel();
             isStarted = true;
+          } if(timerForTimer == 0){
+            //iterate the video,  dispose the youtube controller and initialize a new one
+            videoWatched();
           } else {
             timerForTimer = timerForTimer - 1;
           }
@@ -164,8 +165,16 @@ class _ViewPageState extends State<ViewPage> {
   }
 
   void videoWatched() {
+
+    int view = 1;
+    int durationWatched = watchVideoController.curVideo.value.duration;
+
+    watchVideoController.youtubeController.value.reset();
     userController.updateWatchedVideos(
-        watchVideoController.curVideo.value.videoId.toString());
+        watchVideoController.curVideo.value.videoId.toString(), AWARD , view, durationWatched);
+    Get.snackbar("Award received", "${AWARD} Minutes have been added to your account.", snackPosition: SnackPosition.BOTTOM);
+    watchVideoController.getVideo();
+    watchVideoController.youtubeController.value.reload();
   }
 
   @override
