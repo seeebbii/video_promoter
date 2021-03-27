@@ -17,7 +17,6 @@ class ChannelPage extends StatefulWidget {
 }
 
 class _ChannelPageState extends State<ChannelPage> {
-
   TextEditingController _linkController = TextEditingController();
   bool isValid = false;
 
@@ -34,22 +33,22 @@ class _ChannelPageState extends State<ChannelPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Video Link'),
+            title: Text('Video Link'.tr),
             content: TextField(
               controller: _linkController,
               decoration: InputDecoration(
-                  hintText: "Enter your YouTube video link here"),
+                  hintText: "Enter your YouTube video link here".tr),
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancel'.tr),
                 onPressed: () {
                   _linkController.clear();
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Add'),
+                child: new Text('Add'.tr),
                 onPressed: () {
                   _checkValidity();
                 },
@@ -61,8 +60,8 @@ class _ChannelPageState extends State<ChannelPage> {
 
   // set up the AlertDialog
   AlertDialog invalid = AlertDialog(
-    title: Text("Error!"),
-    content: Text("The link entered is not valid."),
+    title: Text("Error!".tr),
+    content: Text("The link entered is not valid.".tr),
   );
 
   _checkValidity() {
@@ -91,7 +90,6 @@ class _ChannelPageState extends State<ChannelPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -113,36 +111,41 @@ class _ChannelPageState extends State<ChannelPage> {
                 );
               }
 
-              return controller.userVideos.length > 0 ?ListView.builder(
-                  cacheExtent: 9000,
-                  shrinkWrap: true,
-                  itemCount: controller.userVideos.length,
-                  padding: new EdgeInsets.all(8.0),
-                  itemBuilder: (_, int index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(new MaterialPageRoute(builder: (context) {
-                          return ViewMyVideo(
-                              controller.userVideos[index].link,
-                              controller.userVideos[index].totalViews,
-                              controller.userVideos[index].gotView,
-                              controller.userVideos[index].duration,
-                              controller.userVideos[index].durationWatched,
-                              index, controller.userVideos[index].vidId);
-                        }));
-                      },
-                      child: Card(
-                          shadowColor: Colors.black,
-                          elevation: 3.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          color: Colors.black,
-                          child: controller.userVideos[index]),
-                    );
-                  }) : Container(width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,child: Center(child: Text("No video for promotion")));
+              return controller.userVideos.length > 0
+                  ? ListView.builder(
+                      cacheExtent: 9000,
+                      shrinkWrap: true,
+                      itemCount: controller.userVideos.length,
+                      padding: new EdgeInsets.all(8.0),
+                      itemBuilder: (_, int index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(new MaterialPageRoute(builder: (context) {
+                              return ViewMyVideo(
+                                  controller.userVideos[index].link,
+                                  controller.userVideos[index].totalViews,
+                                  controller.userVideos[index].gotView,
+                                  controller.userVideos[index].duration,
+                                  controller.userVideos[index].durationWatched,
+                                  index,
+                                  controller.userVideos[index].vidId);
+                            }));
+                          },
+                          child: Card(
+                              shadowColor: Colors.black,
+                              elevation: 3.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.black,
+                              child: controller.userVideos[index]),
+                        );
+                      })
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(child: Text("No video for promotion".tr)));
             }));
   }
 }

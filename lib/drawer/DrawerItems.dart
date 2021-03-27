@@ -5,6 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
 import 'package:video_promoter/Ui/change_language.dart';
+import 'package:video_promoter/Ui/consentPage.dart';
+import 'package:video_promoter/Ui/contatctus.dart';
+import 'package:video_promoter/Ui/privacypolicy.dart';
+import 'package:video_promoter/Ui/withdrawalPage.dart';
 import 'package:video_promoter/controllers/language_controller.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
@@ -57,25 +61,22 @@ class DrawerItems extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ShareScreen(
-                    referralId: userController.user.referral,
-                  );
-                }));
+                Get.to(() => ShareScreen(
+                      referralId: userController.user.referral,
+                    ));
               },
               leading: Icon(
                 Icons.share,
                 size: 20,
               ),
               title: Text(
-                'Share with friends'.tr,
+                'Share with Friends'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
             ListTile(
               onTap: () {
-                Navigator.of(context).pop();
+                Get.to(() => ConsentPage());
               },
               leading: Icon(
                 Icons.assignment_rounded,
@@ -88,14 +89,14 @@ class DrawerItems extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.of(context).pop();
+                Get.to(() => PrivacyPolicy());
               },
               leading: Icon(
                 Icons.policy,
                 size: 20,
               ),
               title: Text(
-                'Privacy policy',
+                'Privacy policy'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -114,7 +115,20 @@ class DrawerItems extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.of(context).pop();
+                Get.to(() => WithdrawalPage());
+              },
+              leading: Icon(
+                Icons.money,
+                size: 20,
+              ),
+              title: Text(
+                'Withdrawal'.tr,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Get.to(() => contactUs());
               },
               leading: Icon(
                 Icons.attach_email,

@@ -12,13 +12,13 @@ import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/utilities/constant_dart.dart';
 import 'package:http/http.dart' as http;
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   var _emailFieldController = new TextEditingController();
   var _passFieldController = new TextEditingController();
 
@@ -31,14 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-
-
   Widget _emailFormField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Email'.tr,
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -59,21 +57,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   Icons.email,
                   color: Colors.white,
                 ),
-                hintText: "Enter your Email",
-                hintStyle: kHintTextStyle
-            ),
+                hintText: "Enter your Email".tr,
+                hintStyle: kHintTextStyle),
           ),
         ),
       ],
     );
   }
 
-  Widget _passwordFormField(){
+  Widget _passwordFormField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Password',
+          'Password'.tr,
           style: kLabelStyle,
         ),
         SizedBox(
@@ -96,9 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Icons.lock,
                   color: Colors.white,
                 ),
-                hintText: "Enter your Password",
-                hintStyle: kHintTextStyle
-            ),
+                hintText: "Enter your Password".tr,
+                hintStyle: kHintTextStyle),
           ),
         ),
       ],
@@ -111,51 +107,53 @@ class _LoginScreenState extends State<LoginScreen> {
       child: FlatButton(
         onPressed: () => print('Forgot Password Button Pressed'),
         padding: EdgeInsets.only(right: 0.0),
-        child:Text(
-          'Forgot Password?',
+        child: Text(
+          'Forgot Password?'.tr,
           style: kLabelStyle,
         ),
       ),
     );
   }
 
-
   Widget _buildLoginBtn() {
-    return !progress?Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: (){
-          loginUser();
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Colors.red,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    ):CircularProgressIndicator(
-      strokeWidth: 1.5,
-      backgroundColor: Color(0xFFF1959B),
-      valueColor: new AlwaysStoppedAnimation<Color>(Colors.red.shade700),
-    );
+    return !progress
+        ? Container(
+            padding: EdgeInsets.symmetric(vertical: 25.0),
+            width: double.infinity,
+            child: RaisedButton(
+              elevation: 5.0,
+              onPressed: () {
+                loginUser();
+              },
+              padding: EdgeInsets.all(15.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              color: Colors.white,
+              child: Text(
+                'LOGIN',
+                style: TextStyle(
+                  color: Colors.red,
+                  letterSpacing: 1.5,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
+            ),
+          )
+        : CircularProgressIndicator(
+            strokeWidth: 1.5,
+            backgroundColor: Color(0xFFF1959B),
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.red.shade700),
+          );
   }
 
   Widget _buildSignupBtn() {
     return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context){
+      onTap: () {
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (BuildContext context) {
           return SignupScreen();
         }));
       },
@@ -218,13 +216,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   margin: const EdgeInsets.all(15),
                   child: Text(
-                    'Video Promoter',
+                    'Video Promoter'.tr,
                     style: TextStyle(
                         letterSpacing: 2.5,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.2
-                    ),
+                        fontSize: 18.2),
                   ),
                 ),
                 Container(
@@ -239,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Sign In',
+                          'Sign In'.tr,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 30.0,
@@ -274,11 +271,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       progress = true;
     });
-    if (_emailFieldController.text
-        .toString()
-        .isNotEmpty && _passFieldController.text
-        .toString()
-        .isNotEmpty) {
+    if (_emailFieldController.text.toString().isNotEmpty &&
+        _passFieldController.text.toString().isNotEmpty) {
       String email, pass;
       email = _emailFieldController.text.trim();
       pass = _passFieldController.text.trim();
@@ -300,7 +294,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Checking if the user has successfully logged in
       if (response.statusCode == 200) {
-
         setState(() {
           progress = false;
         });
@@ -315,10 +308,10 @@ class _LoginScreenState extends State<LoginScreen> {
         saveObjectToPreferences(User.fromJson(json.decode(response.body)));
         await Future.delayed(Duration(seconds: 2), () {
           // Switch to home page here
-          Navigator.of(context).pushReplacement(
-              new MaterialPageRoute(builder: (context) {
-                return HomePage();
-              }));
+          Navigator.of(context)
+              .pushReplacement(new MaterialPageRoute(builder: (context) {
+            return HomePage();
+          }));
         });
       } else if (response.statusCode == 401) {
         setState(() {
@@ -359,6 +352,7 @@ class _LoginScreenState extends State<LoginScreen> {
           fontSize: 16.0);
     }
   }
+
   void saveObjectToPreferences(User user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('id', user.id);
@@ -366,11 +360,10 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString('name', user.name);
     prefs.setString('email', user.email);
     prefs.setString('referral', user.referral);
-    if(user.videoWatched == ""){
+    if (user.videoWatched == "") {
       prefs.setString("vid_watched", "0");
-    }else{
+    } else {
       prefs.setString("vid_watched", user.videoWatched);
     }
-
   }
 }

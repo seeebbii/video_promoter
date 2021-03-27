@@ -38,7 +38,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Video"),
+        title: Text("Add Video".tr),
         backgroundColor: Colors.red,
         actions: [
           Image.asset(
@@ -177,6 +177,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                   'NOTE: YouTube needs 72 hours to update views from third party apps. So please wait at least 72 hours before checking.'
+                      .tr
                       .tr),
             ),
           ],
@@ -186,13 +187,13 @@ class _AddVideoPageState extends State<AddVideoPage> {
   }
 
   AlertDialog invalid = AlertDialog(
-    title: Text("Insufficient fund!"),
-    content: Text("Watch more videos to earn."),
+    title: Text("Insufficient fund!".tr),
+    content: Text("Watch more videos to earn.".tr),
   );
 
   AlertDialog invalidCount = AlertDialog(
-    title: Text("View count or Min count cannot be 0"),
-    content: Text("Values should be greater than 0"),
+    title: Text("View count or Min count cannot be 0".tr),
+    content: Text("Values should be greater than 0".tr),
   );
 
   void validate() async {
@@ -203,7 +204,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
         String URL =
             'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
-        if (response.body == "Video added successfully") {
+        if (response.body == "Video added successfully".tr) {
           String extractedId = "";
           if (widget.videoUrl.contains("https://youtu.be/")) {
             extractedId = widget.videoUrl.substring(

@@ -26,8 +26,9 @@ class _OthersPageState extends State<OthersPage> {
             returnCard(500.00, 1000, "Minutes"),
             returnCard(950.00, 2000, "Minutes"),
             returnCard(1800.00, 4000, "Minutes"),
-            returnCard(2400.00, 1000, "Hours"),
-            returnCard(4200.00, 2000, "Hours"),
+            returnCard(24000.00, 1000, "Hours"),
+            returnCard(42000.00, 2000, "Hours"),
+            returnCard(60000.00, 4000, "Hours"),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(

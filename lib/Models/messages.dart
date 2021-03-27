@@ -44,6 +44,8 @@ class Messages extends Translations {
           'Forgot Password?': 'Forgot Password?',
           'Available offers': 'Available offers',
           'Hours': 'Hours',
+          'Change Language': 'Change Language',
+          'Withdrawal': 'Withdrawal',
           'To avail any of these offers please contact +923350215159':
               'To avail any of these offers please contact +923350215159',
         },
@@ -88,6 +90,8 @@ class Messages extends Translations {
           'Forgot Password?': 'पासवर्ड भूल गए?',
           'Available offers': 'उपलब्ध ऑफ़र',
           'Hours': 'घंटे',
+          'Change Language': 'भाषा बदलें',
+          'Withdrawal': 'निकासी',
           'To avail any of these offers please contact +923350215159':
               'इनमें से किसी भी ऑफ़र का लाभ उठाने के लिए +923350215159 पर संपर्क करें',
         },
@@ -133,6 +137,8 @@ class Messages extends Translations {
           'Forgot Password?': 'Mot de passe oublié?',
           'Available offers': 'Offres disponibles',
           'Hours': 'Les heures',
+          'Change Language': 'Changer de langue',
+          'Withdrawal': 'Retrait',
           'To avail any of these offers please contact +923350215159':
               "Pour bénéficier de l'une de ces offres, veuillez contacter le +923350215159",
         },
@@ -177,6 +183,8 @@ class Messages extends Translations {
           'Forgot Password?': 'پاسورڈ بھول گے؟',
           'Available offers': 'دستیاب پیش کشیں',
           'Hours': 'اوقات',
+          'Change Language': 'زبان تبدیل کریں',
+          'Withdrawal': 'واپسی',
           'To avail any of these offers please contact +923350215159':
               'ان میں سے کسی بھی پیش کش کو حاصل کرنے کے لئے ، 923350215159 پر رابطہ کریں',
         },
@@ -219,6 +227,8 @@ class Messages extends Translations {
           'Forgot Password?': '비밀번호를 잊으 셨나요?',
           'Available offers': '사용 가능한 제안',
           'Hours': '시간',
+          'Change Language': '언어 변경',
+          'Withdrawal': '철수',
           'To avail any of these offers please contact +923350215159':
               '이러한 제안을 이용하려면 +923350215159로 문의하십시오.',
         },
