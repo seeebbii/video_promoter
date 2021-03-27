@@ -53,6 +53,9 @@ class WithdrawalPage extends StatelessWidget {
                       subtitle: Text("You Will be Paid Rs 100"),
                       trailing: Text("1000 minutes"),
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                     onPressed: () => {
                       Get.defaultDialog(
                         title: "Confirm Withdrawal",
@@ -93,6 +96,9 @@ class WithdrawalPage extends StatelessWidget {
                       title: Text("Get Rs.240 in Exchange of 2000 Minutes"),
                       subtitle: Text("You Will be Paid Rs Rs.240"),
                       trailing: Text("2000 minutes"),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () => {
                       Get.defaultDialog(
@@ -135,6 +141,9 @@ class WithdrawalPage extends StatelessWidget {
                       subtitle: Text("You Will be Paid Rs 600"),
                       trailing: Text("4000 minutes"),
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                     onPressed: () => {
                       Get.defaultDialog(
                         title: "Confirm Withdrawal",
@@ -175,6 +184,9 @@ class WithdrawalPage extends StatelessWidget {
                       title: Text("Get Rs.12000 in Exchange of 1000 Hours"),
                       subtitle: Text("You Will be Paid Rs.12000"),
                       trailing: Text("1000 Hours"),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () => {
                       Get.defaultDialog(

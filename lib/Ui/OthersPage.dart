@@ -24,10 +24,25 @@ class _OthersPageState extends State<OthersPage> {
               ),
             ),
             returnCard(500.00, 1000, "Minutes"),
+            SizedBox(
+              height: 10,
+            ),
             returnCard(950.00, 2000, "Minutes"),
+            SizedBox(
+              height: 10,
+            ),
             returnCard(1800.00, 4000, "Minutes"),
+            SizedBox(
+              height: 10,
+            ),
             returnCard(24000.00, 1000, "Hours"),
+            SizedBox(
+              height: 10,
+            ),
             returnCard(42000.00, 2000, "Hours"),
+            SizedBox(
+              height: 10,
+            ),
             returnCard(60000.00, 4000, "Hours"),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -54,6 +69,9 @@ class _OthersPageState extends State<OthersPage> {
         subtitle: Text(
             "${values} ${type.toLowerCase()} will be added to your account"),
         trailing: Text("Rs ${ammount}"),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
       ),
     );
   }
