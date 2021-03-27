@@ -161,20 +161,6 @@ class DrawerItems extends StatelessWidget {
                 style: TextStyle(color: Color(0xFFC11010)),
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              leading: Icon(
-                Icons.delete_forever,
-                size: 20,
-                color: Color(0xFFC11010),
-              ),
-              title: Text(
-                'Delete account'.tr,
-                style: TextStyle(color: Color(0xFFC11010)),
-              ),
-            ),
           ],
         ),
       ),

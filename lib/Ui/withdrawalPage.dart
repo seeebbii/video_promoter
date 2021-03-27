@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:video_promoter/controllers/userController.dart';
 
 class WithdrawalPage extends StatelessWidget {
-  TextEditingController textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController textEditingController = TextEditingController();
+    int withdrawalAmount; int costToBeDeducted;
+    final userController = Get.find<UserController>();
+
+    void makeRequest() async {
+      // READY FOR QUERY REQUEST
+      String queryUrl = "https://www.videopromoter.tk/Video_app/withdrawalQuery.php?userId=${userController.user.id}&name=${userController.user.name}&email=${userController.user.email}&easyPaisa=${textEditingController.text}&package=${withdrawalAmount}";
+      http.Response response = await http.get(queryUrl);
+      print(response.body);
+
+      // UPDATE USER BALANCE REQUEST
+      String updateBal = 'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${costToBeDeducted}';
+      userController.user.balance = userController.user.balance - costToBeDeducted;
+      userController.userBal -= costToBeDeducted;
+      http.Response responseTwo = await http.get(updateBal);
+      print(responseTwo.body);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Withdrawal Request'),
@@ -38,6 +58,7 @@ class WithdrawalPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: TextField(
+                    keyboardType: TextInputType.number,
                     controller: textEditingController,
                     decoration: InputDecoration(
                         hintText: 'Enter Your EasyPaisa Number Here'),
@@ -62,6 +83,8 @@ class WithdrawalPage extends StatelessWidget {
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
+                          withdrawalAmount = 100,
+                          costToBeDeducted = 1000,
                           if (textEditingController.text.isBlank)
                             {
                               Navigator.pop(context),
@@ -72,11 +95,19 @@ class WithdrawalPage extends StatelessWidget {
                             }
                           else
                             {
-                              Navigator.pop(context),
-                              Get.snackbar('Withdrawal Successful',
-                                  'You will recieve your reward in Few minutes, Please Wait!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.lightGreen)
+                              if(userController.user.balance >= 1000){
+                                makeRequest(),
+                                Navigator.pop(context),
+                                Get.snackbar('Withdrawal Successful',
+                                    'You will recieve your reward in Few minutes, Please Wait!',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.lightGreen)
+                              }else{
+                                Get.snackbar('Insufficient Balance',
+                                    'You are not eligible for this offer.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.redAccent)
+                              }
                             }
                         },
                         onCancel: () => {},
@@ -103,6 +134,8 @@ class WithdrawalPage extends StatelessWidget {
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
+                          withdrawalAmount = 240,
+                          costToBeDeducted = 2000,
                           if (textEditingController.text.isBlank)
                             {
                               Navigator.pop(context),
@@ -113,11 +146,22 @@ class WithdrawalPage extends StatelessWidget {
                             }
                           else
                             {
-                              Navigator.pop(context),
-                              Get.snackbar('Withdrawal Successful',
-                                  'You will recieve your reward in Few minutes, Please Wait!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.lightGreen)
+
+                              if(userController.user.balance >= 2000){
+                                makeRequest(),
+                                Navigator.pop(context),
+                                Get.snackbar('Withdrawal Successful',
+                                    'You will recieve your reward in Few minutes, Please Wait!',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.lightGreen)
+                              }else{
+                                Get.snackbar('Insufficient Balance',
+                                    'You are not eligible for this offer.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.redAccent)
+                              }
+
+
                             }
                         },
                         onCancel: () => {},
@@ -144,6 +188,8 @@ class WithdrawalPage extends StatelessWidget {
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
+                          withdrawalAmount = 600,
+                          costToBeDeducted = 4000,
                           if (textEditingController.text.isBlank)
                             {
                               Navigator.pop(context),
@@ -154,11 +200,19 @@ class WithdrawalPage extends StatelessWidget {
                             }
                           else
                             {
-                              Navigator.pop(context),
-                              Get.snackbar('Withdrawal Successful',
-                                  'You will recieve your reward in Few minutes, Please Wait!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.lightGreen)
+                              if(userController.user.balance >= 4000){
+                                makeRequest(),
+                                Navigator.pop(context),
+                                Get.snackbar('Withdrawal Successful',
+                                    'You will recieve your reward in Few minutes, Please Wait!',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.lightGreen)
+                              }else{
+                                Get.snackbar('Insufficient Balance',
+                                    'You are not eligible for this offer.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.redAccent)
+                              }
                             }
                         },
                         onCancel: () => {},
@@ -185,6 +239,8 @@ class WithdrawalPage extends StatelessWidget {
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
+                          withdrawalAmount = 12000,
+                          costToBeDeducted = 60000,
                           if (textEditingController.text.isBlank)
                             {
                               Navigator.pop(context),
@@ -195,11 +251,19 @@ class WithdrawalPage extends StatelessWidget {
                             }
                           else
                             {
-                              Navigator.pop(context),
-                              Get.snackbar('Withdrawal Successful',
-                                  'You will recieve your reward in Few minutes, Please Wait!',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.lightGreen)
+                              if(userController.user.balance >= 60000){
+                                makeRequest(),
+                                Navigator.pop(context),
+                                Get.snackbar('Withdrawal Successful',
+                                    'You will recieve your reward in Few minutes, Please Wait!',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.lightGreen)
+                              }else{
+                                Get.snackbar('Insufficient Balance',
+                                    'You are not eligible for this offer.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.redAccent)
+                              }
                             }
                         },
                         onCancel: () => {},
@@ -214,4 +278,6 @@ class WithdrawalPage extends StatelessWidget {
       ),
     );
   }
+
+
 }
