@@ -121,12 +121,16 @@ class UserController extends GetxController {
     //   watchVideoController.getVideo();
     //
     // }else{
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      _user.value.videoWatched += ",${vidId}" ;
-      prefs.setString("vid_watched", _user.value.videoWatched);
+      String watchUrl =
+          "https://www.videopromoter.tk/Video_app/getWatchVideoString.php?id=${user.id}";
+      http.Response watchedByUser = await http.get(watchUrl);
+      var variable = jsonDecode(watchedByUser.body);
+
+      String userWatchings = variable['vid_watched'];
+      userWatchings+=",$vidId";
 
       // UPDATES USER WATCHING
-      String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
+      String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${userWatchings}";
       http.Response userWatching = await http.get(Url);
       print(userWatching.body);
 

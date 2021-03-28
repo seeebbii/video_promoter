@@ -43,9 +43,6 @@ class WatchVideoController extends GetxController {
       print(response.body);
 
       if (response.body.contains("null")) {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("vid_watched", "0");
-
         // UPDATES USER WATCHING
         String Url =
             "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${userID}&vid_watched=0";
