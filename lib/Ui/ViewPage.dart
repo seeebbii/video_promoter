@@ -67,7 +67,6 @@ class _ViewPageState extends State<ViewPage> {
   Widget build(BuildContext context) {
 
     if(watchVideoController.isStateChanged.value == true) {
-      timerForTimer += 1;
       stop();
 
     }

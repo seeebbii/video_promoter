@@ -104,11 +104,11 @@ class _HomePageState extends State<HomePage> {
                 return FlatButton(
                   textColor: Colors.white,
                   minWidth: 15,
-                  onPressed: () {
+                  onPressed: userController.currentTab.value != 1 ? () {
                     setState(() {
                       userController.currentTab.value = 2;
                     });
-                  },
+                  } : (){},
                   child: controller.user.balance == null
                       ? SizedBox(
                           height: 20,
