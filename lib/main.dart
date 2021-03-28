@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Ui/SplashScreen.dart';
 import 'package:video_promoter/controllers/userController.dart';
+import 'package:wakelock/wakelock.dart';
 
 
 import 'Models/messages.dart';
@@ -10,8 +11,8 @@ import 'Models/messages.dart';
 bool loggedIn;
 SharedPreferences prefs;
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
+  await Wakelock.enable();
   var param1;
   var param2;
   prefs = await SharedPreferences.getInstance();

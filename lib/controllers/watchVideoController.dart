@@ -76,8 +76,8 @@ class WatchVideoController extends GetxController {
           initialVideoId:
               YoutubePlayer.convertUrlToId("${curVideo.value.link}"),
           flags: YoutubePlayerFlags(
-              autoPlay: true,
-              forceHD: true,
+              autoPlay: false,
+              forceHD: false,
               disableDragSeek: true,
               controlsVisibleAtStart: true,
               hideControls: true));

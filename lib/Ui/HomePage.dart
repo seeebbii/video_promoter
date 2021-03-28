@@ -13,6 +13,7 @@ import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/DrawerItems.dart';
 import 'package:http/http.dart' as http;
+import 'package:wakelock/wakelock.dart';
 
 class HomePage extends StatefulWidget {
   User user;
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // Wakelock.enable();
     // TODO: implement initState
     super.initState();
     watchVideoController.getVideo();
