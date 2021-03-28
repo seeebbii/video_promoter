@@ -38,8 +38,9 @@ class _ViewPageState extends State<ViewPage> {
   bool isStarted = false;
   int AWARD;
 
-  var watchVideoController = Get.find<WatchVideoController>();
   final userController = Get.put(UserController());
+  var watchVideoController = Get.find<WatchVideoController>();
+
 
   @override
   void initState() {
@@ -72,6 +73,17 @@ class _ViewPageState extends State<ViewPage> {
                   ),
                 );
               }
+
+              if(controller.curVideo.value.isBlank){
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Text("No video found"),
+                  ),
+                );
+              }
+
               return Column(
                 children: [
                   YoutubePlayer(
@@ -171,9 +183,7 @@ class _ViewPageState extends State<ViewPage> {
 
     watchVideoController.youtubeController.value.reset();
     userController.updateWatchedVideos(
-        watchVideoController.curVideo.value.videoId.toString(), AWARD , view, durationWatched);
-    Get.snackbar("Award received", "${AWARD} Minutes have been added to your account.", snackPosition: SnackPosition.BOTTOM);
-    watchVideoController.getVideo();
+        watchVideoController.curVideo.value.videoId.toString(), AWARD , view, durationWatched, watchVideoController);
     watchVideoController.youtubeController.value.reload();
   }
 

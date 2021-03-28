@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:video_promoter/Models/VideosModel.dart';
+import 'package:video_promoter/controllers/watchVideoController.dart';
 
 class UserController extends GetxController {
 
@@ -94,27 +95,58 @@ class UserController extends GetxController {
   }
 
 
-  void updateWatchedVideos(String vidId, int cost, int view, int durationWatched) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _user.value.videoWatched += ",${vidId}" ;
-    prefs.setString("vid_watched", _user.value.videoWatched);
+  void updateWatchedVideos(String vidId, int cost, int view, int durationWatched, var watchVideoController) async {
 
-    // UPDATES USER WATCHING
-    String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
-    http.Response userWatching = await http.get(Url);
-    print(userWatching.body);
+    // CHECK IF THE VID ID IS ALREADY PRESENT IN THE USERS WATCHED VIDEO DATABASE
+    // String url = "https://www.videopromoter.tk/Video_app/getWatchVideoString.php?id=${user.id}";
+    // http.Response watchedByUser = await http.get(url);
+    // var test = jsonDecode(watchedByUser.body);
+    //
+    // String userWatchings = test['vid_watched'];
+    // print(userWatchings);
+    //
+    // if(userWatchings.contains(vidId)){
+    //   // Last vid of the database
+    //
+    //   // Clear all the shared pref watching history as well as watching database
+    //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   _user.value.videoWatched = "0" ;
+    //   prefs.setString("vid_watched", "0");
+    //
+    //   // UPDATES USER WATCHING
+    //   String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
+    //   http.Response userWatching = await http.get(Url);
+    //   print(userWatching.body);
+    //
+    //   watchVideoController.getVideo();
+    //
+    // }else{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      _user.value.videoWatched += ",${vidId}" ;
+      prefs.setString("vid_watched", _user.value.videoWatched);
 
-    // UPDATES VIDEO DETAILS ACCORDINGLY
-    String updateVidDetailsUrl = "https://www.videopromoter.tk/Video_app/updateVideoDetails.php?vidId=${vidId}&gotViews=${view}&durationWatched=${durationWatched}";
-    http.Response videoDetails = await http.get(updateVidDetailsUrl);
-    print(videoDetails.body);
+      // UPDATES USER WATCHING
+      String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${_user.value.videoWatched}";
+      http.Response userWatching = await http.get(Url);
+      print(userWatching.body);
 
-    // ADD AWARD TO THE USER
-    addBalance(cost);
-    int updateBalaCost =-cost;
-    String updateBalance = "https://www.videopromoter.tk/Video_app/updateBalance.php?id=${user.id}&cost=$updateBalaCost";
-    http.Response updateBalanceReq = await http.get(updateBalance);
-    print(updateBalanceReq.body);
+      // UPDATES VIDEO DETAILS ACCORDINGLY
+      String updateVidDetailsUrl = "https://www.videopromoter.tk/Video_app/updateVideoDetails.php?vidId=${vidId}&gotViews=${view}&durationWatched=${durationWatched}";
+      http.Response videoDetails = await http.get(updateVidDetailsUrl);
+      print(videoDetails.body);
+
+      // ADD AWARD TO THE USER
+      addBalance(cost);
+      int updateBalaCost =-cost;
+      String updateBalance = "https://www.videopromoter.tk/Video_app/updateBalance.php?id=${user.id}&cost=$updateBalaCost";
+      http.Response updateBalanceReq = await http.get(updateBalance);
+      print(updateBalanceReq.body);
+      Get.snackbar("Award received", "${cost} Minutes have been added to your account.", snackPosition: SnackPosition.BOTTOM);
+
+      watchVideoController.getVideo();
+
+    // }
+
   }
 
 

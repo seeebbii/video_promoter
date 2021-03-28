@@ -12,7 +12,6 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class WatchVideoController extends GetxController {
   var curVideo = WatchVideo().obs;
 
-
   var youtubeController = YoutubePlayerController(initialVideoId: "").obs;
 
   var videoIsLoading = true.obs;
@@ -23,28 +22,62 @@ class WatchVideoController extends GetxController {
   var isTimerRunning = false.obs;
   var isStateChanged = false.obs;
 
-
   void getVideo() async {
     try {
       videoIsLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String watchedVid = prefs.getString("vid_watched");
+      String userID = prefs.getString('id');
+
+      String watchUrl =
+          "https://www.videopromoter.tk/Video_app/getWatchVideoString.php?id=${userID}";
+      http.Response watchedByUser = await http.get(watchUrl);
+      var variable = jsonDecode(watchedByUser.body);
+
+      String userWatchings = variable['vid_watched'];
+      print(userWatchings);
+
       String url =
-          "https://www.videopromoter.tk/Video_app/viewRandomVideo.php?tested=$watchedVid";
+          "https://www.videopromoter.tk/Video_app/viewRandomVideo.php?tested=$userWatchings";
       http.Response response = await http.get(url);
       var test = json.decode(response.body);
-      WatchVideo obj = WatchVideo(
-          link: test['link'],
-          videoId: int.parse(test['vid']),
-          email: test['email'],
-          name: test['name'],
-          uploaderId: int.parse(test['id']),
-          duration: int.parse(test['duration']));
-      curVideo.value = obj;
+      print(response.body);
+
+      if (response.body.contains("null")) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("vid_watched", "0");
+
+        // UPDATES USER WATCHING
+        String Url =
+            "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${userID}&vid_watched=0";
+        http.Response userWatching = await http.get(Url);
+
+        String url =
+            "https://www.videopromoter.tk/Video_app/viewRandomVideo.php?tested=0";
+        http.Response response = await http.get(url);
+        var again = json.decode(response.body);
+
+        WatchVideo obj = WatchVideo(
+            link: again['link'],
+            videoId: int.parse(again['vid']),
+            email: again['email'],
+            name: again['name'],
+            uploaderId: int.parse(again['id']),
+            duration: int.parse(again['duration']));
+        curVideo.value = obj;
+      } else {
+        WatchVideo obj = WatchVideo(
+            link: test['link'],
+            videoId: int.parse(test['vid']),
+            email: test['email'],
+            name: test['name'],
+            uploaderId: int.parse(test['id']),
+            duration: int.parse(test['duration']));
+        curVideo.value = obj;
+      }
 
       youtubeController.value = YoutubePlayerController(
           initialVideoId:
-          YoutubePlayer.convertUrlToId("${curVideo.value.link}"),
+              YoutubePlayer.convertUrlToId("${curVideo.value.link}"),
           flags: YoutubePlayerFlags(
               autoPlay: true,
               forceHD: true,
@@ -55,5 +88,4 @@ class WatchVideoController extends GetxController {
       videoIsLoading(false);
     }
   }
-
 }
