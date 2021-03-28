@@ -67,6 +67,7 @@ class _ViewPageState extends State<ViewPage> {
   Widget build(BuildContext context) {
 
     if(watchVideoController.isStateChanged.value == true) {
+      timerForTimer += 1;
       stop();
 
     }
@@ -106,7 +107,7 @@ class _ViewPageState extends State<ViewPage> {
                   children: [
                     YoutubePlayer(
                       onReady: () {
-                        Future.delayed(Duration(milliseconds: 1500), (){
+                        Future.delayed(Duration(milliseconds: 1300), (){
                           declareTimeValues();
                           setState(() {
                             watchVideoController.isPlayerReady.value = true;
@@ -146,8 +147,8 @@ class _ViewPageState extends State<ViewPage> {
                             "${timerForTimer}"),
                         FlatButton(
                           onPressed: !isStarted && timerForTimer != null && watchVideoController.isPlayerReady.value ?  () {
-                            watchVideoController.youtubeController.value.play();
                             startTimer();
+                            watchVideoController.youtubeController.value.play();
                           } : null,
                           child: Text("Play"),
                           color: Colors.red,
@@ -200,7 +201,7 @@ class _ViewPageState extends State<ViewPage> {
 
 
 
-    Future.delayed(Duration(milliseconds: 1200 ), (){
+    Future.delayed(Duration(milliseconds: 1100 ), (){
       const oneSec = const Duration(seconds: 1);
       _timer = new Timer.periodic(
         oneSec,
