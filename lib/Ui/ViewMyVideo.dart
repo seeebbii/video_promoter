@@ -25,6 +25,7 @@ class ViewMyVideo extends StatefulWidget {
 
 class _ViewMyVideoState extends State<ViewMyVideo> {
   YoutubePlayerController controller;
+  bool deleting = false;
 
   @override
   void initState() {
@@ -122,10 +123,17 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
               title: RaisedButton(
                 elevation: 5,
                 color: Colors.red,
-                onPressed: deleteVideo,
-                child: Text(
+                onPressed: !deleting ? deleteVideo : null,
+                child: !deleting ? Text(
                   "DELETE",
                   style: TextStyle(color: Colors.white, fontSize: 15),
+                ) : Container(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.redAccent,
+                    strokeWidth: 3.2,
+                  ),
                 ),
               ),
             ),
@@ -141,30 +149,23 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
   }
 
   void deleteVideo() async {
+    setState(() {
+      deleting = true;
+    });
     String url = "https://www.videopromoter.tk/Video_app/deleteVideo.php?vidId=${widget.vidId}";
     http.Response response = await http.get(url);
     if(response.body.contains("Video Deleted successfully")){
-      Fluttertoast.showToast(
-          msg: "Video deleted successfully!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white,
-          fontSize: 16.0);
+
 
       userController.userVideos.removeAt(widget.index);
 
       Navigator.of(context).pop();
+      Get.snackbar("Video deleted successfully!","", snackPosition: SnackPosition.BOTTOM);
     }else{
-      Fluttertoast.showToast(
-          msg: "Error deleting video!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      setState(() {
+        deleting = false;
+      });
+      Get.snackbar("Error deleting video!","", snackPosition: SnackPosition.BOTTOM);
     }
   }
   @override

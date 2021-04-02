@@ -20,6 +20,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
   YoutubePlayerController controller;
   TextEditingController viewsController;
   TextEditingController minController;
+  bool uploading = false;
 
   @override
   void initState() {
@@ -164,13 +165,17 @@ class _AddVideoPageState extends State<AddVideoPage> {
               title: RaisedButton(
                 elevation: 5,
                 color: Colors.red,
-                onPressed: () {
-                  validate();
-                },
-                child: Text(
+                onPressed: !uploading ? validate : null,
+                child: !uploading ? Text(
                   "DONE",
                   style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
+                ) : Container(
+                  height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.redAccent,
+                      strokeWidth: 3.2,
+                    )),
               ),
             ),
             Padding(
@@ -196,11 +201,21 @@ class _AddVideoPageState extends State<AddVideoPage> {
     content: Text("Values should be greater than 0".tr),
   );
 
+  void toggleUploading(bool val){
+    setState(() {
+      uploading = val;
+    });
+  }
+
   void validate() async {
+
     int totalCost = selectedViewCount * selectedMinCount;
 
     if (userController.user.balance >= totalCost) {
       if (selectedMinCount > 0 && selectedViewCount > 0) {
+
+        toggleUploading(true);
+
         String URL =
             'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
         http.Response response = await http.get(URL);
@@ -218,16 +233,24 @@ class _AddVideoPageState extends State<AddVideoPage> {
               selectedMinCount, 0, extractedId, null);
           userController.addToVideos(model);
 
+
+
           // Deduct balance from the server
           String URL =
               'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
           userController.user.balance = userController.user.balance - totalCost;
           userController.userBal -= totalCost;
           http.Response response = await http.get(URL);
+          toggleUploading(false);
           print(response.body);
           Navigator.of(context).pop();
+          Get.snackbar("Video added successfully!", "", snackPosition: SnackPosition.BOTTOM);
+        }if(response.body == "Video already exists"){
+          toggleUploading(false);
+          Get.snackbar("Video already exists!", "Video cannot be recurring", snackPosition: SnackPosition.BOTTOM);
         }
       } else {
+        // toggleUploading(false);
         // COUNT < 0
         showDialog(
           barrierDismissible: true,
@@ -238,6 +261,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
         );
       }
     } else {
+      // toggleUploading(false);
       // Not sufficient stuff
       showDialog(
         barrierDismissible: true,
