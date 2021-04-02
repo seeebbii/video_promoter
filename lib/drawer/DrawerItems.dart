@@ -31,13 +31,13 @@ class DrawerItems extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.red),
+              decoration: BoxDecoration(color: Color.fromRGBO(255, 119, 129, 1)),
               accountName: Text(
                   userController.user.name == null
                       ? "Loading..."
                       : userController.user.name,
                   style: TextStyle(
-                      color: Colors.red.shade900,
+                      color: Color.fromRGBO(171, 63, 65, 1),
                       fontSize: 18,
                       fontWeight: FontWeight.w500)),
               accountEmail: Text(
@@ -55,7 +55,7 @@ class DrawerItems extends StatelessWidget {
                   userController.user.name == null
                       ? " "
                       : userController.user.name[0].toUpperCase(),
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: Color.fromRGBO(255, 119, 129, 1)),
                 ),
               ),
             ),
@@ -154,11 +154,11 @@ class DrawerItems extends StatelessWidget {
               leading: Icon(
                 Icons.exit_to_app,
                 size: 20,
-                color: Color(0xFFC11010),
+                color: Color.fromRGBO(171, 63, 65, 1),
               ),
               title: Text(
                 'Log Out'.tr,
-                style: TextStyle(color: Color(0xFFC11010)),
+                style: TextStyle(color: Color.fromRGBO(171, 63, 65, 1)),
               ),
             ),
           ],

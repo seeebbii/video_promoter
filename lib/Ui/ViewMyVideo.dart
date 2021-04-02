@@ -43,7 +43,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Video ${widget.index + 1}"),
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromRGBO(255, 119, 129, 1),
         actions: [
           Image.asset(
             'assets/logo/clock.png',
@@ -62,7 +62,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
                       strokeWidth: 1.5,
                       backgroundColor: Color(0xFFF1959B),
                       valueColor: new AlwaysStoppedAnimation<Color>(
-                          Colors.red.shade700),
+                          Color.fromRGBO(255, 119, 129, 1)),
                     ),
                   )
                 : Text(
@@ -122,7 +122,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
             ListTile(
               title: RaisedButton(
                 elevation: 5,
-                color: Colors.red,
+                color: Color.fromRGBO(255, 119, 129, 1),
                 onPressed: !deleting ? deleteVideo : null,
                 child: !deleting ? Text(
                   "DELETE",
@@ -131,7 +131,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
                   height: 20,
                   width: 20,
                   child: CircularProgressIndicator(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(255, 119, 129, 1),
                     strokeWidth: 3.2,
                   ),
                 ),

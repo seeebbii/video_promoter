@@ -40,7 +40,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Video".tr),
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromRGBO(255, 119, 129, 1),
         actions: [
           Image.asset(
             'assets/logo/clock.png',
@@ -59,7 +59,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       strokeWidth: 1.5,
                       backgroundColor: Color(0xFFF1959B),
                       valueColor: new AlwaysStoppedAnimation<Color>(
-                          Colors.red.shade700),
+                          Color.fromRGBO(255, 119, 129, 1)),
                     ),
                   )
                 : Text(
@@ -164,7 +164,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
             ListTile(
               title: RaisedButton(
                 elevation: 5,
-                color: Colors.red,
+                color: Color.fromRGBO(255, 119, 129, 1),
                 onPressed: !uploading ? validate : null,
                 child: !uploading ? Text(
                   "DONE",
@@ -173,7 +173,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                   height: 20,
                     width: 20,
                     child: CircularProgressIndicator(
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(252, 222, 214, 1),
                       strokeWidth: 3.2,
                     )),
               ),

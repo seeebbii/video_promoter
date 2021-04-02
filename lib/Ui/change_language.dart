@@ -28,46 +28,61 @@ class ChangeLanguage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
+                new RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('en', 'US');
                     Get.snackbar('Language Changed',
                         'Your Language has been changed to English',
                         snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.lightGreen);
+                        backgroundColor: Color.fromRGBO(171, 63, 65, 1));
                   },
-                  child: Text("English"),
+                  color: Color.fromRGBO(255, 119, 129, 1),
+                  child: Text("English",
+                    style: new TextStyle(
+                      color: Colors.white,
+                    ),),
                 ),
-                ElevatedButton(
+                RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'IN');
                     Get.snackbar('Language Changed',
                         'Your Language has been changed to Hindi',
                         snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.lightGreen);
+                        backgroundColor: Color.fromRGBO(171, 63, 65, 1));
                   },
-                  child: Text("Hindi"),
+                  color: Color.fromRGBO(255, 119, 129, 1),
+                  child: Text("Hindi",
+                    style: new TextStyle(
+                      color: Colors.white,
+                    ),),
                 ),
-                ElevatedButton(
+                RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'FR');
                     Get.snackbar('Language Changed',
                         'Your Language has been changed to French',
                         snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.lightGreen);
+                        backgroundColor: Color.fromRGBO(171, 63, 65, 1));
                   },
-                  child: Text("French"),
-                ),
-                ElevatedButton(
+                  color: Color.fromRGBO(255, 119, 129, 1),
+                  child: Text("French",
+                    style: new TextStyle(
+                    color: Colors.white,
+                  ),),
+                  ),
+                RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'UR');
                     Get.snackbar('Language Changed',
                         'Your Language has been changed to Urdu',
                         snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.lightGreen);
+                        backgroundColor: Color.fromRGBO(171, 63, 65, 1));
                   },
-                  child: Text("Urdu"),
-                ),
+                  color: Color.fromRGBO(255, 119, 129, 1),
+                  child: Text("Urdu",
+                    style: new TextStyle(
+                      color: Colors.white,),
+                ),),
               ],
             )
           ],

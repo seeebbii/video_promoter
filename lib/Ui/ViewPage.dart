@@ -116,7 +116,7 @@ class _ViewPageState extends State<ViewPage> {
                       },
                       controller: watchVideoController.youtubeController.value,
                       showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.red,
+                      progressIndicatorColor: Color.fromRGBO(255, 119, 129, 1),
                       bufferIndicator: Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -150,7 +150,7 @@ class _ViewPageState extends State<ViewPage> {
                             watchVideoController.youtubeController.value.play();
                           } : null,
                           child: Text("Play"),
-                          color: Colors.red,
+                          color: Color.fromRGBO(255, 119, 129, 1),
                         ),
                       ],
                     ),

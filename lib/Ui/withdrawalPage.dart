@@ -28,7 +28,7 @@ class WithdrawalPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Withdrawal Request'),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color.fromRGBO(255, 119, 129, 1),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -83,6 +83,8 @@ class WithdrawalPage extends StatelessWidget {
                         middleText:
                             "Are you sure you want to Initiate a Withdrawal",
                         textCancel: "Cancel",
+                        buttonColor: Color.fromRGBO(255, 119, 129, 1),
+                        cancelTextColor: Color.fromRGBO(255, 119, 129, 1),
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
@@ -94,7 +96,7 @@ class WithdrawalPage extends StatelessWidget {
                               Get.snackbar('Number Missing',
                                   'Please enter your EasyPaisa number before Initiating a Withdrawal',
                                   snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.redAccent)
+                                  backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                             }
                           else
                             {
@@ -103,13 +105,15 @@ class WithdrawalPage extends StatelessWidget {
                                 Navigator.pop(context),
                                 Get.snackbar('Withdrawal Successful',
                                     'You will recieve your reward in Few minutes, Please Wait!',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.lightGreen)
+                                    backgroundColor: Color.fromRGBO(171, 63, 65, 1))
                               }else{
                                 Get.snackbar('Insufficient Balance',
                                     'You are not eligible for this offer.',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent)
+                                    backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                               }
                             }
                         },
@@ -137,6 +141,8 @@ class WithdrawalPage extends StatelessWidget {
                         middleText:
                             "Are you sure you want to Initiate a Withdrawal",
                         textCancel: "Cancel",
+                        buttonColor: Color.fromRGBO(255, 119, 129, 1),
+                        cancelTextColor: Color.fromRGBO(255, 119, 129, 1),
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
@@ -147,8 +153,9 @@ class WithdrawalPage extends StatelessWidget {
                               Navigator.pop(context),
                               Get.snackbar('Number Missing',
                                   'Please enter your EasyPaisa number before Initiating a Withdrawal',
+                                  colorText: Colors.white,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.redAccent)
+                                  backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                             }
                           else
                             {
@@ -159,12 +166,13 @@ class WithdrawalPage extends StatelessWidget {
                                 Get.snackbar('Withdrawal Successful',
                                     'You will recieve your reward in Few minutes, Please Wait!',
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.lightGreen)
+                                    colorText: Colors.white,
+                                    backgroundColor: Color.fromRGBO(171, 63, 65, 1))
                               }else{
                                 Get.snackbar('Insufficient Balance',
                                     'You are not eligible for this offer.',
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent)
+                                    backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                               }
 
 
@@ -194,6 +202,8 @@ class WithdrawalPage extends StatelessWidget {
                         middleText:
                             "Are you sure you want to Initiate a Withdrawal",
                         textCancel: "Cancel",
+                        buttonColor: Color.fromRGBO(255, 119, 129, 1),
+                        cancelTextColor: Color.fromRGBO(255, 119, 129, 1),
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
@@ -204,8 +214,9 @@ class WithdrawalPage extends StatelessWidget {
                               Navigator.pop(context),
                               Get.snackbar('Number Missing',
                                   'Please enter your EasyPaisa number before Initiating a Withdrawal',
+                                  colorText: Colors.white,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.redAccent)
+                                  backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                             }
                           else
                             {
@@ -214,13 +225,15 @@ class WithdrawalPage extends StatelessWidget {
                                 Navigator.pop(context),
                                 Get.snackbar('Withdrawal Successful',
                                     'You will recieve your reward in Few minutes, Please Wait!',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.lightGreen)
+                                    backgroundColor: Color.fromRGBO(171, 63, 65, 1))
                               }else{
                                 Get.snackbar('Insufficient Balance',
                                     'You are not eligible for this offer.',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent)
+                                    backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                               }
                             }
                         },
@@ -248,6 +261,8 @@ class WithdrawalPage extends StatelessWidget {
                         middleText:
                             "Are you sure you want to Initiate a Withdrawal",
                         textCancel: "Cancel",
+                        buttonColor: Color.fromRGBO(255, 119, 129, 1),
+                        cancelTextColor: Color.fromRGBO(255, 119, 129, 1),
                         textConfirm: "Confirm",
                         confirmTextColor: Colors.white,
                         onConfirm: () => {
@@ -258,8 +273,9 @@ class WithdrawalPage extends StatelessWidget {
                               Navigator.pop(context),
                               Get.snackbar('Number Missing',
                                   'Please enter your EasyPaisa number before Initiating a Withdrawal',
+                                  colorText: Colors.white,
                                   snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.redAccent)
+                                  backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                             }
                           else
                             {
@@ -268,13 +284,15 @@ class WithdrawalPage extends StatelessWidget {
                                 Navigator.pop(context),
                                 Get.snackbar('Withdrawal Successful',
                                     'You will recieve your reward in Few minutes, Please Wait!',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.lightGreen)
+                                    backgroundColor: Color.fromRGBO(171, 63, 65, 1))
                               }else{
                                 Get.snackbar('Insufficient Balance',
                                     'You are not eligible for this offer.',
+                                    colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent)
+                                    backgroundColor: Color.fromRGBO(255, 119, 129, 1))
                               }
                             }
                         },

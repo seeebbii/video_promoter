@@ -97,7 +97,7 @@ class _ChannelPageState extends State<ChannelPage> {
           onPressed: () {
             _displayDialog(context);
           },
-          backgroundColor: Colors.red,
+          backgroundColor: Color.fromRGBO(255, 119, 129, 1),
           child: Icon(Icons.add),
         ),
         body: GetX<UserController>(

@@ -6,7 +6,7 @@ class contactUs extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Contact Us"),
-        backgroundColor: Colors.redAccent,
+        backgroundColor:Color.fromRGBO(255, 119, 129, 1),
       ),
       body: Container(
         child: Padding(

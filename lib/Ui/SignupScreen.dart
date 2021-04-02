@@ -211,7 +211,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Text(
           'REGISTER',
           style: TextStyle(
-            color: Colors.red,
+            color: Color.fromRGBO(255, 119, 129, 1),
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -221,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
     ):CircularProgressIndicator(
     strokeWidth: 1.5,
     backgroundColor: Color(0xFFF1959B),
-    valueColor: new AlwaysStoppedAnimation<Color>(Colors.red.shade700),
+    valueColor: new AlwaysStoppedAnimation<Color>(Color.fromRGBO(255, 119, 129, 1)),
     );
   }
   Widget _signInButton() {

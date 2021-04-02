@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       drawer: userController.currentTab.value != 1 ? DrawerItems() : null,
       appBar: AppBar(
         title: Text("Video Promoter".tr),
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromRGBO(255, 119, 129, 1),
         actions: [
           Image.asset(
             'assets/logo/clock.png',
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                             strokeWidth: 1.5,
                             backgroundColor: Color(0xFFF1959B),
                             valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.red.shade700),
+                                Color.fromRGBO(255, 119, 129, 1)),
                           ),
                         )
                       : Text(
@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: userController.currentTab.value,
-        selectedItemColor: Colors.red,
+        selectedItemColor: Color.fromRGBO(255, 119, 129, 1),
         onTap: _onItemTapped,
       ),
     );

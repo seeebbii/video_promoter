@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text(
                 'LOGIN',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Color.fromRGBO(171, 63, 65, 1),
                   letterSpacing: 1.5,
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
         : CircularProgressIndicator(
             strokeWidth: 1.5,
             backgroundColor: Color(0xFFF1959B),
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.red.shade700),
+            valueColor: new AlwaysStoppedAnimation<Color>(Color.fromARGB(171, 171, 63, 65)),
           );
   }
 
@@ -205,9 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Color(0xFFF1959B),
+                        Color.fromRGBO(255, 119, 129, 1),
                         Color(0xFFF07470),
-                        Color(0xFFEA4C46),
-                        Color(0xFFDC1C13),
+                        Color.fromRGBO(171, 63 ,65, 1),
                       ],
                       stops: [0.1, 0.4, 0.7, 0.9],
                     ),
@@ -215,8 +215,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(15),
+
                   child: Text(
                     'Video Promoter'.tr,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         letterSpacing: 2.5,
                         color: Colors.white,
