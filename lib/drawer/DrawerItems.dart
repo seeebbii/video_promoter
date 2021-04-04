@@ -2,14 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
 import 'package:video_promoter/Ui/change_language.dart';
 import 'package:video_promoter/Ui/consentPage.dart';
 import 'package:video_promoter/Ui/contatctus.dart';
 import 'package:video_promoter/Ui/privacypolicy.dart';
 import 'package:video_promoter/Ui/withdrawalPage.dart';
-import 'package:video_promoter/controllers/language_controller.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/ShareScreen.dart';
@@ -19,7 +17,6 @@ class DrawerItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final watchVideoController = Get.find<WatchVideoController>();
     final userController = Get.find<UserController>();
-    final LanguageController languageController = LanguageController();
 
     if (watchVideoController.isPlayerReady.value) {
       watchVideoController.youtubeController.value.pause();

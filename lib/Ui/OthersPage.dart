@@ -65,10 +65,10 @@ class _OthersPageState extends State<OthersPage> {
   Widget returnCard(double ammount, int values, String type) {
     return Card(
       child: ListTile(
-        title: Text("Get ${values} ${type}"),
+        title: Text("Get $values $type"),
         subtitle: Text(
-            "${values} ${type.toLowerCase()} will be added to your account"),
-        trailing: Text("Rs ${ammount}"),
+            "$values ${type.toLowerCase()} will be added to your account"),
+        trailing: Text("Rs $ammount"),
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),

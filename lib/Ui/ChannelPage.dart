@@ -1,15 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_promoter/Models/User.dart';
-import 'package:video_promoter/Models/VideosModel.dart';
 import 'package:video_promoter/Ui/AddVideoPage.dart';
 import 'package:video_promoter/Ui/ViewMyVideo.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_video_validator/youtube_video_validator.dart';
-import 'package:http/http.dart' as http;
 
 class ChannelPage extends StatefulWidget {
   @override
@@ -42,6 +36,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   hintText: "Enter your YouTube video link here".tr),
             ),
             actions: <Widget>[
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text('Cancel'.tr),
                 onPressed: () {
@@ -49,6 +44,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   Navigator.of(context).pop();
                 },
               ),
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text('Add'.tr),
                 onPressed: () {

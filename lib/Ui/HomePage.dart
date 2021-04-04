@@ -1,20 +1,18 @@
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:video_promoter/Models/User.dart';
-import 'package:video_promoter/Models/stateMachine.dart';
 import 'package:video_promoter/Ui/ChannelPage.dart';
 import 'package:video_promoter/Ui/OthersPage.dart';
 import 'package:video_promoter/Ui/ViewPage.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/drawer/DrawerItems.dart';
-import 'package:http/http.dart' as http;
-import 'package:wakelock/wakelock.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   User user;
 
@@ -86,11 +84,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(Colors.red.withOpacity(0.7));
+    FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(255, 129, 119, 0.3));
     return Scaffold(
       drawer: userController.currentTab.value != 1 ? DrawerItems() : null,
       appBar: AppBar(
-        title: Text("Video Promoter".tr),
+        title: Text("Video Promoter".tr, style: new TextStyle(
+          color: Colors.white,
+        ),),
         backgroundColor: Color.fromRGBO(255, 119, 129, 1),
         actions: [
           Image.asset(
@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
           GetX<UserController>(
               init: UserController(),
               builder: (controller) {
+                // ignore: deprecated_member_use
                 return FlatButton(
                   textColor: Colors.white,
                   minWidth: 15,
@@ -128,18 +129,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                 );
-                ;
-                Obx(
-                  () => Text(
-                    "${userController.userBal.value}",
-                    style: TextStyle(
-                      fontSize: 20.5,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                );
-                shape:
-                CircleBorder(side: BorderSide(color: Colors.transparent));
               }),
         ],
       ),

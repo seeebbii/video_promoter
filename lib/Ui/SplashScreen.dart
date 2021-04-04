@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/controllers/userController.dart';
-import 'package:video_promoter/controllers/watchVideoController.dart';
 
 import 'HomePage.dart';
 import 'LoginScreen.dart';
 
+// ignore: must_be_immutable
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();

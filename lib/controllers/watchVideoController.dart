@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/WatchVideo.dart';
@@ -29,7 +27,7 @@ class WatchVideoController extends GetxController {
       String userID = prefs.getString('id');
 
       String watchUrl =
-          "https://www.videopromoter.tk/Video_app/getWatchVideoString.php?id=${userID}";
+          "https://www.videopromoter.tk/Video_app/getWatchVideoString.php?id=$userID";
       http.Response watchedByUser = await http.get(watchUrl);
       var variable = jsonDecode(watchedByUser.body);
 
@@ -44,10 +42,7 @@ class WatchVideoController extends GetxController {
 
       if (response.body.contains("null")) {
         // UPDATES USER WATCHING
-        String Url =
-            "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${userID}&vid_watched=0";
-        http.Response userWatching = await http.get(Url);
-
+        // ignore: non_constant_identifier_names
         String url =
             "https://www.videopromoter.tk/Video_app/viewRandomVideo.php?tested=0";
         http.Response response = await http.get(url);

@@ -198,6 +198,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return !progress? Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
+      // ignore: deprecated_member_use
       child: RaisedButton(
         elevation: 5.0,
         onPressed: (){
@@ -372,6 +373,7 @@ class _SignupScreenState extends State<SignupScreen> {
           }else{
             referral = _referralController.text;
           }
+          // ignore: non_constant_identifier_names
           String URL =
               'https://www.videopromoter.tk/Video_app/signup.php?email=$email&name=$name&password=$pass&referral=$referral';
           http.Response response = await http.get(URL);

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:video_promoter/Models/VideosModel.dart';
-import 'package:video_promoter/controllers/watchVideoController.dart';
 
 class UserController extends GetxController {
 
@@ -59,6 +58,7 @@ class UserController extends GetxController {
   void getMyVideos() {
     isVideoLoading(true);
     Future.delayed(Duration(seconds: 3), () async {
+      // ignore: non_constant_identifier_names
       String Url =
           "https://www.videopromoter.tk/Video_app/getMyVideos.php?id=${user.id}";
       http.Response response = await http.get(Url);
@@ -130,12 +130,13 @@ class UserController extends GetxController {
       userWatchings+=",$vidId";
 
       // UPDATES USER WATCHING
-      String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=${userWatchings}";
+      // ignore: non_constant_identifier_names
+      String Url = "https://www.videopromoter.tk/Video_app/vidWatchedByUser.php?id=${user.id}&vid_watched=$userWatchings";
       http.Response userWatching = await http.get(Url);
       print(userWatching.body);
 
       // UPDATES VIDEO DETAILS ACCORDINGLY
-      String updateVidDetailsUrl = "https://www.videopromoter.tk/Video_app/updateVideoDetails.php?vidId=${vidId}&gotViews=${view}&durationWatched=${durationWatched}";
+      String updateVidDetailsUrl = "https://www.videopromoter.tk/Video_app/updateVideoDetails.php?vidId=$vidId&gotViews=$view&durationWatched=$durationWatched";
       http.Response videoDetails = await http.get(updateVidDetailsUrl);
       print(videoDetails.body);
 
@@ -145,7 +146,7 @@ class UserController extends GetxController {
       String updateBalance = "https://www.videopromoter.tk/Video_app/updateBalance.php?id=${user.id}&cost=$updateBalaCost";
       http.Response updateBalanceReq = await http.get(updateBalance);
       print(updateBalanceReq.body);
-      Get.snackbar("Award received", "${cost} Minutes have been added to your account.", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Award received", "$cost Minutes have been added to your account.", snackPosition: SnackPosition.BOTTOM);
 
       watchVideoController.getVideo();
 

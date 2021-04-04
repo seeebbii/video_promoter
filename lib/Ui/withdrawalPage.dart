@@ -13,12 +13,12 @@ class WithdrawalPage extends StatelessWidget {
 
     void makeRequest() async {
       // READY FOR QUERY REQUEST
-      String queryUrl = "https://www.videopromoter.tk/Video_app/withdrawalQuery.php?userId=${userController.user.id}&name=${userController.user.name}&email=${userController.user.email}&easyPaisa=${textEditingController.text}&package=${withdrawalAmount}";
+      String queryUrl = "https://www.videopromoter.tk/Video_app/withdrawalQuery.php?userId=${userController.user.id}&name=${userController.user.name}&email=${userController.user.email}&easyPaisa=${textEditingController.text}&package=$withdrawalAmount";
       http.Response response = await http.get(queryUrl);
       print(response.body);
 
       // UPDATE USER BALANCE REQUEST
-      String updateBal = 'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${costToBeDeducted}';
+      String updateBal = 'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=$costToBeDeducted';
       userController.user.balance = userController.user.balance - costToBeDeducted;
       userController.userBal -= costToBeDeducted;
       http.Response responseTwo = await http.get(updateBal);
@@ -68,6 +68,7 @@ class WithdrawalPage extends StatelessWidget {
                   height: 20,
                 ),
                 Card(
+                  // ignore: deprecated_member_use
                   child: RaisedButton(
                     child: ListTile(
                       title: Text("Get 100rs in Exchange of 1000 Minutes"),
@@ -126,6 +127,7 @@ class WithdrawalPage extends StatelessWidget {
                   height: 10,
                 ),
                 Card(
+                  // ignore: deprecated_member_use
                   child: RaisedButton(
                     child: ListTile(
                       title: Text("Get Rs.240 in Exchange of 2000 Minutes"),
@@ -187,6 +189,7 @@ class WithdrawalPage extends StatelessWidget {
                   height: 10,
                 ),
                 Card(
+                  // ignore: deprecated_member_use
                   child: RaisedButton(
                     child: ListTile(
                       title: Text("Get Rs.600 in Exchange of 4000 Minutes"),
@@ -246,6 +249,7 @@ class WithdrawalPage extends StatelessWidget {
                   height: 10,
                 ),
                 Card(
+                  // ignore: deprecated_member_use
                   child: RaisedButton(
                     child: ListTile(
                       title: Text("Get Rs.12000 in Exchange of 1000 Hours"),

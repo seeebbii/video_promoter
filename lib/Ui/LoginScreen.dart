@@ -9,7 +9,6 @@ import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:video_promoter/Ui/SignupScreen.dart';
 import 'package:video_promoter/controllers/userController.dart';
-import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:video_promoter/utilities/constant_dart.dart';
 import 'package:http/http.dart' as http;
 
@@ -104,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _forgotPass() {
     return Container(
       alignment: Alignment.centerRight,
+      // ignore: deprecated_member_use
       child: FlatButton(
         onPressed: () => print('Forgot Password Button Pressed'),
         padding: EdgeInsets.only(right: 0.0),
@@ -120,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ? Container(
             padding: EdgeInsets.symmetric(vertical: 25.0),
             width: double.infinity,
+            // ignore: deprecated_member_use
             child: RaisedButton(
               elevation: 5.0,
               onPressed: () {
@@ -285,6 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'user_password': pass,
       });
 
+      // ignore: non_constant_identifier_names
       String URL = 'https://www.videopromoter.tk/Video_app/login.php';
       http.Response response = await http.post(
         URL,

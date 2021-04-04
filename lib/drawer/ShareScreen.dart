@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// ignore: must_be_immutable
 class ShareScreen extends StatefulWidget {
   String referralId;
   ShareScreen({Key key, this.referralId}) : super(key: key);
@@ -54,6 +55,7 @@ class _ShareScreenState extends State<ShareScreen> {
                   ),
                 ),
               ),
+              // ignore: deprecated_member_use
               RaisedButton(
                 child: Text(
                   "Refer Now",

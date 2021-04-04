@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/Models/VideosModel.dart';
-import 'package:video_promoter/Ui/HomePage.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class AddVideoPage extends StatefulWidget {
   String videoUrl;
 
@@ -47,6 +46,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
             width: 22,
             color: Colors.white,
           ),
+          // ignore: deprecated_member_use
           FlatButton(
             textColor: Colors.white,
             minWidth: 15,
@@ -162,6 +162,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
               height: 10,
             ),
             ListTile(
+              // ignore: deprecated_member_use
               title: RaisedButton(
                 elevation: 5,
                 color: Color.fromRGBO(255, 119, 129, 1),
@@ -216,8 +217,9 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
         toggleUploading(true);
 
+        // ignore: non_constant_identifier_names
         String URL =
-            'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=${selectedViewCount}&gotViews=0&duration=${selectedMinCount}&durationWatched=0';
+            'https://www.videopromoter.tk/Video_app/addVideo.php?email=${userController.user.email}&name=${userController.user.name}&id=${userController.user.id}&link=${widget.videoUrl}&totalViews=$selectedViewCount&gotViews=0&duration=$selectedMinCount&durationWatched=0';
         http.Response response = await http.get(URL);
         if (response.body == "Video added successfully".tr) {
           String extractedId = "";
@@ -236,8 +238,9 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
 
           // Deduct balance from the server
+          // ignore: non_constant_identifier_names
           String URL =
-              'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=${totalCost}';
+              'https://www.videopromoter.tk/Video_app/updateBalance.php?id=${userController.user.id}&cost=$totalCost';
           userController.user.balance = userController.user.balance - totalCost;
           userController.userBal -= totalCost;
           http.Response response = await http.get(URL);

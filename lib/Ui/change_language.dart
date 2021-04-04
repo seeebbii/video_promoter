@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_promoter/controllers/language_controller.dart';
 
+// ignore: must_be_immutable
 class ChangeLanguage extends StatelessWidget {
   LanguageController languageControler = Get.put(LanguageController());
   @override
@@ -28,6 +29,7 @@ class ChangeLanguage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                // ignore: deprecated_member_use
                 new RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('en', 'US');
@@ -42,6 +44,7 @@ class ChangeLanguage extends StatelessWidget {
                       color: Colors.white,
                     ),),
                 ),
+                // ignore: deprecated_member_use
                 RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'IN');
@@ -56,6 +59,7 @@ class ChangeLanguage extends StatelessWidget {
                       color: Colors.white,
                     ),),
                 ),
+                // ignore: deprecated_member_use
                 RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'FR');
@@ -70,6 +74,7 @@ class ChangeLanguage extends StatelessWidget {
                     color: Colors.white,
                   ),),
                   ),
+                // ignore: deprecated_member_use
                 RaisedButton(
                   onPressed: () {
                     languageControler.changeLanguage('hi', 'UR');

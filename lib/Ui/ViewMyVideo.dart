@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:video_promoter/Models/User.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
 
+// ignore: must_be_immutable
 class ViewMyVideo extends StatefulWidget {
   String link;
   int totalViews;
@@ -50,6 +49,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
             width: 22,
             color: Colors.white,
           ),
+          // ignore: deprecated_member_use
           FlatButton(
             textColor: Colors.white,
             minWidth: 15,
@@ -120,6 +120,7 @@ class _ViewMyVideoState extends State<ViewMyVideo> {
               height: 10,
             ),
             ListTile(
+              // ignore: deprecated_member_use
               title: RaisedButton(
                 elevation: 5,
                 color: Color.fromRGBO(255, 119, 129, 1),

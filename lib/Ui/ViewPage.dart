@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:video_promoter/Models/WatchVideo.dart';
@@ -11,7 +9,6 @@ import 'package:video_promoter/Models/stateMachine.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:http/http.dart' as http;
 
 import '../Models/WatchVideo.dart';
 
@@ -27,19 +24,16 @@ class ViewPage extends StatefulWidget {
 }
 
 class _ViewPageState extends State<ViewPage> {
-  PlayerState _playerState;
 
   // CONNECTION VARIABLES
-  String _connectionStatus = 'Unknown';
-  final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
   ConnectivityResult _connectivityResult;
 
   WatchVideo currentVideo;
   int duration;
-  Timer _timer;
   int timerForTimer;
   bool isStarted = false;
+  // ignore: non_constant_identifier_names
   int AWARD;
 
   final userController = Get.put(UserController());
@@ -127,7 +121,7 @@ class _ViewPageState extends State<ViewPage> {
                       children: [
                         Card(
                           child: Container(
-                            child: AWARD == null ? Text("Award: ...") :Text("Award: ${AWARD} Minutes"),
+                            child: AWARD == null ? Text("Award: ...") :Text("Award: $AWARD Minutes"),
                           ),
                         ),
                         // FlatButton(
@@ -143,7 +137,8 @@ class _ViewPageState extends State<ViewPage> {
                             ? CircularProgressIndicator()
                             : timerForTimer == null ?  Text(
                             "${watchVideoController.curVideo.value.duration}") : Text(
-                            "${timerForTimer}"),
+                            "$timerForTimer"),
+                        // ignore: deprecated_member_use
                         FlatButton(
                           onPressed: !isStarted && timerForTimer != null && watchVideoController.isPlayerReady.value ?  () {
                             startTimer();
@@ -201,23 +196,6 @@ class _ViewPageState extends State<ViewPage> {
 
 
     Future.delayed(Duration(milliseconds: 1100 ), (){
-      const oneSec = const Duration(seconds: 1);
-      _timer = new Timer.periodic(
-        oneSec,
-            (Timer timer) => setState(
-              () {
-            if (timerForTimer < 1 || isStarted == false) {
-              timer.cancel();
-              isStarted = true;
-            } if(timerForTimer == 0){
-              //iterate the video,  dispose the youtube controller and initialize a new one
-              videoWatched();
-            } else {
-              timerForTimer = timerForTimer - 1;
-            }
-          },
-        ),
-      );
     });
 
 

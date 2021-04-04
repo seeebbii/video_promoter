@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Ui/SplashScreen.dart';
-import 'package:video_promoter/controllers/userController.dart';
 import 'package:wakelock/wakelock.dart';
 
 
@@ -29,6 +28,10 @@ void main() async {
     locale: Locale(param1, param2),
     debugShowCheckedModeBanner: false,
     title: "Video Promotion".tr,
+    theme: ThemeData(
+      primaryColor: Color.fromRGBO(255, 129, 119, 1.0),
+      visualDensity:  VisualDensity.adaptivePlatformDensity,
+    ),
     home: MyApp(),
   ));
 }
