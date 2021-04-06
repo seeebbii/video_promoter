@@ -42,6 +42,7 @@ dependencies:
   get:
   wakelock: ^0.5.0+2
   connectivity: ^3.0.3
+  google_mobile_ads: ^0.12.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_promoter/Ui/SplashScreen.dart';
 import 'package:wakelock/wakelock.dart';
-
 
 import 'Models/messages.dart';
 
@@ -11,6 +11,7 @@ bool loggedIn;
 SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Wakelock.enable();
   var param1;
   var param2;
@@ -30,7 +31,7 @@ void main() async {
     title: "Video Promotion".tr,
     theme: ThemeData(
       primaryColor: Color.fromRGBO(255, 129, 119, 1.0),
-      visualDensity:  VisualDensity.adaptivePlatformDensity,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
     home: MyApp(),
   ));
@@ -42,7 +43,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     // TODO: implement initState

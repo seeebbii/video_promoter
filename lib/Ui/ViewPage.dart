@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:video_promoter/Models/WatchVideo.dart';
 import 'package:video_promoter/Models/stateMachine.dart';
 import 'package:video_promoter/controllers/userController.dart';
 import 'package:video_promoter/controllers/watchVideoController.dart';
+import 'package:video_promoter/utilities/ad_helper.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../Models/WatchVideo.dart';
@@ -24,6 +26,7 @@ class ViewPage extends StatefulWidget {
 }
 
 class _ViewPageState extends State<ViewPage> {
+  BannerAd _ad;
 
   // CONNECTION VARIABLES
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -39,11 +42,21 @@ class _ViewPageState extends State<ViewPage> {
   final userController = Get.put(UserController());
   var watchVideoController = Get.find<WatchVideoController>();
 
-
   @override
   void initState() {
     super.initState();
-    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    _ad = BannerAd(
+        size: AdSize.banner,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: AdListener(
+          onAdLoaded: (_) {
+            setState(() {});
+          },
+        ),
+        request: AdRequest());
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
       // Got a new connectivity status!
       setState(() {
         _connectivityResult = result;
@@ -53,21 +66,17 @@ class _ViewPageState extends State<ViewPage> {
     // _connectivitySubscription =
     //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
-
     // videoWatched();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if(watchVideoController.isStateChanged.value == true) {
+    if (watchVideoController.isStateChanged.value == true) {
       stop();
-
     }
     // if(watchVideoController.isStateChanged.value == false && watchVideoController.counterOfTimeStarted.value > 1){
     //   startTimer();
     // }
-
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -95,18 +104,24 @@ class _ViewPageState extends State<ViewPage> {
               //   );
               // }
 
-              if(_connectivityResult != ConnectivityResult.none){
+              if (_connectivityResult != ConnectivityResult.none) {
                 return Column(
                   children: [
+                    Container(
+                      child: AdWidget(
+                        ad: _ad,
+                      ),
+                      width: _ad.size.width.toDouble(),
+                      height: _ad.size.height.toDouble(),
+                    ),
                     YoutubePlayer(
                       onReady: () {
-                        Future.delayed(Duration(milliseconds: 1300), (){
+                        Future.delayed(Duration(milliseconds: 1300), () {
                           declareTimeValues();
                           setState(() {
                             watchVideoController.isPlayerReady.value = true;
                           });
                         });
-
                       },
                       controller: watchVideoController.youtubeController.value,
                       showVideoProgressIndicator: true,
@@ -121,7 +136,9 @@ class _ViewPageState extends State<ViewPage> {
                       children: [
                         Card(
                           child: Container(
-                            child: AWARD == null ? Text("Award: ...") :Text("Award: $AWARD Minutes"),
+                            child: AWARD == null
+                                ? Text("Award: ...")
+                                : Text("Award: $AWARD Minutes"),
                           ),
                         ),
                         // FlatButton(
@@ -135,15 +152,21 @@ class _ViewPageState extends State<ViewPage> {
                         // ),
                         watchVideoController.curVideo.value.duration == null
                             ? CircularProgressIndicator()
-                            : timerForTimer == null ?  Text(
-                            "${watchVideoController.curVideo.value.duration}") : Text(
-                            "$timerForTimer"),
+                            : timerForTimer == null
+                                ? Text(
+                                    "${watchVideoController.curVideo.value.duration}")
+                                : Text("$timerForTimer"),
                         // ignore: deprecated_member_use
                         FlatButton(
-                          onPressed: !isStarted && timerForTimer != null && watchVideoController.isPlayerReady.value ?  () {
-                            startTimer();
-                            watchVideoController.youtubeController.value.play();
-                          } : null,
+                          onPressed: !isStarted &&
+                                  timerForTimer != null &&
+                                  watchVideoController.isPlayerReady.value
+                              ? () {
+                                  startTimer();
+                                  watchVideoController.youtubeController.value
+                                      .play();
+                                }
+                              : null,
                           child: Text("Play"),
                           color: Color.fromRGBO(255, 119, 129, 1),
                         ),
@@ -151,21 +174,21 @@ class _ViewPageState extends State<ViewPage> {
                     ),
                   ],
                 );
-              }else{
-
-                try{
-                  if(isStarted && _connectivityResult == ConnectivityResult.none){
+              } else {
+                try {
+                  if (isStarted &&
+                      _connectivityResult == ConnectivityResult.none) {
                     setState(() {
                       isStarted = false;
                     });
-                  }else{
+                  } else {
                     setState(() {
                       watchVideoController.isPlayerReady.value = false;
                     });
                     watchVideoController.youtubeController.value.reset();
                     // startTimer();
                   }
-                }finally{
+                } finally {
                   // ignore: control_flow_in_finally
                   return Container(
                     width: MediaQuery.of(context).size.width,
@@ -176,14 +199,12 @@ class _ViewPageState extends State<ViewPage> {
                   );
                 }
               }
-
-
             }),
       ),
     );
   }
 
-  void declareTimeValues(){
+  void declareTimeValues() {
     watchVideoController.isTimerRunning.value = true;
     timerForTimer = watchVideoController.curVideo.value.duration * 60;
   }
@@ -193,13 +214,7 @@ class _ViewPageState extends State<ViewPage> {
       isStarted = true;
     });
 
-
-
-    Future.delayed(Duration(milliseconds: 1100 ), (){
-    });
-
-
-
+    Future.delayed(Duration(milliseconds: 1100), () {});
   }
 
   void stop() {
@@ -209,7 +224,6 @@ class _ViewPageState extends State<ViewPage> {
   }
 
   void videoWatched() {
-
     int view = 1;
     int durationWatched = watchVideoController.curVideo.value.duration;
     isStarted = false;
@@ -218,7 +232,11 @@ class _ViewPageState extends State<ViewPage> {
     });
     watchVideoController.youtubeController.value.reset();
     userController.updateWatchedVideos(
-        watchVideoController.curVideo.value.videoId.toString(), AWARD , view, durationWatched, watchVideoController);
+        watchVideoController.curVideo.value.videoId.toString(),
+        AWARD,
+        view,
+        durationWatched,
+        watchVideoController);
     watchVideoController.youtubeController.value.reload();
   }
 
