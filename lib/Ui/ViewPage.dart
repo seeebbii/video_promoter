@@ -27,6 +27,8 @@ class ViewPage extends StatefulWidget {
 
 class _ViewPageState extends State<ViewPage> {
   BannerAd _ad;
+  InterstitialAd _interstitialAd;
+  int videoCounter = 0;
 
   // CONNECTION VARIABLES
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -35,12 +37,16 @@ class _ViewPageState extends State<ViewPage> {
   WatchVideo currentVideo;
   int duration;
   int timerForTimer;
+  Timer _timer;
   bool isStarted = false;
-  // ignore: non_constant_identifier_names
   int AWARD;
 
   final userController = Get.put(UserController());
   var watchVideoController = Get.find<WatchVideoController>();
+
+  static final AdRequest request = AdRequest(
+    nonPersonalizedAds: true,
+  );
 
   @override
   void initState() {
@@ -53,7 +59,9 @@ class _ViewPageState extends State<ViewPage> {
             setState(() {});
           },
         ),
-        request: AdRequest());
+        request: AdRequest())
+      ..load();
+    createInterstitialAd();
     _connectivitySubscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
@@ -67,6 +75,32 @@ class _ViewPageState extends State<ViewPage> {
     //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
     // videoWatched();
+  }
+
+  void createInterstitialAd() {
+    _interstitialAd = InterstitialAd(
+      adUnitId: InterstitialAd.testAdUnitId,
+      listener: AdListener(
+        onAdLoaded: (Ad ad) {
+          print('${ad.runtimeType} loaded.');
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('${ad.runtimeType} failed to load: $error.');
+          ad.dispose();
+          _interstitialAd = null;
+          createInterstitialAd();
+        },
+        onAdOpened: (Ad ad) => print('${ad.runtimeType} onAdOpened.'),
+        onAdClosed: (Ad ad) {
+          print('${ad.runtimeType} closed.');
+          ad.dispose();
+          createInterstitialAd();
+        },
+        onApplicationExit: (Ad ad) =>
+            print('${ad.runtimeType} onApplicationExit.'),
+      ),
+      request: request,
+    )..load();
   }
 
   @override
@@ -108,6 +142,7 @@ class _ViewPageState extends State<ViewPage> {
                 return Column(
                   children: [
                     Container(
+                      margin: EdgeInsets.only(bottom: 10),
                       child: AdWidget(
                         ad: _ad,
                       ),
@@ -214,7 +249,25 @@ class _ViewPageState extends State<ViewPage> {
       isStarted = true;
     });
 
-    Future.delayed(Duration(milliseconds: 1100), () {});
+    Future.delayed(Duration(milliseconds: 1100), () {
+      const oneSec = const Duration(seconds: 1);
+      _timer = new Timer.periodic(
+        oneSec,
+            (Timer timer) => setState(
+              () {
+            if (timerForTimer < 1 || isStarted == false) {
+              timer.cancel();
+              isStarted = true;
+            } if(timerForTimer == 0){
+              //iterate the video,  dispose the youtube controller and initialize a new one
+              videoWatched();
+            } else {
+              timerForTimer = timerForTimer - 1;
+            }
+          },
+        ),
+      );
+    });
   }
 
   void stop() {
@@ -229,6 +282,7 @@ class _ViewPageState extends State<ViewPage> {
     isStarted = false;
     setState(() {
       watchVideoController.isPlayerReady.value = false;
+      videoCounter += 1;
     });
     watchVideoController.youtubeController.value.reset();
     userController.updateWatchedVideos(
@@ -238,12 +292,20 @@ class _ViewPageState extends State<ViewPage> {
         durationWatched,
         watchVideoController);
     watchVideoController.youtubeController.value.reload();
+    if (videoCounter == 5) {
+      _interstitialAd.show();
+      setState(() {
+        videoCounter = 0;
+      });
+    }
   }
 
   @override
   void dispose() {
     watchVideoController.youtubeController.value.dispose();
     _connectivitySubscription.cancel();
+    _interstitialAd.dispose();
+    _ad.dispose();
     // TODO: implement dispose
     super.dispose();
   }

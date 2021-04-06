@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:video_promoter/controllers/userController.dart';
+import 'package:video_promoter/utilities/ad_helper.dart';
 
-class WithdrawalPage extends StatelessWidget {
+class WithdrawalPage extends StatefulWidget {
+
+  @override
+  _WithdrawalPageState createState() => _WithdrawalPageState();
+}
+
+class _WithdrawalPageState extends State<WithdrawalPage> {
+  BannerAd _ad;
+
+  @override
+  void initState() {
+    _ad = BannerAd(
+        size: AdSize.banner,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: AdListener(
+          onAdLoaded: (_) {
+            setState(() {});
+          },
+        ),
+        request: AdRequest())..load();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +48,7 @@ class WithdrawalPage extends StatelessWidget {
       print(responseTwo.body);
     }
 
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Withdrawal Request'),
@@ -36,6 +60,14 @@ class WithdrawalPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                Container(
+                  margin:  EdgeInsets.only(bottom: 10),
+                  child: AdWidget(
+                    ad: _ad,
+                  ),
+                  width: _ad.size.width.toDouble(),
+                  height: _ad.size.height.toDouble(),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Center(
@@ -312,6 +344,4 @@ class WithdrawalPage extends StatelessWidget {
       ),
     );
   }
-
-
 }

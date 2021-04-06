@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:video_promoter/utilities/ad_helper.dart';
 
 class OthersPage extends StatefulWidget {
   @override
@@ -8,6 +10,22 @@ class OthersPage extends StatefulWidget {
 }
 
 class _OthersPageState extends State<OthersPage> {
+  BannerAd _ad;
+
+  @override
+  void initState() {
+    _ad = BannerAd(
+        size: AdSize.banner,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: AdListener(
+          onAdLoaded: (_) {
+            setState(() {});
+          },
+        ),
+        request: AdRequest())..load();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +34,14 @@ class _OthersPageState extends State<OthersPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            Container(
+              margin:  EdgeInsets.only(bottom: 10),
+              child: AdWidget(
+                ad: _ad,
+              ),
+              width: _ad.size.width.toDouble(),
+              height: _ad.size.height.toDouble(),
+            ),
             Container(
               height: 50,
               child: Text(
