@@ -151,11 +151,11 @@ class DrawerItems extends StatelessWidget {
               leading: Icon(
                 Icons.exit_to_app,
                 size: 20,
-                color: Color.fromRGBO(171, 63, 65, 1),
+                color: Color.fromRGBO(171, 63, 65, 1.0),
               ),
               title: Text(
                 'Log Out'.tr,
-                style: TextStyle(color: Color.fromRGBO(171, 63, 65, 1)),
+                style: TextStyle(color: Color.fromRGBO(171, 63, 65, 1.0)),
               ),
             ),
           ],
