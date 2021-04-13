@@ -51,7 +51,9 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Withdrawal Request'),
+        title: Text('Withdrawal Request', style: new TextStyle(
+          color: Colors.white,
+        ),),
         backgroundColor: Color.fromRGBO(255, 119, 129, 1),
       ),
       body: SingleChildScrollView(

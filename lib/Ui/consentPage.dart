@@ -5,7 +5,9 @@ class ConsentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consent'),
+        title: Text('Consent', style: new TextStyle(
+          color: Colors.white,
+        ),),
         backgroundColor: Color.fromRGBO(255, 119, 129, 1),
       ),
       body: Container(

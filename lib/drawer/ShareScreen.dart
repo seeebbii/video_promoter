@@ -17,8 +17,10 @@ class _ShareScreenState extends State<ShareScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Refer Now'),
-          backgroundColor: Colors.redAccent,
+          title: Text('Refer Now', style: new TextStyle(
+            color: Colors.white,
+          ),),
+          backgroundColor: Color.fromRGBO(255, 119, 125, 1),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -61,7 +63,7 @@ class _ShareScreenState extends State<ShareScreen> {
                   "Refer Now",
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                color: Colors.red,
+                color: Color.fromRGBO(255, 119, 125, 1),
                 onPressed: () {
                   share(widget.referralId);
                 },

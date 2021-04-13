@@ -9,8 +9,10 @@ class ChangeLanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Language'),
-        backgroundColor: Colors.red[400],
+        title: Text('Change Language', style: new TextStyle(
+            color: Colors.white,
+        ),),
+        backgroundColor: Color.fromRGBO(255, 119, 125, 1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

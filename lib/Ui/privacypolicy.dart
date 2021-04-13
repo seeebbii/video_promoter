@@ -73,7 +73,9 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Privacy Policy"),
+        title: Text("Privacy Policy", style: new TextStyle(
+          color: Colors.white,
+        ),),
         backgroundColor: Color.fromRGBO(255, 119, 129, 1),
       ),
       body: SingleChildScrollView(

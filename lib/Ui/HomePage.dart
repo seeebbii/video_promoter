@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(255, 129, 119, 0.3));
+    FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(255, 119, 129, 0.3));
     return Scaffold(
       drawer: userController.currentTab.value != 1 ? DrawerItems() : null,
       appBar: AppBar(
