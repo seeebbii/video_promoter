@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "377029425866",
+    "project_id": "videopromoter-74719",
+    "storage_bucket": "videopromoter-74719.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377029425866:android:a3e5d9ac66a548f4de1233",
+        "android_client_info": {
+          "package_name": "com.codeminers.video_promoter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377029425866-1kenql4p26pnas5r7g1s9htio2vihc01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_nPpmVPDbgHxhEudVO95BHKFGl5f-uek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377029425866-1kenql4p26pnas5r7g1s9htio2vihc01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
