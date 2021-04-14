@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_promoter/Ui/LoginScreen.dart';
 import 'package:video_promoter/Ui/change_language.dart';
 import 'package:video_promoter/Ui/consentPage.dart';
@@ -28,7 +29,8 @@ class DrawerItems extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Color.fromRGBO(255, 119, 129, 1)),
+              decoration:
+                  BoxDecoration(color: Color.fromRGBO(255, 119, 129, 1)),
               accountName: Text(
                   userController.user.name == null
                       ? "Loading..."
@@ -68,6 +70,21 @@ class DrawerItems extends StatelessWidget {
               ),
               title: Text(
                 'Share with Friends'.tr,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                const url =
+                    'https://play.google.com/store/apps/developer?id=MUHAMMAD+ISHAQ';
+                launchURL(url);
+              },
+              leading: Icon(
+                Icons.share,
+                size: 20,
+              ),
+              title: Text(
+                'Our Other Apps'.tr,
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -164,12 +181,21 @@ class DrawerItems extends StatelessWidget {
     );
   }
 
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   void logOutHandler(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     // await prefs.clear();
     prefs.setBool('loggedIn', false);
 
-    Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (_){
+    Navigator.of(context).pushAndRemoveUntil(
+        new MaterialPageRoute(builder: (_) {
       return LoginScreen();
     }), (route) => false);
   }

@@ -43,6 +43,7 @@ dependencies:
   wakelock: ^0.5.0+2
   connectivity: ^3.0.3
   google_mobile_ads: ^0.12.1
+  url_launcher: ^6.0.3
 
 
 dev_dependencies:
